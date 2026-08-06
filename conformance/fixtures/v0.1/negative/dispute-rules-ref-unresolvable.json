@@ -1,0 +1,58 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "dsp_delta_calibration_01",
+  "object_type": "dispute",
+  "version": 1,
+  "created_at": "2026-08-12T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_delta",
+    "agent_id": "agt_delta_supplier_01",
+    "mandate_id": "mnd_delta_supplier_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "d52cfe6d2e22c7a053a9c3c88cf044a0ab78d838d1622853f343cba48ba64e8f",
+  "signatures": [
+    {
+      "key_id": "key_delta_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-12T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "raising_party": {
+      "organization_id": "org_delta",
+      "agent_id": "agt_delta_supplier_01"
+    },
+    "respondent_party": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "subject_type": "act",
+    "subject_id": "off_calibration_demo_01",
+    "grounds": [
+      "authority_exceeded"
+    ],
+    "evidence_refs": [
+      {
+        "evidence_id": "evd_delta_calibration_certificate_01",
+        "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+        "evidence_type": "third_party_certificate",
+        "signed_by": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+      }
+    ],
+    "rules_ref": {
+      "rule_set_id": "a202-rules/pilot",
+      "version": "9.9",
+      "rules_hash": "164915aeb8355af204d602b6f4d1a2d47e5a05586242aeb842e86cd350b575e0"
+    },
+    "subject_hash": "9e93f2925f8f3b66e9d12522f0a6458157285abecc109d260fc23999374fe46b",
+    "description": "The referenced act was taken outside the constraints of the mandate that covered it."
+  }
+}

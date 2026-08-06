@@ -1,0 +1,92 @@
+{
+  "fixture_kind": "bundle",
+  "note": "A disclosed subset that cannot be verified without an object the verifier was not given, and whose absence the bundle does not state.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "obl_delta_calibration_01",
+      "object_type": "obligation",
+      "version": 1,
+      "created_at": "2026-08-02T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "82f7687d126ac203a2d4308ef14bf801879a8744317ade77c96f68aa62b18e7a",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-02T09:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "agreement_id": "agr_calibration_demo_01",
+        "commitment_id": "cmt_delta_calibration_01",
+        "obligor": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "obligee": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "subject": {
+          "agreement_id": "agr_calibration_demo_01",
+          "terms_hash": "8c627a6dd9a8de24d77734c591a70162a04a5789c12d1aac39d194d90b52e533",
+          "profile": "a202-profile/calibration-service/0.1",
+          "term_path": "$.terms.core.quantity"
+        },
+        "due_condition": {
+          "type": "due_at_time",
+          "at": "2026-08-14T12:00:00Z"
+        },
+        "quantity": "10",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "consideration": {
+          "currency": "EUR",
+          "amount": "3200.00"
+        },
+        "state": "pending"
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "obr_northstar_calibration_01",
+      "object_type": "obligation_response",
+      "version": 1,
+      "created_at": "2026-08-11T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "8647ea6f0c1f780a6f8134cbe8b960429e224931eae18ea768dac16e060a61ac",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-11T10:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "obligation_id": "obl_delta_calibration_01",
+        "response_type": "accept",
+        "assertion_id": "prf_delta_calibration_01",
+        "assertion_hash": "8f3bf17ea7bcb97bcb81e9857301fae229d30b535a93ab269d2ef921061686f9",
+        "accepted_quantity": "10"
+      }
+    }
+  ]
+}

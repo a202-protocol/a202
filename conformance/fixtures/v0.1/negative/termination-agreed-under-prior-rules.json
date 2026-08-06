@@ -1,0 +1,50 @@
+{
+  "fixture_kind": "bundle",
+  "note": "The same termination.agreed transition replayed against rules version 1.0, which never permitted it. A transition legal only under a later rules version is illegal on a record governed by an earlier one.",
+  "context": {
+    "rules_version_in_force": "1.0"
+  },
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_termination_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-13T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_calibration_demo_01"
+        },
+        "sequence": 12,
+        "event_type": "termination.agreed",
+        "occurred_at": "2026-08-13T09:00:00Z",
+        "previous_event_hash": null,
+        "action_hash": "e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2",
+        "policy_decision_id": "pol_northstar_terminate_01",
+        "from_state": "committed",
+        "to_state": "terminated",
+        "data": {
+          "termination_record_hash": "f6a7b8c9d0e1f2a3f6a7b8c9d0e1f2a3f6a7b8c9d0e1f2a3f6a7b8c9d0e1f2a3"
+        }
+      },
+      "content_hash": "f6c2709ff7cad41fbe13b0e337948365f9422e91098be71df9a81232828a59a4",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "event_append"
+        }
+      ]
+    }
+  ]
+}

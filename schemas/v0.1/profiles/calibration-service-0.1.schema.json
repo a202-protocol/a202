@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.a202.org/v0.1/profiles/calibration-service-0.1.schema.json",
+  "title": "A202 Transaction Profile: Calibration Service 0.1",
+  "description": "Profile-specific commercial terms for the synthetic calibration-service reference fixture. This profile is a pilot test fixture. It does not select a market, and no field defined here may appear in the canonical kernel schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "completion",
+    "payment",
+    "acceptance",
+    "rework"
+  ],
+  "properties": {
+    "completion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "business_days_after_collection",
+        "business_calendar"
+      ],
+      "properties": {
+        "business_days_after_collection": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "business_calendar": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country whose business calendar governs the count. Required by canonical model section 7: dates MUST state a time zone or business-calendar reference."
+        }
+      }
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prepayment_percent",
+        "balance_trigger"
+      ],
+      "properties": {
+        "prepayment_percent": {
+          "$ref": "https://schemas.a202.org/v0.1/commercial-kernel.schema.json#/$defs/percentString"
+        },
+        "balance_trigger": {
+          "enum": [
+            "buyer_acceptance",
+            "performance_declaration"
+          ]
+        }
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "certificate_required",
+        "machine_readable_result_required",
+        "qualification_standard"
+      ],
+      "properties": {
+        "certificate_required": {
+          "type": "boolean"
+        },
+        "machine_readable_result_required": {
+          "type": "boolean"
+        },
+        "qualification_standard": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Synthetic reference to the accreditation standard asserted by the supplier, for example ISO/IEC 17025:2017. A202 does not verify accreditation in the pilot."
+        }
+      }
+    },
+    "rework": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "included_attempts"
+      ],
+      "properties": {
+        "included_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      }
+    }
+  }
+}

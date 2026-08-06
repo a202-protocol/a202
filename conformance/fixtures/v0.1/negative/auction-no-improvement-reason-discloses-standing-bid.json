@@ -1,0 +1,41 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "pol_auction_no_improvement_01",
+  "object_type": "policy_decision",
+  "version": 1,
+  "created_at": "2026-07-25T15:30:00Z",
+  "created_by": {
+    "organization_id": "org_a202_operator",
+    "agent_id": "agt_a202_control_01",
+    "mandate_id": "mnd_a202_control_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "6d51307ae8139bc21f8f18bf2c7343cc424eb38f1fa44f06d9b8d3552126cfa0",
+  "signatures": [
+    {
+      "key_id": "key_a202_control_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T15:30:00Z",
+      "purpose": "policy_decision"
+    }
+  ],
+  "payload": {
+    "action_hash": "5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e",
+    "decision": "deny",
+    "reason_codes": [
+      "A202-BID-NO-IMPROVEMENT"
+    ],
+    "evaluated_at": "2026-07-25T15:30:00Z",
+    "mandate_ids": [
+      "mnd_delta_supplier_01"
+    ],
+    "stream": {
+      "kind": "private",
+      "id": "prv_delta_supplier_01"
+    },
+    "stream_sequence": 2,
+    "visibility": "private_to_actor"
+  }
+}

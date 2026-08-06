@@ -1,0 +1,124 @@
+{
+  "fixture_kind": "bundle",
+  "note": "A report over a disclosed subset: a stated scope, a named undisclosed stream, and per-check results that keep verified, failed, and not checkable apart.",
+  "context": {
+    "verification_report": {
+      "scope": {
+        "streams_in_scope": [
+          "ses_northstar_delta_01"
+        ],
+        "undisclosed_streams": [
+          "txn_calibration_demo_01"
+        ],
+        "time_range": {
+          "from": "2026-08-04T00:00:00Z",
+          "to": "2026-08-05T00:00:00Z"
+        }
+      },
+      "checks": [
+        {
+          "check": "content_hash_recomputation",
+          "stream": "ses_northstar_delta_01",
+          "result": "verified"
+        },
+        {
+          "check": "per_stream_sequence_continuity",
+          "stream": "ses_northstar_delta_01",
+          "result": "verified"
+        },
+        {
+          "check": "aggregate_transition_replay",
+          "stream": "txn_calibration_demo_01",
+          "result": "not_checkable",
+          "reason": "the transaction stream was not disclosed to this verifier"
+        }
+      ],
+      "overall": "passing_in_scope"
+    }
+  },
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_session_report_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-04T10:00:02Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "d84a78549ced2a1085de3140aa4db53224ff393e6bd875d41fd49b849aec9b8c",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-04T10:00:02Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "session",
+          "id": "ses_northstar_delta_01"
+        },
+        "sequence": 1,
+        "event_type": "offer.submitted",
+        "occurred_at": "2026-08-04T10:00:02Z",
+        "previous_event_hash": null,
+        "action_hash": "e476141822a3c7c28bc36b3e4ad0715f3ff0f865066de18ca2819d5d97aea1a8",
+        "policy_decision_id": "pol_session_report_01",
+        "from_state": "opened",
+        "to_state": "active",
+        "data": {
+          "offer_id": "off_calibration_demo_01",
+          "supersedes_offer_id": null
+        }
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_session_report_02",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-04T15:00:00Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "5a1cee256bd8adc23a395bbc734a4e3b811603ca730e7470242ae08c644a6f24",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-04T15:00:00Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "session",
+          "id": "ses_northstar_delta_01"
+        },
+        "sequence": 2,
+        "event_type": "offer.accepted",
+        "occurred_at": "2026-08-04T15:00:00Z",
+        "previous_event_hash": "d84a78549ced2a1085de3140aa4db53224ff393e6bd875d41fd49b849aec9b8c",
+        "action_hash": "6575c90270f998f709bff7f33d6b24fc459c2d808b0f1d59b855d477b6517762",
+        "policy_decision_id": "pol_session_report_02",
+        "from_state": "active",
+        "to_state": "accepted",
+        "data": {
+          "acceptance_id": "acc_calibration_demo_01"
+        }
+      }
+    }
+  ]
+}

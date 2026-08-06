@@ -1,0 +1,76 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "off_freight_neutrality_01",
+  "object_type": "offer",
+  "version": 1,
+  "created_at": "2026-07-25T11:00:00Z",
+  "created_by": {
+    "organization_id": "org_meridian",
+    "agent_id": "agt_meridian_supplier_01",
+    "mandate_id": "mnd_meridian_supplier_01"
+  },
+  "transaction_id": "txn_freight_neutrality_01",
+  "previous_version_id": null,
+  "content_hash": "78d31e9bbfc1809e7dd64f4cc7bec6e8c34d9a0da658a3bafb49e9e04d53c42d",
+  "signatures": [
+    {
+      "key_id": "key_meridian_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T11:00:00Z",
+      "purpose": "offer_submission"
+    }
+  ],
+  "kernel_annotations": {
+    "policy_decision_id": "pol_meridian_offer_01",
+    "session_id": "ses_neutrality_probe_01",
+    "session_sequence": 1,
+    "received_at": "2026-07-25T11:00:01Z"
+  },
+  "payload": {
+    "offeror": {
+      "organization_id": "org_meridian",
+      "agent_id": "agt_meridian_supplier_01"
+    },
+    "offeree": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "session_id": "ses_neutrality_probe_01",
+    "supersedes_offer_id": null,
+    "valid_until": "2026-07-26T11:00:00Z",
+    "terms": {
+      "profile": "a202-profile/freight-spot/0.1",
+      "core": {
+        "description": "Full truckload, Rotterdam to Milan",
+        "quantity": "1",
+        "unit_code": "E48",
+        "unit_name": "service unit",
+        "total": {
+          "currency": "EUR",
+          "amount": "1850.00"
+        }
+      },
+      "profile_terms": {
+        "lane": {
+          "origin_country": "NL",
+          "destination_country": "IT"
+        },
+        "collection_window": {
+          "earliest": "2026-08-03T06:00:00Z",
+          "latest": "2026-08-03T16:00:00Z",
+          "time_zone": "Europe/Amsterdam"
+        },
+        "equipment": "13.6m curtainsider",
+        "liability": {
+          "regime": "CMR",
+          "cap": {
+            "currency": "EUR",
+            "amount": "25000.00"
+          }
+        }
+      }
+    },
+    "evidence_refs": []
+  }
+}

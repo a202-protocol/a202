@@ -1,0 +1,126 @@
+{
+  "fixture_kind": "bundle",
+  "note": "Sequences run 1, 2, 3 with no gap, but the third event's previous_event_hash names the first event rather than the second. A chain that skips over an event has a link nobody can replay through, and continuity of the counter does not repair it.",
+  "context": {
+    "rules_version_in_force": "1.0"
+  },
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_chain_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-07-30T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_calibration_demo_01"
+        },
+        "sequence": 1,
+        "event_type": "request.published",
+        "occurred_at": "2026-07-30T09:00:00Z",
+        "previous_event_hash": null,
+        "action_hash": "e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2",
+        "policy_decision_id": "pol_northstar_terminate_01",
+        "from_state": "draft",
+        "to_state": "published",
+        "data": {}
+      },
+      "content_hash": "78e2361cb97082da97ca262740e35f2623806029ec467f6682bd40e0556d5a23",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "event_append"
+        }
+      ]
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_chain_02",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-07-30T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_calibration_demo_01"
+        },
+        "sequence": 2,
+        "event_type": "qualification.started",
+        "occurred_at": "2026-07-30T10:00:00Z",
+        "previous_event_hash": "78e2361cb97082da97ca262740e35f2623806029ec467f6682bd40e0556d5a23",
+        "action_hash": "e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2",
+        "policy_decision_id": "pol_northstar_terminate_01",
+        "from_state": "published",
+        "to_state": "qualifying",
+        "data": {}
+      },
+      "content_hash": "a5d007efdfdbb4e95a80a036038eebf6f19641519407da23fa35aec3d8f2b223",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "event_append"
+        }
+      ]
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_chain_03",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-07-30T11:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_calibration_demo_01"
+        },
+        "sequence": 3,
+        "event_type": "negotiation.opened",
+        "occurred_at": "2026-07-30T11:00:00Z",
+        "previous_event_hash": "78e2361cb97082da97ca262740e35f2623806029ec467f6682bd40e0556d5a23",
+        "action_hash": "e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2e5f6a7b8c9d0e1f2",
+        "policy_decision_id": "pol_northstar_terminate_01",
+        "from_state": "qualifying",
+        "to_state": "negotiating",
+        "data": {}
+      },
+      "content_hash": "f847b47042fb9e4dd8edc029531740828d8a2e0ad2e3c1e2c40cb0728f0bd035",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "event_append"
+        }
+      ]
+    }
+  ]
+}

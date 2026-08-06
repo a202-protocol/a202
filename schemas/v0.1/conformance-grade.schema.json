@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.a202.org/v0.1/conformance-grade.schema.json",
+  "title": "A202 Conformance Grade v0.1",
+  "description": "A conformance grade as defined by conformance/conformance-grades-v0.1.md section 4. A grade is a standalone signed document rather than a common-envelope object, on the same footing as a commercial mandate: it is a statement about an implementation and not an act inside a transaction, so it carries no transaction identifier, no version chain, and no object_type. The shape here expresses only what that section defines. Registry membership of the role scope, the exactly-one rule, and the overclaim rule are refusals carrying reason codes under conformance/conformance-role-scopes-v0.1.md sections 3.2 and 6.3, and are enforced by the evaluator in conformance/run-conformance.py rather than by this schema, because a consumer must refuse an unreadable grade with the code the registry document names rather than report a shape error.",
+  "type": "object",
+  "additionalProperties": false,
+  "$comment": "additionalProperties is false at the top level, which is what makes design constraint 1 of section 4 checkable: an object that carries no member for a composite figure cannot carry one. A published weighting is immediately optimised against, which converts the grade from a measurement into a target.",
+  "required": [
+    "spec_version",
+    "subject",
+    "level",
+    "dimensions",
+    "scope",
+    "held_out_coverage",
+    "issued_at",
+    "expires_at",
+    "status",
+    "determination_ref",
+    "signature"
+  ],
+  "properties": {
+    "spec_version": {
+      "const": "a202-commercial/0.1",
+      "description": "The specification version assessed. A grade is meaningless without it, so it is REQUIRED and is the assessed version rather than the version of this document shape."
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["organization_id", "implementation"],
+      "description": "The assessed implementation and the organisation responsible for it.",
+      "properties": {
+        "organization_id": {
+          "type": "string",
+          "pattern": "^org_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "implementation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "level": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "$comment": "Section 4 defines no vocabulary for the assessment level and v0.1 registers none, so this schema carries the value verbatim rather than inventing a closed list. A grade is held at the level it was assessed at and is never inferred at a higher one, which is a rule about the issuer rather than about the string."
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["A", "B", "C", "D", "E"],
+      "description": "Band per dimension A to E, always all five. A dimension that was not assessed is null and is never omitted, because absence is not a pass and the object must not make that reading easy.",
+      "properties": {
+        "A": { "$ref": "#/$defs/dimensionResult" },
+        "B": { "$ref": "#/$defs/dimensionResult" },
+        "C": { "$ref": "#/$defs/dimensionResult" },
+        "D": { "$ref": "#/$defs/dimensionResult" },
+        "E": { "$ref": "#/$defs/dimensionResult" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profiles", "transports"],
+      "description": "Transaction profiles, transports, and the role scope covered. role_scopes is deliberately absent from the required list: a grade naming no role scope is the unscoped form that existed before the registry, and it is refused with A202-GRADE-SCOPE-INVALID by the evaluator rather than reported as a missing member, because a consumer that cannot read a grade needs the refusal code the registry document names.",
+      "properties": {
+        "role_scopes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "$comment": "An array with no cardinality bound at this layer, so that naming none and naming two are both expressible documents. Both are refused with the single code A202-GRADE-SCOPE-INVALID under conformance-role-scopes-v0.1.md section 3.2 item 3, and a shape that could not express them could not fixture them."
+        },
+        "profiles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^a202-profile/[a-z0-9-]+/[0-9]+\\.[0-9]+$"
+          }
+        },
+        "transports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "held_out_coverage": {
+      "oneOf": [
+        { "$ref": "#/$defs/heldOutCoverage" },
+        { "type": "null" }
+      ],
+      "description": "Which dimensions a held-out case set exercised, the case count, and the fixture families the cases were drawn against. Coverage and count only: the cases themselves are never disclosed, because a disclosed case is a case the next subject can hard-code. Null where no held-out set was used."
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Expiry is 12 months or the next specification minor version, whichever is first. A consumer evaluates this before relying on dimensions."
+    },
+    "status": {
+      "enum": ["active", "expired", "suspended", "withdrawn", "under_appeal"]
+    },
+    "determination_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["determination_id", "determination_hash"],
+      "description": "The determination record this grade was issued as, so that a grade is contestable in the same way a protocol determination is.",
+      "properties": {
+        "determination_id": {
+          "type": "string",
+          "pattern": "^det_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "determination_hash": { "$ref": "#/$defs/sha256Hex" }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key_id", "algorithm", "signature", "signed_at", "purpose"],
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "pattern": "^key_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "algorithm": { "enum": ["ES256", "EdDSA"] },
+        "signature": { "type": "string", "minLength": 16, "maxLength": 4096 },
+        "signed_at": { "type": "string", "format": "date-time" },
+        "purpose": { "const": "grade_issuance" }
+      }
+    }
+  },
+  "$defs": {
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "fixtureFamily": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "$comment": "A fixture family identifier is the family's name in the Family column of conformance-role-scopes-v0.1.md sections 4.3 and 5.3, lowercased with spaces replaced by hyphens. The evaluator resolves it against the named role scope's family set; a family outside that set is the overclaim refused with A202-GRADE-SCOPE-OVERCLAIM."
+    },
+    "dimensionResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["band", "established_from"],
+          "properties": {
+            "band": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
+            },
+            "established_from": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/fixtureFamily" },
+              "description": "The fixture families the band was established from. A band that does not say what established it cannot be checked against the scope it is reported under, which is what conformance-role-scopes-v0.1.md section 6.3 item 3 requires."
+            }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "heldOutCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions", "case_count", "families"],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["A", "B", "C", "D", "E"] }
+        },
+        "case_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/fixtureFamily" }
+        }
+      }
+    }
+  }
+}

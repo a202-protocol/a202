@@ -1,0 +1,63 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "obl_delta_calibration_01",
+  "object_type": "obligation",
+  "version": 1,
+  "created_at": "2026-08-02T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "b7e07e1d817aaf986fc937003f2a436e24007af4f79bea78afebc7880dfb1b7b",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-02T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "agreement_id": "agr_calibration_demo_01",
+    "commitment_id": "cmt_delta_calibration_01",
+    "obligor": {
+      "organization_id": "org_delta",
+      "agent_id": "agt_delta_supplier_01"
+    },
+    "obligee": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "subject": {
+      "agreement_id": "agr_calibration_demo_01",
+      "terms_hash": "12debd564faa451204e49e03c6bcd824200228947761c947b561aac429c08186",
+      "profile": "a202-profile/calibration-service/0.1",
+      "terms": {
+        "description": "Calibration and digital certificates for 10 pressure transmitters",
+        "quantity": "10",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "total": {
+          "currency": "EUR",
+          "amount": "3200.00"
+        }
+      }
+    },
+    "due_condition": {
+      "type": "due_at_time",
+      "at": "2026-08-14T12:00:00Z"
+    },
+    "quantity": "10",
+    "unit_code": "H87",
+    "unit_name": "piece",
+    "consideration": {
+      "currency": "EUR",
+      "amount": "3200.00"
+    },
+    "state": "pending"
+  }
+}

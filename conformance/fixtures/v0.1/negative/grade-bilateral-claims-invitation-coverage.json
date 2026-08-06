@@ -1,0 +1,87 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "subject": {
+    "organization_id": "org_northstar",
+    "implementation": "Northstar procurement agent 1.4"
+  },
+  "level": "peer_assessed",
+  "dimensions": {
+    "A": {
+      "band": 1,
+      "established_from": [
+        "mandate",
+        "delegation-chain",
+        "approval",
+        "party-family"
+      ]
+    },
+    "B": {
+      "band": 1,
+      "established_from": [
+        "policy-decision",
+        "envelope-annotation",
+        "offer"
+      ]
+    },
+    "C": {
+      "band": 1,
+      "established_from": [
+        "agreement",
+        "offer",
+        "obligation",
+        "termination"
+      ]
+    },
+    "D": {
+      "band": 1,
+      "established_from": [
+        "evidence-and-verification"
+      ]
+    },
+    "E": {
+      "band": 1,
+      "established_from": [
+        "mandate",
+        "obligation",
+        "settlement",
+        "dispute-and-determination",
+        "carrier-declaration",
+        "key-record"
+      ]
+    }
+  },
+  "scope": {
+    "role_scopes": [
+      "a202-scope/bilateral/0.1"
+    ],
+    "profiles": [
+      "a202-profile/calibration-service/0.1"
+    ],
+    "transports": [
+      "https://schemas.a202.org/a2a-ext/commercial/0.1"
+    ]
+  },
+  "held_out_coverage": {
+    "dimensions": [
+      "A"
+    ],
+    "case_count": 14,
+    "families": [
+      "invitation"
+    ]
+  },
+  "issued_at": "2026-07-30T09:00:00Z",
+  "expires_at": "2027-07-30T09:00:00Z",
+  "status": "active",
+  "determination_ref": {
+    "determination_id": "det_grade_northstar_bilateral_01",
+    "determination_hash": "6a1d4c0f8b3e27d95af06c1b8e2743d05fc9a8b17e34620d9c5be1f078a4c332"
+  },
+  "signature": {
+    "key_id": "key_delta_agent_01",
+    "algorithm": "ES256",
+    "signature": "synthetic-placeholder-signature-value",
+    "signed_at": "2026-07-30T09:00:00Z",
+    "purpose": "grade_issuance"
+  }
+}

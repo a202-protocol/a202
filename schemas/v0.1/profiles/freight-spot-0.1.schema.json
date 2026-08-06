@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.a202.org/v0.1/profiles/freight-spot-0.1.schema.json",
+  "title": "A202 Transaction Profile: Freight Spot 0.1",
+  "description": "Second transaction profile. Its only purpose in v0.1 is to prove that the canonical kernel is market-neutral: a profile with entirely different commercial terms must validate against the same kernel schema with no kernel change. It is not a market selection and no pilot deliverable depends on it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lane",
+    "collection_window",
+    "equipment",
+    "liability"
+  ],
+  "properties": {
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin_country",
+        "destination_country"
+      ],
+      "properties": {
+        "origin_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "destination_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        }
+      }
+    },
+    "collection_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "earliest",
+        "latest",
+        "time_zone"
+      ],
+      "properties": {
+        "earliest": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "latest": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "time_zone": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 64
+        }
+      }
+    },
+    "equipment": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "liability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "regime",
+        "cap"
+      ],
+      "properties": {
+        "regime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "cap": {
+          "$ref": "https://schemas.a202.org/v0.1/commercial-kernel.schema.json#/$defs/money"
+        }
+      }
+    }
+  }
+}

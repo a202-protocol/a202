@@ -1,0 +1,280 @@
+/* A202 documentation site design system.
+   Token source: the Plural Worlds design language (white ground, ink text,
+   one ruby accent, Hanken Grotesk and IBM Plex Mono, rounded cards with
+   soft shadows). Fonts are vendored under assets/fonts with their OFL-1.1
+   licence texts; nothing loads from outside the site. */
+
+/* ---------- Fonts ---------- */
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("fonts/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --md-text-font: "Hanken Grotesk";
+  --md-code-font: "IBM Plex Mono";
+
+  --a202-accent: #E0455C;
+  --a202-accent-deep: #C43A4E;
+  --a202-cobalt: #3157D5;
+  --a202-green: #31745B;
+  --a202-brass: #B49352;
+}
+
+/* ---------- Light scheme: white ground, ink text ---------- */
+
+[data-md-color-scheme="default"] {
+  --a202-ink: #0F1520;
+  --a202-raised: #F7F8FA;
+  --a202-line: rgba(15, 21, 32, 0.09);
+  --a202-line-strong: rgba(15, 21, 32, 0.18);
+  --a202-secondary: rgba(15, 21, 32, 0.70);
+  --a202-shadow: 0 1px 2px rgba(15, 21, 32, 0.05), 0 8px 24px rgba(15, 21, 32, 0.06);
+  --a202-shadow-hover: 0 2px 4px rgba(15, 21, 32, 0.06), 0 16px 36px rgba(15, 21, 32, 0.11);
+  --a202-hover-fill: rgba(15, 21, 32, 0.06);
+  --a202-link-hover: var(--a202-accent-deep);
+
+  --md-default-fg-color: var(--a202-ink);
+  --md-default-fg-color--light: var(--a202-secondary);
+  --md-typeset-color: var(--a202-ink);
+  --md-accent-fg-color: var(--a202-accent);
+  --md-typeset-a-color: var(--a202-ink);
+  --md-code-bg-color: var(--a202-raised);
+}
+
+/* ---------- Dark scheme: ink ground, paper text ---------- */
+
+[data-md-color-scheme="slate"] {
+  --a202-ink: #F3F0E8;
+  --a202-raised: #161E2B;
+  --a202-line: rgba(243, 240, 232, 0.12);
+  --a202-line-strong: rgba(243, 240, 232, 0.30);
+  --a202-secondary: rgba(243, 240, 232, 0.72);
+  --a202-shadow: 0 1px 2px rgba(0, 0, 0, 0.30), 0 8px 24px rgba(0, 0, 0, 0.28);
+  --a202-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.34), 0 16px 36px rgba(0, 0, 0, 0.40);
+  --a202-hover-fill: rgba(243, 240, 232, 0.07);
+  --a202-link-hover: #F0718C;
+
+  --md-default-bg-color: #0F1520;
+  --md-default-fg-color: var(--a202-ink);
+  --md-typeset-color: var(--a202-ink);
+  --md-accent-fg-color: var(--a202-accent);
+  --md-typeset-a-color: var(--a202-ink);
+  --md-code-bg-color: var(--a202-raised);
+  --md-footer-bg-color: #0B111A;
+  --md-footer-bg-color--dark: #080D14;
+}
+
+/* Material's palette stylesheet sets link and accent colours with
+   two-attribute selectors ([scheme][primary]), so the overrides here need
+   the same specificity to win. */
+[data-md-color-scheme="default"][data-md-color-primary],
+[data-md-color-scheme="default"] [data-md-color-primary] {
+  --md-typeset-a-color: var(--a202-ink);
+  --md-accent-fg-color: var(--a202-accent);
+}
+[data-md-color-scheme="slate"][data-md-color-primary],
+[data-md-color-scheme="slate"] [data-md-color-primary] {
+  --md-typeset-a-color: var(--a202-ink);
+  --md-accent-fg-color: var(--a202-accent);
+}
+
+/* ---------- Header and tabs: ruby surface, white text ---------- */
+
+[data-md-color-primary="red"] {
+  --md-primary-fg-color: var(--a202-accent);
+  --md-primary-fg-color--dark: var(--a202-accent-deep);
+}
+.md-header {
+  box-shadow: none;
+}
+.md-header__topic,
+.md-header__title {
+  font-weight: 650;
+}
+
+/* ---------- Prose links: underline, hover to the accent ---------- */
+
+.md-typeset a:not(.md-button) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--a202-line-strong);
+}
+.md-typeset a:not(.md-button):hover,
+.md-typeset a:not(.md-button):focus {
+  color: var(--a202-link-hover);
+  text-decoration-color: var(--a202-link-hover);
+}
+
+/* ---------- Buttons: rounded, one accent ---------- */
+
+.md-typeset .md-button {
+  border: 1px solid var(--a202-line-strong);
+  border-radius: 12px;
+  padding: 0.55em 1.35em;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.15s ease, box-shadow 0.2s ease;
+}
+.md-typeset .md-button:hover,
+.md-typeset .md-button:focus {
+  background-color: var(--a202-hover-fill);
+  border-color: var(--a202-line-strong);
+  color: var(--md-default-fg-color);
+}
+.md-typeset .md-button:active {
+  transform: scale(0.98);
+}
+.md-typeset .md-button--primary {
+  background-color: var(--a202-accent);
+  border-color: var(--a202-accent);
+  color: #ffffff;
+}
+.md-typeset .md-button--primary:hover,
+.md-typeset .md-button--primary:focus {
+  background-color: var(--a202-accent-deep);
+  border-color: var(--a202-accent-deep);
+  color: #ffffff;
+}
+
+/* ---------- Cards: 16px radius, soft two-layer shadow, hover lift ---------- */
+
+.md-typeset .grid.cards > ol > li,
+.md-typeset .grid.cards > ul > li {
+  border: 1px solid var(--a202-line);
+  border-radius: 16px;
+  box-shadow: var(--a202-shadow);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.md-typeset .grid.cards > ol > li:hover,
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--a202-shadow-hover);
+  border-color: var(--a202-line-strong);
+}
+.md-typeset .grid.cards > ul > li hr {
+  border-color: var(--a202-line);
+}
+
+/* Gradient icon tiles, one hue per card, assigned in order:
+   ruby (authority), cobalt (state), green (disclosure), brass (record). */
+.md-typeset .grid.cards .twemoji.lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  color: #ffffff;
+  vertical-align: middle;
+  margin-right: 0.15rem;
+}
+.md-typeset .grid.cards .twemoji.lg svg {
+  width: 24px;
+  height: 24px;
+  fill: currentcolor;
+}
+.md-typeset .grid.cards > ul > li:nth-child(4n + 1) .twemoji.lg {
+  background: linear-gradient(135deg, #E0455C, #F07A8C);
+}
+.md-typeset .grid.cards > ul > li:nth-child(4n + 2) .twemoji.lg {
+  background: linear-gradient(135deg, #3157D5, #6E8CF0);
+}
+.md-typeset .grid.cards > ul > li:nth-child(4n + 3) .twemoji.lg {
+  background: linear-gradient(135deg, #31745B, #5FA98A);
+}
+.md-typeset .grid.cards > ul > li:nth-child(4n + 4) .twemoji.lg {
+  background: linear-gradient(135deg, #B49352, #D3BA86);
+}
+
+/* ---------- Landing page ---------- */
+
+.a202-hero {
+  text-align: center;
+  margin: 3rem auto 3.4rem;
+  max-width: 46rem;
+}
+.a202-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--a202-accent);
+  margin-bottom: 0.6rem;
+}
+.a202-hero h1 {
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  color: var(--md-default-fg-color);
+  margin-bottom: 0.4rem;
+}
+.a202-hero .a202-tagline {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  opacity: 0.9;
+  margin-bottom: 1.1rem;
+}
+.a202-hero p:not(.a202-tagline):not(.a202-eyebrow) {
+  color: var(--a202-secondary);
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.a202-hero .md-button {
+  margin: 0.25rem 0.3rem;
+}
+
+/* ---------- Content polish ---------- */
+
+.md-typeset h1 {
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--md-default-fg-color);
+}
+.md-typeset h2 {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.md-typeset h3 {
+  font-weight: 600;
+}
+.md-typeset code {
+  border-radius: 6px;
+}
+.md-typeset pre > code {
+  border-radius: 12px;
+}
+.md-typeset .mermaid {
+  margin: 1.2rem 0;
+}
+.md-typeset table:not([class]) {
+  border-radius: 12px;
+  border: 1px solid var(--a202-line);
+  box-shadow: none;
+}

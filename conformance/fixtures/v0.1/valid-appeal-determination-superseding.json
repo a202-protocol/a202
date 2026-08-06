@@ -1,0 +1,208 @@
+{
+  "fixture_kind": "bundle",
+  "note": "An appeal outcome superseding a prior determination by reference, with a stated reason. Both records remain in evidence.",
+  "context": {
+    "subject_act_at": "2026-08-15T10:00:00Z",
+    "stated_gaps": [
+      "dsp_delta_calibration_01"
+    ]
+  },
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "det_calibration_question_01",
+      "object_type": "determination",
+      "version": 1,
+      "created_at": "2026-08-15T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "26c6f14fb17d9a478b7cd530c58056beebaba6b03cac9ba3da39d4600f004dee",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-15T10:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "dispute_id": "dsp_delta_calibration_01",
+        "question": {
+          "subject_type": "obligation_state",
+          "subject_hash": "50715387eccdc981c16984cb2b68aecb74a3762df8baa7ddf6398054db5f696f",
+          "subject_id": "obl_delta_calibration_01",
+          "rules_ref": {
+            "rule_set_id": "a202-rules/pilot",
+            "version": "1.0",
+            "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+          }
+        },
+        "outcome": {
+          "finding": "The obligation stood in the asserted state at the time of the response, and the response bound the assertion it named.",
+          "rules_applied": [
+            "a202-rules/pilot#obligation.acceptance-binds-assertion"
+          ],
+          "evidence_relied_on": [
+            {
+              "evidence_id": "evd_delta_calibration_certificate_01",
+              "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+              "evidence_type": "third_party_certificate",
+              "signed_by": {
+                "organization_id": "org_delta",
+                "agent_id": "agt_delta_supplier_01"
+              },
+              "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+            }
+          ],
+          "inputs_hash": "8cd5377fa1a660e41079032b4a79256c5a3bfb8a226bbc9c5508480013725cf9",
+          "state_result": null
+        },
+        "determiner": {
+          "organization_id": "org_a202_operator",
+          "agent_id": "agt_a202_control_01"
+        },
+        "authority_basis_ref": "a202-rules/pilot#determiner.authority",
+        "effect": "presumptive",
+        "supersedes": null,
+        "appeal_route_ref": "a202-rules/pilot#appeal.route",
+        "determined_at": "2026-08-15T10:00:00Z",
+        "effective_from": "2026-08-15T10:00:00Z"
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "dsp_delta_appeal_01",
+      "object_type": "dispute",
+      "version": 1,
+      "created_at": "2026-08-16T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "1bf62fce598a8cfbaa677a98cdea7b3ff23ed33dc4fb7a5e2d40de0be93283ac",
+      "signatures": [
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-16T09:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "raising_party": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "respondent_party": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "subject_type": "determination",
+        "subject_id": "det_calibration_question_01",
+        "grounds": [
+          "wrong_rule_version"
+        ],
+        "evidence_refs": [
+          {
+            "evidence_id": "evd_delta_calibration_certificate_01",
+            "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+            "evidence_type": "third_party_certificate",
+            "signed_by": {
+              "organization_id": "org_delta",
+              "agent_id": "agt_delta_supplier_01"
+            },
+            "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+          }
+        ],
+        "rules_ref": {
+          "rule_set_id": "a202-rules/pilot",
+          "version": "1.0",
+          "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+        },
+        "subject_hash": "26c6f14fb17d9a478b7cd530c58056beebaba6b03cac9ba3da39d4600f004dee",
+        "description": "The determination applied a rule set version other than the one in force when the subject act occurred."
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "det_calibration_question_02",
+      "object_type": "determination",
+      "version": 1,
+      "created_at": "2026-08-20T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "23cfdfe7ce61996e15fe972f18e22ba7f55112723a47701dc368685e9ad6ca53",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T10:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "dispute_id": "dsp_delta_appeal_01",
+        "question": {
+          "subject_type": "determination",
+          "subject_hash": "26c6f14fb17d9a478b7cd530c58056beebaba6b03cac9ba3da39d4600f004dee",
+          "subject_id": "det_calibration_question_01",
+          "rules_ref": {
+            "rule_set_id": "a202-rules/pilot",
+            "version": "1.0",
+            "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+          }
+        },
+        "outcome": {
+          "finding": "The obligation stood in the asserted state at the time of the response, and the response bound the assertion it named.",
+          "rules_applied": [
+            "a202-rules/pilot#obligation.acceptance-binds-assertion"
+          ],
+          "evidence_relied_on": [
+            {
+              "evidence_id": "evd_delta_calibration_certificate_01",
+              "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+              "evidence_type": "third_party_certificate",
+              "signed_by": {
+                "organization_id": "org_delta",
+                "agent_id": "agt_delta_supplier_01"
+              },
+              "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+            }
+          ],
+          "inputs_hash": "26e1bc2641ee8af7cd96cd89a64fd5c58ba6f6d9e4512689882a5a688beebf12",
+          "state_result": null
+        },
+        "determiner": {
+          "organization_id": "org_a202_operator",
+          "agent_id": "agt_a202_control_01"
+        },
+        "authority_basis_ref": "a202-rules/pilot#determiner.authority",
+        "effect": "binding",
+        "supersedes": {
+          "determination_id": "det_calibration_question_01",
+          "determination_hash": "26c6f14fb17d9a478b7cd530c58056beebaba6b03cac9ba3da39d4600f004dee",
+          "reason": "appeal_outcome"
+        },
+        "appeal_route_ref": "a202-rules/pilot#appeal.route",
+        "determined_at": "2026-08-20T10:00:00Z",
+        "effective_from": "2026-08-20T10:00:00Z"
+      }
+    }
+  ]
+}

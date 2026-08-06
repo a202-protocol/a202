@@ -1,0 +1,32 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "obr_northstar_calibration_01",
+  "object_type": "obligation_response",
+  "version": 1,
+  "created_at": "2026-08-11T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "b9b10b83153abcaaff2b9a123f8fea158f8b6977cc8db41297fe96669c2ff2db",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-11T10:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "obligation_id": "obl_delta_calibration_01",
+    "response_type": "accept",
+    "assertion_id": "prf_delta_calibration_01",
+    "assertion_hash": "8f3bf17ea7bcb97bcb81e9857301fae229d30b535a93ab269d2ef921061686f9",
+    "accepted_quantity": "8",
+    "quantity": "8"
+  }
+}

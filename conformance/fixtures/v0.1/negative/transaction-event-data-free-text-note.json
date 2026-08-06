@@ -1,0 +1,42 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "evt_award_note_01",
+  "object_type": "transaction_event",
+  "version": 1,
+  "created_at": "2026-08-01T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "payload": {
+    "stream": {
+      "kind": "transaction",
+      "id": "txn_calibration_demo_01"
+    },
+    "sequence": 9,
+    "event_type": "offer.selected",
+    "occurred_at": "2026-08-01T09:00:00Z",
+    "previous_event_hash": null,
+    "action_hash": "a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8",
+    "policy_decision_id": "pol_northstar_select_01",
+    "from_state": "negotiating",
+    "to_state": "agreement_pending",
+    "data": {
+      "offer_id": "off_calibration_demo_01",
+      "note": "selected over two cheaper bids from the other invitees"
+    }
+  },
+  "content_hash": "07739a4c2c14c5ab70471ec36f92a0f98da31a66f1848975fc14d564b39420b8",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "event_append"
+    }
+  ]
+}

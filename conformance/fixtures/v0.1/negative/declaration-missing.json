@@ -1,0 +1,20 @@
+{
+  "fixture_kind": "declaration",
+  "note": "No entry for the commercial extension URI. The interaction fails closed before any commercial object is transmitted.",
+  "local_party": {
+    "read_versions": [
+      "0.1"
+    ],
+    "write_version": "0.1"
+  },
+  "counterparty_declaration": {
+    "extensions": [
+      {
+        "uri": "https://schemas.example.invalid/unrelated-ext/1.0",
+        "description": "An unrelated extension.",
+        "required": false,
+        "params": {}
+      }
+    ]
+  }
+}

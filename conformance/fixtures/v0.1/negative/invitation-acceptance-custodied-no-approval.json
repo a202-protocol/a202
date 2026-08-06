@@ -1,0 +1,51 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "ina_helix_unapproved_custody_01",
+  "object_type": "invitation_acceptance",
+  "version": 1,
+  "created_at": "2026-07-26T14:30:00Z",
+  "created_by": {
+    "organization_id": "org_a202_operator",
+    "agent_id": "agt_a202_control_01",
+    "mandate_id": "mnd_a202_control_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "905c52159c7c9293d6ccd4dfa3716d354b98437e6be0335e4e7e8903a638cb6c",
+  "signatures": [
+    {
+      "key_id": "key_helix_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-claimant-signature",
+      "signed_at": "2026-07-26T14:29:58Z",
+      "purpose": "invitation_claim"
+    },
+    {
+      "key_id": "key_a202_control_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-operator-signature",
+      "signed_at": "2026-07-26T14:30:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "invitation_id": "inv_helix_onboarding_01",
+    "invitation_hash": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9",
+    "claimant": {
+      "organization_id": "org_helix",
+      "agent_id": "agt_helix_supplier_01",
+      "principal_id": "prn_helix_managing_director"
+    },
+    "channel_proof": {
+      "method": "domain_scoped_token",
+      "verified_at": "2026-07-26T14:22:11Z",
+      "evidence_ref": null
+    },
+    "assurance": "self_asserted",
+    "assurance_evidence_refs": [],
+    "key_custody": "operator_custodied",
+    "endpoint_mode": "operator_hosted",
+    "issuance_approval_id": null,
+    "root_mandate_id": "mnd_helix_supplier_01"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "pol_leaky_deny_01",
+  "object_type": "policy_decision",
+  "version": 1,
+  "created_at": "2026-07-25T10:00:01Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "c8a329103c6499d3fb1f9c37f680d775ea9486d096ed5298a219c4a0fadceea9",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T10:00:01Z",
+      "purpose": "policy_decision"
+    }
+  ],
+  "payload": {
+    "action_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "decision": "deny",
+    "reason_codes": [
+      "A202-MANDATE-PREPAYMENT-LIMIT"
+    ],
+    "evaluated_at": "2026-07-25T10:00:01Z",
+    "mandate_ids": [
+      "mnd_northstar_buyer_01"
+    ],
+    "stream": {
+      "kind": "transaction",
+      "id": "txn_calibration_demo_01"
+    },
+    "stream_sequence": 4,
+    "visibility": "transaction_parties"
+  }
+}

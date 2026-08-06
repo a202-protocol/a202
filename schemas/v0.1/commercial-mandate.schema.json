@@ -1,0 +1,460 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.a202.org/v0.1/commercial-mandate.schema.json",
+  "title": "A202 Commercial Mandate v0.1",
+  "description": "Transaction-scoped delegated commercial authority. Schema validation is necessary but not sufficient: the rules listed in commercial-mandate-v0.1.md section 6.1 are evaluator-enforced and cannot be expressed in JSON Schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "id",
+    "issuer",
+    "subject",
+    "represented_organization_id",
+    "parent_mandate_id",
+    "valid_from",
+    "valid_until",
+    "status_endpoint",
+    "actions",
+    "scope",
+    "constraints",
+    "approval_rules",
+    "delegation",
+    "evidence_refs",
+    "proof"
+  ],
+  "properties": {
+    "spec_version": {
+      "const": "a202-mandate/0.1"
+    },
+    "id": {
+      "$ref": "#/$defs/mandateId"
+    },
+    "issuer": {
+      "$ref": "#/$defs/issuer"
+    },
+    "subject": {
+      "$ref": "#/$defs/subject"
+    },
+    "represented_organization_id": {
+      "$ref": "#/$defs/organizationId"
+    },
+    "parent_mandate_id": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/mandateId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "valid_from": {
+      "type": "string",
+      "format": "date-time",
+      "$comment": "Evaluator-enforced: valid_from MUST be strictly earlier than valid_until."
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status_endpoint": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "Revocation and suspension status source. Plain HTTP is rejected: cached status is the only mechanism by which revocation reaches a relying party."
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+      }
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "constraints": {
+      "type": "array",
+      "minItems": 1,
+      "description": "A mandate with no constraints confers unbounded authority within its allowed actions and is rejected. Express deliberate absence of a limit with an explicit permissive constraint.",
+      "items": {
+        "$ref": "#/$defs/constraint"
+      }
+    },
+    "approval_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/approvalRule"
+      }
+    },
+    "delegation": {
+      "$ref": "#/$defs/delegation"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/evidenceId"
+          },
+          {
+            "$ref": "https://schemas.a202.org/v0.1/commercial-kernel.schema.json#/$defs/evidenceRef"
+          }
+        ]
+      }
+    },
+    "proof": {
+      "$ref": "#/$defs/proof"
+    }
+  },
+  "$defs": {
+    "organizationId": {
+      "type": "string",
+      "pattern": "^org_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "principalId": {
+      "type": "string",
+      "pattern": "^prn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^agt_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "mandateId": {
+      "type": "string",
+      "pattern": "^mnd_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "keyId": {
+      "type": "string",
+      "pattern": "^key_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^evd_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization_id",
+        "principal_id",
+        "key_id"
+      ],
+      "properties": {
+        "organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "principal_id": {
+          "$ref": "#/$defs/principalId"
+        },
+        "key_id": {
+          "$ref": "#/$defs/keyId"
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_id"
+      ],
+      "properties": {
+        "agent_id": {
+          "$ref": "#/$defs/agentId"
+        },
+        "principal_id": {
+          "$ref": "#/$defs/principalId"
+        },
+        "key_id": {
+          "$ref": "#/$defs/keyId"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "agent_id"
+          ],
+          "not": {
+            "required": [
+              "principal_id"
+            ]
+          }
+        },
+        {
+          "required": [
+            "principal_id"
+          ],
+          "not": {
+            "required": [
+              "agent_id"
+            ]
+          }
+        }
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Authority must be bounded by transaction or by capability category. Geography and counterparty narrow that boundary; they cannot establish it on their own.",
+      "properties": {
+        "transaction_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^txn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+          }
+        },
+        "counterparty_organization_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/organizationId"
+          }
+        },
+        "geographies": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "transaction_ids"
+          ]
+        },
+        {
+          "required": [
+            "categories"
+          ]
+        }
+      ]
+    },
+    "constraintType": {
+      "enum": [
+        "commercial.decimal",
+        "commercial.integer",
+        "commercial.string",
+        "commercial.boolean",
+        "commercial.timestamp",
+        "commercial.set",
+        "disclosure.path",
+        "evidence.reference",
+        "counterparty.reference",
+        "geography.reference"
+      ],
+      "description": "Closed registry for v0.1. An unregistered type is rejected at validation, and the evaluator additionally fails closed at runtime. Both layers are required: adding a type to this enum without an evaluator implementation must not silently allow the action."
+    },
+    "constraintOperator": {
+      "enum": [
+        "equals",
+        "not_equals",
+        "one_of",
+        "none_of",
+        "minimum",
+        "maximum",
+        "matches",
+        "present",
+        "absent",
+        "before",
+        "after",
+        "evidence_verified"
+      ]
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "path",
+        "operator",
+        "value",
+        "on_failure"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{1,63}$"
+        },
+        "type": {
+          "$ref": "#/$defs/constraintType"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^\\$\\."
+        },
+        "operator": {
+          "$ref": "#/$defs/constraintOperator"
+        },
+        "value": {},
+        "on_failure": {
+          "enum": [
+            "deny",
+            "require_approval"
+          ]
+        }
+      }
+    },
+    "approvalRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "when",
+        "approver",
+        "expires_after_seconds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{1,63}$"
+        },
+        "when": {
+          "$ref": "#/$defs/predicate"
+        },
+        "approver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "organization_id",
+            "role"
+          ],
+          "properties": {
+            "organization_id": {
+              "$ref": "#/$defs/organizationId"
+            },
+            "role": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,63}$"
+            }
+          }
+        },
+        "expires_after_seconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 86400
+        }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "operator",
+        "value"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^\\$\\."
+        },
+        "operator": {
+          "$ref": "#/$defs/constraintOperator"
+        },
+        "value": {}
+      }
+    },
+    "delegation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed",
+        "maximum_depth"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "maximum_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "allowed": {
+                "const": false
+              }
+            },
+            "required": [
+              "allowed"
+            ]
+          },
+          "then": {
+            "properties": {
+              "maximum_depth": {
+                "const": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "maximum_depth": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_id",
+        "algorithm",
+        "created_at",
+        "purpose",
+        "signature"
+      ],
+      "properties": {
+        "key_id": {
+          "$ref": "#/$defs/keyId"
+        },
+        "algorithm": {
+          "enum": [
+            "ES256",
+            "EdDSA"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "purpose": {
+          "const": "mandate_issuance"
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 4096
+        }
+      }
+    }
+  }
+}

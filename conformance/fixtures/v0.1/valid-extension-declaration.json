@@ -1,0 +1,25 @@
+{
+  "fixture_kind": "declaration",
+  "note": "A counterparty declaration carrying the commercial extension URI, a required flag, and a parseable version pair. The exchange may proceed.",
+  "local_party": {
+    "read_versions": [
+      "0.1"
+    ],
+    "write_version": "0.1"
+  },
+  "counterparty_declaration": {
+    "extensions": [
+      {
+        "uri": "https://schemas.a202.org/a2a-ext/commercial/0.1",
+        "description": "Exchanges A202 commercial objects.",
+        "required": true,
+        "params": {
+          "read_versions": [
+            "0.1"
+          ],
+          "write_version": "0.1"
+        }
+      }
+    ]
+  }
+}

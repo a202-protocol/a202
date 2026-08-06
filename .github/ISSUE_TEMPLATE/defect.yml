@@ -1,0 +1,67 @@
+name: Specification defect or editorial correction
+description: Report something the specification gets wrong, contradicts, or leaves unreadable, where no new capability is being proposed
+title: "Defect: "
+labels: ["defect"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for a defect in what is already written: two documents that contradict each other, a rule whose fixture does not exercise it, a link that does not resolve, a typographical error, or wording whose meaning cannot be recovered.
+
+        Use the change proposal form instead if you are asking the specification to say something new. If a fix would alter what a conformant implementation has to do, it is a normative change and needs a proposal, whatever it is called when it arrives. The test is in `proposals/README.md` section 1.
+
+        **Do not use this form for a suspected vulnerability.** Report privately to security@a202.org. See `SECURITY.md`.
+
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: The file, and the section or line.
+      placeholder: "schemas/canonical-commercial-model-v0.1.md section 4.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - "Contradiction: two documents, or two sections, say different things"
+        - "Unenforced rule: a stated rule no fixture or check exercises"
+        - "Broken reference: a link, a path, or an identifier that does not resolve"
+        - "Editorial: a typographical error, or wording whose meaning is unclear"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: says
+    attributes:
+      label: What it says
+      description: Quote it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: wrong
+    attributes:
+      label: Why that is wrong
+      description: For a contradiction, name both statements. For an unenforced rule, name the rule and say what an implementation could do today without failing anything.
+    validations:
+      required: true
+
+  - type: textarea
+    id: consequence
+    attributes:
+      label: What an implementer does wrong as a result
+      description: If the answer is nothing, say so. A defect that misleads nobody is still worth fixing and is worth less urgency, and stating that plainly is more useful than inflating it.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This is not a suspected vulnerability. A vulnerability goes to security@a202.org and never to an issue.
+          required: true

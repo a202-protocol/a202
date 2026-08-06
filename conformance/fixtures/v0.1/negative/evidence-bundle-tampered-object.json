@@ -1,0 +1,78 @@
+{
+  "fixture_kind": "bundle",
+  "note": "One byte changed in a signed object after it was hashed, caught at step 1 by recomputing the content hash over the canonical bytes.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "off_calibration_demo_01",
+      "object_type": "offer",
+      "version": 1,
+      "created_at": "2026-08-04T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "0923206cd580e0daf093ef34829f48d4dceb8a03486fe5802b21f5c5cb39be05",
+      "signatures": [
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-04T10:00:00Z",
+          "purpose": "offer_submission"
+        }
+      ],
+      "payload": {
+        "offeror": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "offeree": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "session_id": "ses_northstar_delta_01",
+        "supersedes_offer_id": null,
+        "valid_until": "2026-08-05T10:00:00Z",
+        "terms": {
+          "profile": "a202-profile/calibration-service/0.1",
+          "core": {
+            "description": "Calibration and digital certificates for 10 pressure transmitters",
+            "quantity": "10",
+            "unit_code": "H87",
+            "unit_name": "piece",
+            "total": {
+              "currency": "EUR",
+              "amount": "2900.00"
+            }
+          },
+          "profile_terms": {
+            "completion": {
+              "business_days_after_collection": 15,
+              "business_calendar": "NL"
+            },
+            "payment": {
+              "prepayment_percent": "20",
+              "balance_trigger": "buyer_acceptance"
+            },
+            "acceptance": {
+              "certificate_required": true,
+              "machine_readable_result_required": true,
+              "qualification_standard": "ISO/IEC 17025:2017"
+            },
+            "rework": {
+              "included_attempts": 1
+            }
+          }
+        },
+        "evidence_refs": [
+          "evd_delta_accreditation_01"
+        ]
+      }
+    }
+  ]
+}

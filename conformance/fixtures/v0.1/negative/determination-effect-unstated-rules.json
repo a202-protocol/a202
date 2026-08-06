@@ -1,0 +1,67 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "det_calibration_question_01",
+  "object_type": "determination",
+  "version": 1,
+  "created_at": "2026-08-15T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "21bfeda02e7927b41f8a8018d34612c7933f7feeb1b4b7904584efc632766a49",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-15T10:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "dispute_id": "dsp_delta_calibration_01",
+    "question": {
+      "subject_type": "refusal",
+      "subject_hash": "5f480be802569dac5ee62809462d8db438dff5bc9c50aa253038dba03fd0d273",
+      "subject_id": "pol_northstar_refusal_01",
+      "rules_ref": {
+        "rule_set_id": "a202-rules/pilot",
+        "version": "1.0",
+        "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+      }
+    },
+    "outcome": {
+      "finding": "The obligation stood in the asserted state at the time of the response, and the response bound the assertion it named.",
+      "rules_applied": [
+        "a202-rules/pilot#obligation.acceptance-binds-assertion"
+      ],
+      "evidence_relied_on": [
+        {
+          "evidence_id": "evd_delta_calibration_certificate_01",
+          "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+          "evidence_type": "third_party_certificate",
+          "signed_by": {
+            "organization_id": "org_delta",
+            "agent_id": "agt_delta_supplier_01"
+          },
+          "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+        }
+      ],
+      "inputs_hash": "8cd5377fa1a660e41079032b4a79256c5a3bfb8a226bbc9c5508480013725cf9",
+      "state_result": null
+    },
+    "determiner": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "authority_basis_ref": "a202-rules/pilot#determiner.authority",
+    "effect": "presumptive",
+    "supersedes": null,
+    "appeal_route_ref": "a202-rules/pilot#appeal.route",
+    "determined_at": "2026-08-15T10:00:00Z",
+    "effective_from": "2026-08-15T10:00:00Z"
+  }
+}

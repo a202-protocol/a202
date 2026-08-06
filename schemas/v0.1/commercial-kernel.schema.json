@@ -1,0 +1,3301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.a202.org/v0.1/commercial-kernel.schema.json",
+  "title": "A202 Commercial Kernel Object v0.1",
+  "description": "Market-neutral canonical object envelope. No transaction-profile-specific field may be defined in this schema. Profile terms are carried opaquely in payload.terms.profile_terms and validated against the profile schema named by payload.terms.profile.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "id",
+    "object_type",
+    "version",
+    "created_at",
+    "created_by",
+    "transaction_id",
+    "previous_version_id",
+    "content_hash",
+    "signatures",
+    "payload"
+  ],
+  "properties": {
+    "spec_version": {
+      "const": "a202-commercial/0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]{3}_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "object_type": {
+      "$comment": "commercial_mandate is deliberately absent. A mandate is a standalone signed document under commercial-mandate.schema.json with spec_version a202-mandate/0.1; it is referenced from envelope objects by its mnd_ identifier and is never itself wrapped in the common envelope. See canonical model section 3.",
+      "enum": [
+        "organization",
+        "agent",
+        "principal",
+        "external_identity_assertion",
+        "key_record",
+        "delegation",
+        "approval",
+        "policy_decision",
+        "revocation_record",
+        "capability",
+        "intent",
+        "counterparty_invitation",
+        "invitation_acceptance",
+        "qualification_requirement",
+        "evidence",
+        "commercial_request",
+        "clarification",
+        "action_envelope",
+        "offer",
+        "acceptance",
+        "agreement",
+        "transaction_event",
+        "commitment",
+        "obligation",
+        "obligation_response",
+        "performance_event",
+        "dispute",
+        "determination",
+        "exception",
+        "settlement_instruction",
+        "adapter_receipt",
+        "evidence_manifest",
+        "audit_bundle"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "$ref": "#/$defs/actorRef"
+    },
+    "transaction_id": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/transactionId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "previous_version_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z]{3}_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "content_hash": {
+      "$ref": "#/$defs/sha256Hex"
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/signature"
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "kernel_annotations": {
+      "$ref": "#/$defs/kernelAnnotations"
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "Version 1 has no predecessor; later versions must name one.",
+      "if": {
+        "properties": {
+          "version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "then": {
+        "properties": {
+          "previous_version_id": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "previous_version_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Transaction-bound object types require a non-null transaction_id.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "enum": [
+              "organization",
+              "agent",
+              "principal",
+              "external_identity_assertion",
+              "key_record",
+              "delegation",
+              "revocation_record",
+              "capability",
+              "intent"
+            ]
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {},
+      "else": {
+        "properties": {
+          "transaction_id": {
+            "$ref": "#/$defs/transactionId"
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Only the control plane may attach kernel_annotations. Agent-authored object types must not carry them.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "enum": [
+              "action_envelope"
+            ]
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "kernel_annotations"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "action_envelope"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^act_"
+          },
+          "payload": {
+            "$ref": "#/$defs/actionEnvelopePayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Onboarding grant. Issued by the inviting party under a mandate carrying the invitation.issue action.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "counterparty_invitation"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^inv_"
+          },
+          "payload": {
+            "$ref": "#/$defs/counterpartyInvitationPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Onboarding record. Authored by the control plane because the claimant has no mandate yet; attested by the claimant's own key. Two signatures are required so that operator authorship alone can never constitute an onboarding.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "invitation_acceptance"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^ina_"
+          },
+          "payload": {
+            "$ref": "#/$defs/invitationAcceptancePayload"
+          },
+          "signatures": {
+            "minItems": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "offer"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^off_"
+          },
+          "payload": {
+            "$ref": "#/$defs/offerPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "acceptance"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^acc_"
+          },
+          "payload": {
+            "$ref": "#/$defs/acceptancePayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "agreement"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^agr_"
+          },
+          "payload": {
+            "$ref": "#/$defs/agreementPayload"
+          },
+          "signatures": {
+            "minItems": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "transaction_event"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^evt_"
+          },
+          "payload": {
+            "$ref": "#/$defs/eventPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "policy_decision"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^pol_"
+          },
+          "payload": {
+            "$ref": "#/$defs/policyDecisionPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A duty derived from a commitment. The subject is carried by reference to the agreement's terms hash, never as a restated copy.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "obligation"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^obl_"
+          },
+          "payload": {
+            "$ref": "#/$defs/obligationPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "The obligor's assertion of performance. It carries at least one evidence reference, because a claim with nothing behind it cannot be checked by the obligee now or by a third party later.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "performance_event"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^prf_"
+          },
+          "payload": {
+            "$ref": "#/$defs/performanceEventPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "The obligee's response to an assertion. Acceptance is a distinct signed act, so that an obligor cannot declare its own obligation discharged.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "obligation_response"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^obr_"
+          },
+          "payload": {
+            "$ref": "#/$defs/obligationResponsePayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A contested question. The subject is referenced by content hash and never by identifier alone, because a dispute about an object that can change is a dispute about nothing fixed.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "dispute"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^dsp_"
+          },
+          "payload": {
+            "$ref": "#/$defs/disputePayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A reasoned finding on a dispute. The outcome shape is closed and carries no enumerated verdict, so a determination that says which way a question went and nothing about why fails validation.",
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "determination"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^det_"
+          },
+          "payload": {
+            "$ref": "#/$defs/determinationPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "settlement_instruction"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^stl_"
+          },
+          "payload": {
+            "$ref": "#/$defs/settlementInstructionPayload"
+          },
+          "signatures": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "adapter_receipt"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^adp_"
+          },
+          "payload": {
+            "$ref": "#/$defs/adapterReceiptPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "approval"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^apr_"
+          },
+          "payload": {
+            "$ref": "#/$defs/approvalPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "commitment"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^cmt_"
+          },
+          "payload": {
+            "$ref": "#/$defs/commitmentPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "evidence"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^evd_"
+          },
+          "payload": {
+            "$ref": "#/$defs/evidencePayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "revocation_record"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^rev_"
+          },
+          "payload": {
+            "$ref": "#/$defs/revocationRecordPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "key_record"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^key_"
+          },
+          "payload": {
+            "$ref": "#/$defs/keyRecordPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "organization"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^org_"
+          },
+          "payload": {
+            "$ref": "#/$defs/organizationPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "agent"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^agt_"
+          },
+          "payload": {
+            "$ref": "#/$defs/agentPayload"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "object_type": {
+            "const": "principal"
+          }
+        },
+        "required": [
+          "object_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^prn_"
+          },
+          "payload": {
+            "$ref": "#/$defs/principalPayload"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hexadecimal SHA-256. v0.1 does not accept multibase."
+    },
+    "transactionId": {
+      "type": "string",
+      "pattern": "^txn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "sessionId": {
+      "type": "string",
+      "pattern": "^ses_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "organizationId": {
+      "type": "string",
+      "pattern": "^org_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^agt_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "mandateId": {
+      "type": "string",
+      "pattern": "^mnd_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "actorRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization_id",
+        "agent_id",
+        "mandate_id"
+      ],
+      "properties": {
+        "organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "agent_id": {
+          "$ref": "#/$defs/agentId"
+        },
+        "mandate_id": {
+          "$ref": "#/$defs/mandateId"
+        }
+      }
+    },
+    "kernelAnnotations": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Control-plane metadata attached AFTER the object is signed. These fields MUST be excluded from the bytes covered by content_hash and by every signature. This breaks the circular dependency between an offer and the policy decision that authorized it.",
+      "required": [
+        "policy_decision_id",
+        "session_id",
+        "session_sequence",
+        "received_at"
+      ],
+      "properties": {
+        "policy_decision_id": {
+          "type": "string",
+          "pattern": "^pol_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "session_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sessionId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session_sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "received_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_id",
+        "algorithm",
+        "signature",
+        "signed_at",
+        "purpose"
+      ],
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "pattern": "^key_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "algorithm": {
+          "enum": [
+            "ES256",
+            "EdDSA"
+          ]
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 4096
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "purpose": {
+          "enum": [
+            "object_issuance",
+            "action_submission",
+            "invitation_issuance",
+            "invitation_claim",
+            "offer_submission",
+            "offer_acceptance",
+            "agreement_commitment",
+            "event_append",
+            "policy_decision",
+            "adapter_receipt",
+            "audit_seal"
+          ]
+        }
+      }
+    },
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Non-negative consideration. Credits, refunds, and adjustments use a signed direction field on their own object rather than a negative amount.",
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,18})?$"
+        }
+      }
+    },
+    "percentString": {
+      "type": "string",
+      "pattern": "^(100(\\.0+)?|[0-9]{1,2}(\\.[0-9]+)?)$",
+      "description": "Decimal string in the closed interval 0 to 100. Values above 100 are invalid."
+    },
+    "quantityString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,9})?$"
+    },
+    "partyRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization_id",
+        "agent_id"
+      ],
+      "properties": {
+        "organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "agent_id": {
+          "$ref": "#/$defs/agentId"
+        }
+      }
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^evd_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "obligationId": {
+      "type": "string",
+      "pattern": "^obl_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "agreementId": {
+      "type": "string",
+      "pattern": "^agr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+    },
+    "profileId": {
+      "type": "string",
+      "pattern": "^a202-profile/[a-z0-9][a-z0-9-]*/[0-9]+\\.[0-9]+$"
+    },
+    "termPath": {
+      "type": "string",
+      "pattern": "^\\$\\.terms\\.(core|profile_terms)(\\.[A-Za-z0-9_]+)*$",
+      "description": "Addresses one term under $.terms.core or $.terms.profile_terms, using the same path addressing a mandate constraint uses, so that a term a mandate constrains and a term an obligation owes are named the same way."
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^a202-rules/[a-z0-9][a-z0-9-]*#[a-z0-9][a-z0-9._-]*$",
+      "description": "A stable rule identifier inside a rule set. It resolves within the rule set version named by the referencing rulesRef."
+    },
+    "rulesRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "An exact, hash-addressed rule set version. A window, an available effect, and an appeal route are read from the rules in force through this reference and are never restated by the referencing object.",
+      "required": [
+        "rule_set_id",
+        "version",
+        "rules_hash"
+      ],
+      "properties": {
+        "rule_set_id": {
+          "type": "string",
+          "pattern": "^a202-rules/[a-z0-9][a-z0-9-]*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "rules_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        }
+      }
+    },
+    "evidenceTypeId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "enum": [
+        "attestation",
+        "third_party_certificate",
+        "inspection_result",
+        "delivery_confirmation",
+        "measurement_record",
+        "adapter_receipt",
+        "verification_report",
+        "signed_document"
+      ],
+      "description": "The registered evidence type list, closed in v0.1. An unregistered value fails closed here and independently at verification, so that adding a member to this enum without an evaluator that knows what it means cannot cause evidence to be treated as verified."
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The reference shape every object family uses to point at evidence, so that a verifier resolves one shape rather than a different one per family. The content hash is what makes the reference portable: an identifier alone can be pointed at different bytes later.",
+      "required": [
+        "evidence_id",
+        "content_hash",
+        "evidence_type",
+        "signed_by"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/evidenceId"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "evidence_type": {
+          "$ref": "#/$defs/evidenceTypeId"
+        },
+        "locator_hint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512,
+          "description": "Where a copy may be found. Never load bearing: verification never depends on it resolving, and evidence retrieved through it is verified by its hash and signature and by nothing else. It carries no secret, credential, or personal data."
+        },
+        "signed_by": {
+          "$ref": "#/$defs/partyRef"
+        }
+      }
+    },
+    "evidenceRefOrId": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/evidenceId"
+        },
+        {
+          "$ref": "#/$defs/evidenceRef"
+        }
+      ],
+      "description": "Object families defined before the reference shape existed accept either the identifier-only short form or the reference object. A verifier that cannot resolve the short form to an object carrying a content hash reports it as not checkable, never as verified. Object families defined with the shape accept the object form only."
+    },
+    "subjectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What is owed, named by pointing at the agreement's terms rather than by copying them. A restated term can drift from the agreement while both copies stay validly signed; a reference plus a terms hash makes that drift a hash mismatch.",
+      "required": [
+        "agreement_id",
+        "terms_hash",
+        "profile",
+        "term_path"
+      ],
+      "properties": {
+        "agreement_id": {
+          "$ref": "#/$defs/agreementId"
+        },
+        "terms_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "profile": {
+          "$ref": "#/$defs/profileId"
+        },
+        "term_path": {
+          "$ref": "#/$defs/termPath"
+        }
+      }
+    },
+    "businessDaysDue": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A duration in business days is a term only when it names the calendar it is counted against.",
+      "required": [
+        "days",
+        "calendar"
+      ],
+      "properties": {
+        "days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "calendar": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 32
+        },
+        "after_ref": {
+          "$ref": "#/$defs/sha256Hex"
+        }
+      }
+    },
+    "dueConditionLeaf": {
+      "description": "One registered due condition. The registry is closed in v0.1 and each member is closed, so a registered type carrying another type's fields fails here as well as at evaluation.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "due_at_time"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "business_days": {
+              "$ref": "#/$defs/businessDaysDue"
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "at"
+              ],
+              "not": {
+                "required": [
+                  "business_days"
+                ]
+              }
+            },
+            {
+              "required": [
+                "business_days"
+              ],
+              "not": {
+                "required": [
+                  "at"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "due_on_event"
+            },
+            "act_ref": {
+              "$ref": "#/$defs/sha256Hex"
+            },
+            "evidence_type": {
+              "$ref": "#/$defs/evidenceTypeId"
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "act_ref"
+              ],
+              "not": {
+                "required": [
+                  "evidence_type"
+                ]
+              }
+            },
+            {
+              "required": [
+                "evidence_type"
+              ],
+              "not": {
+                "required": [
+                  "act_ref"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "obligation_id"
+          ],
+          "properties": {
+            "type": {
+              "const": "due_on_discharge"
+            },
+            "obligation_id": {
+              "$ref": "#/$defs/obligationId"
+            }
+          }
+        }
+      ]
+    },
+    "dueCondition": {
+      "description": "When the obligation is due. Conditions compose with AND only, and all_of does not nest, because a disjunction is expressible as two obligations and writing it out is what keeps the record replayable.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/dueConditionLeaf"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "conditions"
+          ],
+          "properties": {
+            "type": {
+              "const": "all_of"
+            },
+            "conditions": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/dueConditionLeaf"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "questionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What was determined. The rule set version is the one in force at the time of the subject act, not at the time of the determination, so that changing the rules cannot change the answer to a question that was already asked.",
+      "required": [
+        "subject_type",
+        "subject_hash",
+        "subject_id",
+        "rules_ref"
+      ],
+      "properties": {
+        "subject_type": {
+          "$ref": "#/$defs/disputeSubjectType"
+        },
+        "subject_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "subject_id": {
+          "type": "string",
+          "pattern": "^[a-z]{3}_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "rules_ref": {
+          "$ref": "#/$defs/rulesRef"
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A reasoned finding. There is deliberately no verdict member: an enumerated verdict states which way a question went and nothing about why, which leaves nothing to point at on appeal and nothing for a third party to replay. The shape is closed so that a verdict cannot be added alongside the finding.",
+      "required": [
+        "finding",
+        "rules_applied",
+        "evidence_relied_on",
+        "inputs_hash",
+        "state_result"
+      ],
+      "properties": {
+        "finding": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rules_applied": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ruleId"
+          }
+        },
+        "evidence_relied_on": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
+        },
+        "inputs_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "state_result": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "subject_id",
+                "state"
+              ],
+              "properties": {
+                "subject_id": {
+                  "type": "string",
+                  "pattern": "^[a-z]{3}_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$",
+                  "description": "The determined subject, and only it. The evaluator refuses a subject_id that differs from question.subject_id."
+                },
+                "state": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,63}$",
+                  "description": "One registered state token. The evaluator refuses a state outside the specification's state vocabularies, and the transition it names is subject to the guards of the state machine it targets."
+                }
+              }
+            }
+          ],
+          "description": "The state the one determined subject stands in as a result, where the effect permits a state change. Null otherwise. This is the only field through which a determination touches state, and it is inert unless the rules in force granted a binding effect. The shape is closed so that a determination cannot carry a bag of transitions: one subject, one state, guarded like any other event."
+        }
+      }
+    },
+    "supersession": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A later determination replaces an earlier one by reference. Both remain in the record: a record that can be removed when it is unfavourable is a record nobody has a reason to read.",
+      "required": [
+        "determination_id",
+        "determination_hash",
+        "reason"
+      ],
+      "properties": {
+        "determination_id": {
+          "type": "string",
+          "pattern": "^det_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "determination_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "reason": {
+          "enum": [
+            "appeal_outcome",
+            "corrected_input",
+            "rule_misapplication"
+          ]
+        }
+      }
+    },
+    "disputeSubjectType": {
+      "enum": [
+        "act",
+        "determination",
+        "obligation_state",
+        "refusal"
+      ]
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Market-neutral commercial terms. core is identical for every transaction profile. profile_terms is opaque to the kernel and is validated separately against the schema named by profile.",
+      "required": [
+        "profile",
+        "core",
+        "profile_terms"
+      ],
+      "properties": {
+        "profile": {
+          "type": "string",
+          "pattern": "^a202-profile/[a-z0-9][a-z0-9-]*/[0-9]+\\.[0-9]+$",
+          "description": "Registered transaction profile identifier. The kernel MUST NOT special-case any particular value."
+        },
+        "core": {
+          "$ref": "#/$defs/coreTerms"
+        },
+        "profile_terms": {
+          "type": "object",
+          "description": "Validated against the profile schema, not by this schema. An unregistered or unresolvable profile fails closed."
+        }
+      }
+    },
+    "coreTerms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "quantity",
+        "unit_code",
+        "total"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "quantity": {
+          "$ref": "#/$defs/quantityString"
+        },
+        "unit_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{2,3}$",
+          "description": "UN/ECE Recommendation 20 common code. This is the declared controlled vocabulary required by canonical model section 7."
+        },
+        "unit_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Optional human-readable label. It carries no commercial meaning and MUST NOT be used for matching or validation."
+        },
+        "total": {
+          "$ref": "#/$defs/money"
+        }
+      }
+    },
+    "actionEnvelopePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The agent-signed unit of intent. The policy evaluator computes action_hash over this object. The kernel mints the resulting commercial object only after the decision is allow.",
+      "required": [
+        "action_type",
+        "expected_sequence",
+        "session_id",
+        "idempotency_key",
+        "proposed_object"
+      ],
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "expected_sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Sequence of the stream this action targets. For bilateral actions this is the per-session sequence, never the transaction-wide sequence."
+        },
+        "session_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sessionId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 255
+        },
+        "proposed_object": {
+          "type": "object",
+          "description": "The candidate commercial object without content_hash, signatures, or kernel_annotations."
+        }
+      }
+    },
+    "assuranceLevel": {
+      "enum": [
+        "self_asserted",
+        "credential_verified",
+        "entity_bound"
+      ],
+      "description": "Reported, never inferred. self_asserted establishes control of a channel and nothing about the existence of a legal entity or the authority of a signer within it."
+    },
+    "counterpartyInvitationPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A single-use, expiring grant of participation in one named transaction. It confers no commercial authority. The claim secret is held only as a hash, and no URL may appear anywhere in this object: the claim URL travels on the invited channel and always resolves to an operator-controlled origin.",
+      "required": [
+        "inviting_party",
+        "invited_channel",
+        "claim_secret_hash",
+        "expires_at",
+        "purpose_note",
+        "disclosed_scope",
+        "granted_scope",
+        "minimum_assurance",
+        "endpoint_offer"
+      ],
+      "properties": {
+        "inviting_party": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "invited_channel": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "An invited channel is frequently a named individual's address, which is personal data. It is held in the operator contact store and referenced here by an opaque identifier and a hash.",
+          "required": [
+            "channel_type",
+            "channel_domain",
+            "channel_ref",
+            "channel_hash"
+          ],
+          "properties": {
+            "channel_type": {
+              "enum": [
+                "email_domain_scoped",
+                "https_endpoint",
+                "existing_organization"
+              ]
+            },
+            "channel_domain": {
+              "type": "string",
+              "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$",
+              "maxLength": 253,
+              "description": "Registrable domain only. A local part, an at sign, or a full address here is a data-classification failure."
+            },
+            "channel_ref": {
+              "type": "string",
+              "pattern": "^chn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            "channel_hash": {
+              "$ref": "#/$defs/sha256Hex"
+            }
+          }
+        },
+        "claim_secret_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "$comment": "Evaluator-enforced: expires_at MUST be strictly later than created_at."
+        },
+        "purpose_note": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Human-readable reason for the contact. Untrusted free text directed at the invited party's agent. Bounded in length and rendered as data."
+        },
+        "disclosed_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The bounded description of what the party is invited to. Not the CommercialRequest, which becomes visible only after qualification.",
+          "required": [
+            "category",
+            "summary",
+            "response_deadline"
+          ],
+          "properties": {
+            "category": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+            },
+            "summary": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "response_deadline": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "granted_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "What claiming permits. Evaluator-enforced: transaction_ids must contain exactly this object's own transaction_id. A party that has received one invitation has demonstrated nothing beyond that transaction.",
+          "required": [
+            "transaction_ids",
+            "actions"
+          ],
+          "properties": {
+            "transaction_ids": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1,
+              "items": {
+                "$ref": "#/$defs/transactionId"
+              }
+            },
+            "actions": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+              }
+            }
+          }
+        },
+        "minimum_assurance": {
+          "$ref": "#/$defs/assuranceLevel"
+        },
+        "endpoint_offer": {
+          "enum": [
+            "participant_operated",
+            "operator_hosted_available"
+          ]
+        }
+      }
+    },
+    "invitationAcceptancePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The onboarding record. Authored by the control plane under the operator mandate because the claimant has no mandate of its own yet, and attested by the claimant's key. It grants no authority: the claimant's own principal issues the root mandate named here.",
+      "required": [
+        "invitation_id",
+        "invitation_hash",
+        "claimant",
+        "channel_proof",
+        "assurance",
+        "assurance_evidence_refs",
+        "key_custody",
+        "endpoint_mode",
+        "issuance_approval_id",
+        "root_mandate_id"
+      ],
+      "properties": {
+        "invitation_id": {
+          "type": "string",
+          "pattern": "^inv_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "invitation_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "$comment": "Evaluator-enforced: must equal the referenced invitation's content_hash."
+        },
+        "claimant": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "organization_id",
+            "agent_id",
+            "principal_id"
+          ],
+          "properties": {
+            "organization_id": {
+              "$ref": "#/$defs/organizationId"
+            },
+            "agent_id": {
+              "$ref": "#/$defs/agentId"
+            },
+            "principal_id": {
+              "type": "string",
+              "pattern": "^prn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            }
+          }
+        },
+        "channel_proof": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "method",
+            "verified_at",
+            "evidence_ref"
+          ],
+          "properties": {
+            "method": {
+              "enum": [
+                "domain_scoped_token",
+                "https_well_known",
+                "existing_principal_authorization"
+              ]
+            },
+            "verified_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "evidence_ref": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^evd_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "assurance": {
+          "$ref": "#/$defs/assuranceLevel"
+        },
+        "assurance_evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Evaluator-enforced: non-empty for any level above self_asserted. Either reference form is accepted, because this array was written before the reference shape existed and narrowing it would invalidate objects that are valid today.",
+          "items": {
+            "$ref": "#/$defs/evidenceRefOrId"
+          }
+        },
+        "key_custody": {
+          "enum": [
+            "self",
+            "operator_custodied"
+          ],
+          "description": "Disclosed to the counterparty. An operator-custodied key may never sign a commercial act without a human Approval bound to that exact action hash."
+        },
+        "endpoint_mode": {
+          "enum": [
+            "participant_operated",
+            "operator_hosted"
+          ]
+        },
+        "issuance_approval_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^apr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The named principal's approval over the root mandate content hash. REQUIRED and non-null under operator key custody."
+        },
+        "root_mandate_id": {
+          "$ref": "#/$defs/mandateId",
+          "description": "Issued by the claimant's own principal, never by the operator, and bounded to the invitation's transaction."
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "Operator key custody requires a bound principal approval. This is also an evaluator rule so that both layers fail closed independently.",
+          "if": {
+            "properties": {
+              "key_custody": {
+                "const": "operator_custodied"
+              }
+            },
+            "required": [
+              "key_custody"
+            ]
+          },
+          "then": {
+            "properties": {
+              "issuance_approval_id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "offerPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offeror",
+        "offeree",
+        "session_id",
+        "supersedes_offer_id",
+        "valid_until",
+        "terms",
+        "evidence_refs"
+      ],
+      "properties": {
+        "offeror": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "offeree": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "session_id": {
+          "$ref": "#/$defs/sessionId"
+        },
+        "supersedes_offer_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "terms": {
+          "$ref": "#/$defs/terms"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Either reference form is accepted. The identifier-only short form remains valid in v0.1 and resolves, or is reported as not checkable; it is never reported as verified.",
+          "items": {
+            "$ref": "#/$defs/evidenceRefOrId"
+          }
+        }
+      }
+    },
+    "acceptancePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offer_id",
+        "offer_hash",
+        "session_id",
+        "accepting_party"
+      ],
+      "properties": {
+        "offer_id": {
+          "type": "string",
+          "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "offer_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "session_id": {
+          "$ref": "#/$defs/sessionId"
+        },
+        "accepting_party": {
+          "$ref": "#/$defs/partyRef"
+        }
+      }
+    },
+    "agreementPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accepted_offer_id",
+        "accepted_offer_hash",
+        "acceptance_id",
+        "buyer",
+        "supplier",
+        "terms",
+        "terms_hash",
+        "effective_at",
+        "commitment_ids"
+      ],
+      "properties": {
+        "accepted_offer_id": {
+          "type": "string",
+          "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "accepted_offer_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "acceptance_id": {
+          "type": "string",
+          "pattern": "^acc_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "buyer": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "supplier": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "terms": {
+          "$ref": "#/$defs/terms"
+        },
+        "terms_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "commitment_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^cmt_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+          }
+        }
+      }
+    },
+    "eventPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stream",
+        "sequence",
+        "event_type",
+        "occurred_at",
+        "previous_event_hash",
+        "action_hash",
+        "policy_decision_id",
+        "from_state",
+        "to_state",
+        "data"
+      ],
+      "properties": {
+        "stream": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "description": "Which append-only stream this event belongs to. Bilateral negotiation events belong to a session stream so that no counterparty can infer rival activity from a shared counter.",
+          "properties": {
+            "kind": {
+              "enum": [
+                "transaction",
+                "session"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^(txn|ses)_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            }
+          }
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "event_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "previous_event_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256Hex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "action_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "policy_decision_id": {
+          "type": "string",
+          "pattern": "^pol_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "from_state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "to_state": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "A session reaching a terminal state carries a typed close reason and nothing else. A losing counterparty may learn that its session ended and why in kernel terms. It may never learn rival identity, price, count, or timing. An allowlist is used rather than a denylist because a denylist only refuses the leaks someone anticipated. See test 16 in negotiation/pilot-transaction-state-machine-v0.1.md section 11.",
+          "if": {
+            "required": [
+              "stream",
+              "to_state"
+            ],
+            "properties": {
+              "stream": {
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "session"
+                  }
+                }
+              },
+              "to_state": {
+                "enum": [
+                  "rejected",
+                  "withdrawn",
+                  "expired",
+                  "closed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/sessionCloseData"
+              }
+            }
+          }
+        },
+        {
+          "$comment": "Every other session-stream event carries references to signed objects, never their content. An identifier cannot leak a rival's price, quantity, or terms, and the referenced object enforces its own visibility separately. This closes the residual gap left when only session-close events were constrained.",
+          "if": {
+            "required": [
+              "stream",
+              "to_state"
+            ],
+            "properties": {
+              "stream": {
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "session"
+                  }
+                }
+              },
+              "to_state": {
+                "not": {
+                  "enum": [
+                    "rejected",
+                    "withdrawn",
+                    "expired",
+                    "closed"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/sessionEventData"
+              }
+            }
+          }
+        },
+        {
+          "$comment": "Transaction-stream events carry the same references-only discipline. This closes the last open data object in the event model: the aggregate lifecycle is now typed as well as the session lifecycle, so an award, a commitment, or a termination cannot carry a rival's price, count, or timing in a free-form member. See A202-0013.",
+          "if": {
+            "required": [
+              "stream"
+            ],
+            "properties": {
+              "stream": {
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "transaction"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/transactionEventData"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sessionEventData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The complete permitted content of a non-terminal session-stream event. References only. Commercial content belongs in the referenced signed object, which carries its own visibility and its own private-field validation. Every reference pattern is bound to its registered prefix: apr_ for approvals and clr_ for clarifications, both registered in canonical model section 3. Prefix binding constrains what family an identifier claims; full opacity is enforced at resolution, where an identifier that resolves to no object is refused.",
+      "properties": {
+        "offer_id": {
+          "type": "string",
+          "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "supersedes_offer_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "acceptance_id": {
+          "type": "string",
+          "pattern": "^acc_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "clarification_id": {
+          "type": "string",
+          "pattern": "^clr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "approval_id": {
+          "type": "string",
+          "pattern": "^apr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        }
+      }
+    },
+    "transactionEventData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The complete permitted content of a transaction-stream event. References and hashes only, on the same rule as the session shapes: an event names the signed object it concerns and never restates that object's terms. No member is required, because most aggregate transitions are fully described by from_state, event_type, and to_state and carry no reference at all. The audience is narrower than a session stream's, but it is not empty: after commitment the winning counterparty reads this stream, and before an allowlist existed an award event could carry a losing rival's price in an open object.",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^req_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "session_id": {
+          "$ref": "#/$defs/sessionId"
+        },
+        "invitation_id": {
+          "type": "string",
+          "pattern": "^inv_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "invitation_acceptance_id": {
+          "type": "string",
+          "pattern": "^ina_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "offer_id": {
+          "type": "string",
+          "pattern": "^off_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "acceptance_id": {
+          "type": "string",
+          "pattern": "^acc_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$",
+          "description": "The Acceptance an aggregate transition concerns, named by acceptance.withdrawn so that the record shows which acceptance was withdrawn rather than only that one was."
+        },
+        "agreement_id": {
+          "$ref": "#/$defs/agreementId"
+        },
+        "commitment_id": {
+          "type": "string",
+          "pattern": "^cmt_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "performance_event_id": {
+          "type": "string",
+          "pattern": "^prf_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "obligation_response_id": {
+          "type": "string",
+          "pattern": "^obr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "exception_id": {
+          "type": "string",
+          "pattern": "^exc_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "dispute_id": {
+          "type": "string",
+          "pattern": "^dsp_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "determination_id": {
+          "type": "string",
+          "pattern": "^det_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "approval_id": {
+          "type": "string",
+          "pattern": "^apr_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "settlement_instruction_id": {
+          "type": "string",
+          "pattern": "^stl_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "adapter_receipt_id": {
+          "type": "string",
+          "pattern": "^adp_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "termination_record_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "The termination record both parties signed, bound by hash on termination.agreed."
+        },
+        "remediation_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "The remediation both parties accepted, bound by hash on remediation.accepted."
+        },
+        "audit_bundle_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "The sealed audit bundle, bound by hash where a terminal transition seals one."
+        }
+      }
+    },
+    "sessionCloseData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The complete permitted content of a session-close event. Every value in close_reason is stated from the closing party's own perspective and reveals nothing about any other session on the transaction.",
+      "required": [
+        "close_reason"
+      ],
+      "properties": {
+        "close_reason": {
+          "enum": [
+            "not_selected",
+            "withdrawn_by_offeror",
+            "declined_by_offeree",
+            "session_expired",
+            "transaction_cancelled",
+            "transaction_expired",
+            "mandate_inactive",
+            "qualification_failed"
+          ]
+        }
+      }
+    },
+    "policyDecisionPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_hash",
+        "decision",
+        "reason_codes",
+        "evaluated_at",
+        "mandate_ids",
+        "stream",
+        "stream_sequence",
+        "visibility"
+      ],
+      "properties": {
+        "action_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "decision": {
+          "enum": [
+            "allow",
+            "deny",
+            "require_approval"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^A202-[A-Z0-9-]+$"
+          }
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "mandate_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/mandateId"
+          }
+        },
+        "stream": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "transaction",
+                "session",
+                "private"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 131
+            }
+          }
+        },
+        "stream_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visibility": {
+          "enum": [
+            "private_to_actor",
+            "session_parties",
+            "transaction_parties",
+            "operator_only"
+          ],
+          "description": "A deny decision on an untransmitted proposal MUST be private_to_actor and MUST NOT consume a shared stream sequence."
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "A denied action never becomes visible to a counterparty.",
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "deny"
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "visibility": {
+                "enum": [
+                  "private_to_actor",
+                  "operator_only"
+                ]
+              },
+              "stream": {
+                "properties": {
+                  "kind": {
+                    "const": "private"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "obligationPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What is owed, by whom, when it is due, and against which term. Money uses the money type and percentages use percentString; an obligation that introduced a parallel representation of either would be a second value vocabulary inside one kernel.",
+      "required": [
+        "agreement_id",
+        "commitment_id",
+        "obligor",
+        "obligee",
+        "subject",
+        "due_condition",
+        "quantity",
+        "unit_code",
+        "consideration",
+        "state"
+      ],
+      "properties": {
+        "agreement_id": {
+          "$ref": "#/$defs/agreementId"
+        },
+        "commitment_id": {
+          "type": "string",
+          "pattern": "^cmt_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "obligor": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "obligee": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "subject": {
+          "$ref": "#/$defs/subjectRef"
+        },
+        "due_condition": {
+          "$ref": "#/$defs/dueCondition"
+        },
+        "quantity": {
+          "$ref": "#/$defs/quantityString"
+        },
+        "unit_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{2,3}$",
+          "description": "UN/ECE Recommendation 20 common code."
+        },
+        "unit_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Optional human-readable label. It carries no commercial meaning and MUST NOT be used for matching or validation."
+        },
+        "consideration": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "$comment": "released is the obligation-level counterpart of an authorized transaction termination: the obligation ends because the transaction ended, not because it was performed, waived, or timed out. It is terminal.",
+          "enum": [
+            "pending",
+            "due",
+            "asserted",
+            "accepted",
+            "rejected",
+            "disputed",
+            "discharged",
+            "waived",
+            "expired",
+            "released"
+          ]
+        }
+      }
+    },
+    "performanceEventPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The obligor's assertion that it performed. Evidence references use the reference object form only, because this family is being defined with the shape and nothing has been written against an earlier one.",
+      "required": [
+        "obligation_id",
+        "asserted_quantity",
+        "unit_code",
+        "evidence_refs"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "asserted_quantity": {
+          "$ref": "#/$defs/quantityString"
+        },
+        "unit_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{2,3}$"
+        },
+        "unit_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
+        }
+      }
+    },
+    "obligationResponsePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The obligee's response to one assertion. It binds the exact assertion bytes, and it never mutates the obligation: an accepted quantity below what is owed names a remainder obligation, so that the shortfall stays in the record.",
+      "required": [
+        "obligation_id",
+        "response_type"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "response_type": {
+          "enum": [
+            "accept",
+            "reject",
+            "waive"
+          ]
+        },
+        "assertion_id": {
+          "type": "string",
+          "pattern": "^prf_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "assertion_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "accepted_quantity": {
+          "$ref": "#/$defs/quantityString"
+        },
+        "remainder_obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "reason_code": {
+          "enum": [
+            "evidence_insufficient",
+            "evidence_unverified",
+            "quantity_short",
+            "subject_not_as_agreed",
+            "due_condition_not_met",
+            "assertion_unauthorized"
+          ],
+          "description": "The closed rejection reason list. Each value is stated from the obligee's own position and none of them discloses the identity, price, count, or timing of any other party's activity on the transaction."
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "An acceptance binds an exact assertion and states what quantity it accepts.",
+          "if": {
+            "properties": {
+              "response_type": {
+                "const": "accept"
+              }
+            },
+            "required": [
+              "response_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "assertion_id",
+              "assertion_hash",
+              "accepted_quantity"
+            ]
+          }
+        },
+        {
+          "$comment": "A rejection binds an exact assertion and carries a registered reason.",
+          "if": {
+            "properties": {
+              "response_type": {
+                "const": "reject"
+              }
+            },
+            "required": [
+              "response_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "assertion_id",
+              "assertion_hash",
+              "reason_code"
+            ]
+          }
+        },
+        {
+          "$comment": "A waiver names no assertion, which is why the authorization rule is checked against the signing party rather than against assertion_id alone.",
+          "if": {
+            "properties": {
+              "response_type": {
+                "const": "waive"
+              }
+            },
+            "required": [
+              "response_type"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "assertion_id"
+                  ]
+                },
+                {
+                  "required": [
+                    "assertion_hash"
+                  ]
+                },
+                {
+                  "required": [
+                    "accepted_quantity"
+                  ]
+                },
+                {
+                  "required": [
+                    "reason_code"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "disputePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A contested question. Every element a determination relies on appears in grounds, subject_hash, evidence_refs, and rules_ref; description carries no protocol meaning at all.",
+      "required": [
+        "raising_party",
+        "respondent_party",
+        "subject_type",
+        "subject_hash",
+        "subject_id",
+        "grounds",
+        "evidence_refs",
+        "rules_ref"
+      ],
+      "properties": {
+        "raising_party": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "respondent_party": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "subject_type": {
+          "$ref": "#/$defs/disputeSubjectType"
+        },
+        "subject_hash": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "subject_id": {
+          "type": "string",
+          "pattern": "^[a-z]{3}_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$",
+          "description": "Present for resolution and never load bearing on its own."
+        },
+        "grounds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "authority_absent",
+              "authority_exceeded",
+              "state_transition_invalid",
+              "obligation_not_performed",
+              "obligation_wrongly_rejected",
+              "evidence_unverified",
+              "disclosure_breach",
+              "refusal_incorrect",
+              "rule_misapplied",
+              "input_did_not_exercise_invariant",
+              "wrong_scope",
+              "wrong_rule_version"
+            ]
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "description": "Untrusted free text directed at a counterparty's agent. Bounded in length, rendered as data, and never interpreted as an instruction. The disclosure rules apply to it unchanged."
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
+        },
+        "rules_ref": {
+          "$ref": "#/$defs/rulesRef"
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "An appeal is a dispute whose subject is a determination. Its grounds are the narrower closed list, which is what stops every determination being relitigated on the merits. Disagreement with the rule itself is not a ground: that is a change proposal against the specification.",
+          "if": {
+            "properties": {
+              "subject_type": {
+                "const": "determination"
+              }
+            },
+            "required": [
+              "subject_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "grounds": {
+                "items": {
+                  "enum": [
+                    "rule_misapplied",
+                    "input_did_not_exercise_invariant",
+                    "wrong_scope",
+                    "wrong_rule_version"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "determinationPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A determination on one dispute. It is replayable: a third party holding the referenced rules, the inputs covered by inputs_hash, and the evidence relied on can check that the stated finding follows from them.",
+      "required": [
+        "dispute_id",
+        "question",
+        "outcome",
+        "determiner",
+        "authority_basis_ref",
+        "effect",
+        "supersedes",
+        "appeal_route_ref",
+        "determined_at",
+        "effective_from"
+      ],
+      "properties": {
+        "dispute_id": {
+          "type": "string",
+          "pattern": "^dsp_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "question": {
+          "$ref": "#/$defs/questionRef"
+        },
+        "outcome": {
+          "$ref": "#/$defs/outcome"
+        },
+        "determiner": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "authority_basis_ref": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "effect": {
+          "enum": [
+            "advisory",
+            "presumptive",
+            "binding"
+          ],
+          "description": "Checked against what the referenced rules granted for this question class and these parties, independently of the carried claim. Where the rules state none, the effect is advisory and is never inferred upward."
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/supersession"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "appeal_route_ref": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "determined_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effective_from": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "settlementInstructionPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What a settlement rail is being asked to do. The payload is closed, and the rail identifier is opaque: no rule in the kernel varies on its value and no field exists for one rail and not another. Every commercial reference is an identifier, so an adapter that needs the terms resolves and verifies the named objects rather than being told them here.",
+      "required": [
+        "obligation_id",
+        "agreement_id",
+        "amount",
+        "payer_organization_id",
+        "payee_organization_id",
+        "trigger",
+        "rail",
+        "idempotency_key"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "agreement_id": {
+          "$ref": "#/$defs/agreementId"
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "payer_organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "payee_organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "trigger": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The commercial transition that made the amount due. A carrier event never triggers settlement, and time alone never does unless the agreement's own terms stated a condition that parses deterministically.",
+          "required": [
+            "condition_ref",
+            "accepting_act_hash"
+          ],
+          "properties": {
+            "condition_ref": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 256
+            },
+            "accepting_act_hash": {
+              "$ref": "#/$defs/sha256Hex"
+            }
+          }
+        },
+        "rail": {
+          "type": "string",
+          "pattern": "^rail_[a-z0-9][a-z0-9_]{2,63}$",
+          "description": "An opaque registered rail identifier. It is deliberately a pattern and not an enumeration: an enumeration would put a value meaningful to one rail inside a market-neutral kernel, and would make every registered rail a specification release. An unregistered value fails closed at evaluation."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 255
+        }
+      }
+    },
+    "adapterReceiptPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What came back. A receipt is evidence of an external system's response and never authority: it evidences neither that the instruction was authorized nor that an obligation was performed, accepted, or discharged.",
+      "required": [
+        "settlement_instruction_id",
+        "adapter",
+        "external_spec_version",
+        "attempt",
+        "idempotency_key",
+        "status",
+        "requested_at",
+        "completed_at",
+        "external_reference",
+        "error_code",
+        "mapping_report_hash"
+      ],
+      "properties": {
+        "settlement_instruction_id": {
+          "type": "string",
+          "pattern": "^stl_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$",
+          "description": "The instruction this receipt answers. A receipt referencing an instruction identifier and idempotency key pair that was never issued is refused: an answer to a question nobody asked is not evidence of anything."
+        },
+        "adapter": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "external_spec_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 255
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "pending"
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "external_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "error_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mapping_report_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256Hex"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Hash of the mapping report required by the integration plan. Null only for read-only status calls."
+        }
+      }
+    },
+    "partyStatus": {
+      "enum": [
+        "active",
+        "suspended",
+        "revoked"
+      ],
+      "description": "The party's own lifecycle status, as its controller published it in this version. For an agent this vocabulary is deliberately the same as a RevocationRecord's, and where the two disagree the RevocationRecord governs: it is a signed, ordered event, and a status field on a profile object is a statement that may be stale."
+    },
+    "organizationPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A commercial participant and its legal-entity reference. Public profile. Every field here is a claim by the organization about itself; none of it is proof of anything, and an assurance level is deliberately absent because assurance is recorded on the InvitationAcceptance under discovery/counterparty-invitation-v0.1.md section 7, never on the party. A second home for assurance would be a second answer to how strongly a counterparty is known.",
+      "required": [
+        "legal_name",
+        "jurisdiction",
+        "registry_identifiers",
+        "status",
+        "identity_evidence_refs"
+      ],
+      "properties": {
+        "legal_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "The name the organization trades and contracts under. It belongs in the payload and never in an identifier, which stays opaque per canonical model section 3."
+        },
+        "jurisdiction": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country of incorporation or registration."
+        },
+        "registry_identifiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 16,
+          "description": "Claimed registrations, such as an LEI or a company number. A claim here is not verified by its presence: verification is an ExternalIdentityAssertion carried in identity_evidence_refs, and a relying party that treats an unverified registry identifier as established has inferred assurance rather than read it.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ],
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,31}$",
+                "description": "The registry the value belongs to, for example lei or company_number."
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/partyStatus"
+        },
+        "identity_evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Evidence supporting the claims above. May be empty, in which case every claim above stands unverified and is reported as such.",
+          "items": {
+            "$ref": "#/$defs/evidenceRefOrId"
+          }
+        }
+      }
+    },
+    "agentPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A software actor bound to the organization it represents and to whoever operates it. Public profile. The object says who an agent acts for and which keys it signs with; it says nothing about what the agent may commit to, which is the mandate's job alone, and nothing about what it can parse, which is the carrier's capability declaration under bindings/a2a-binding-v0.1.md section 2.",
+      "required": [
+        "represented_organization_id",
+        "operator_organization_id",
+        "endpoint",
+        "key_ids",
+        "status"
+      ],
+      "properties": {
+        "represented_organization_id": {
+          "$ref": "#/$defs/organizationId",
+          "description": "The organization whose commerce this agent conducts."
+        },
+        "operator_organization_id": {
+          "$ref": "#/$defs/organizationId",
+          "description": "The organization that runs the agent, which equals represented_organization_id for a self-operated agent and differs for a hosted one. Disclosed because a counterparty negotiating with a hosted agent is entitled to know, exactly as key custody is disclosed under discovery/counterparty-invitation-v0.1.md section 8 rule 2."
+        },
+        "endpoint": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Where the agent is reachable, or null for an agent that is not independently addressable. HTTPS only, for the reason given for mandate status endpoints. Reachability confers no authority: an endpoint that answers is not a mandate."
+        },
+        "key_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "The KeyRecord identifiers whose material this agent signs with. A signature verifies against the key its own entry names, resolved through that key's own record; this list states which keys the agent claims, and a signature under a key absent from it is a signature a relying party has reason to question.",
+          "items": {
+            "type": "string",
+            "pattern": "^key_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/partyStatus"
+        }
+      }
+    },
+    "principalPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The authority source inside an organization: the party that issues mandates. Restricted rather than public, and deliberately carrying no personal data. A principal is usually a named human, and a name, an address, or an employee number in a shared object is personal data travelling to every counterparty that resolves the reference. The role is what a relying party needs in order to judge whether the issuer could bind the organization; the identity behind the role is held by the organization and pointed at by contact_ref, following the channel_ref pattern in discovery/counterparty-invitation-v0.1.md section 4.1.1.",
+      "required": [
+        "organization_id",
+        "role",
+        "status",
+        "authority_evidence_refs",
+        "contact_ref"
+      ],
+      "properties": {
+        "organization_id": {
+          "$ref": "#/$defs/organizationId",
+          "description": "The organization this principal holds authority within."
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "The role under which authority is held, for example procurement_director. Approval rules on a mandate name an approver by organization and role, so this is the value those rules match against."
+        },
+        "status": {
+          "$ref": "#/$defs/partyStatus"
+        },
+        "authority_evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Evidence that this role carries the authority claimed, such as a board resolution or a signing-authority record. May be empty, in which case the authority stands unverified and is reported as such rather than assumed.",
+          "items": {
+            "$ref": "#/$defs/evidenceRefOrId"
+          }
+        },
+        "contact_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^chn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Opaque pointer to a contact record the organization holds. Never the contact value itself. A raw address here is a data-classification failure, exactly as it is on an invitation's invited_channel."
+        }
+      }
+    },
+    "approvalPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A human or deterministic approval of one exact action hash, per commercial-mandate-v0.1.md section 8. Changing one byte of the action invalidates it, and it cannot be reused across actions or transactions. The shape is closed because the approval is the control the operator-custody rules lean on: an approval whose content nothing validates is a control in name only.",
+      "required": [
+        "action_hash",
+        "approver",
+        "decision",
+        "expires_at",
+        "conditions"
+      ],
+      "properties": {
+        "action_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "The exact action approved. The transaction it belongs to is the envelope's transaction_id."
+        },
+        "approver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "organization_id",
+            "principal_id",
+            "role"
+          ],
+          "properties": {
+            "organization_id": {
+              "$ref": "#/$defs/organizationId"
+            },
+            "principal_id": {
+              "type": "string",
+              "pattern": "^prn_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        },
+        "decision": {
+          "enum": [
+            "approved",
+            "rejected"
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "After this instant the approval authorizes nothing. The created time is the envelope's created_at."
+        },
+        "conditions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "description": "Conditions the approver attached, as bounded text rendered as data. May be empty. A condition is part of the signed approval and travels with it."
+        }
+      }
+    },
+    "commitmentPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A party promise derived from a committed agreement, which obligations decompose. The subject is a reference into the agreement's terms, never a restatement of them, for the same reason an obligation's subject is: a restated term can drift from the agreement while both copies stay validly signed.",
+      "required": [
+        "agreement_id",
+        "committed_party",
+        "subject"
+      ],
+      "properties": {
+        "agreement_id": {
+          "$ref": "#/$defs/agreementId"
+        },
+        "committed_party": {
+          "$ref": "#/$defs/partyRef"
+        },
+        "subject": {
+          "$ref": "#/$defs/subjectRef"
+        }
+      }
+    },
+    "evidencePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A claim, the hash of the artifact behind it, its issuer, and its verification result. Verification status is reported, never inferred, and absence of verification reads as unverified everywhere it is consumed.",
+      "required": [
+        "evidence_type",
+        "claim",
+        "artifact_hash",
+        "issuer",
+        "verification"
+      ],
+      "properties": {
+        "evidence_type": {
+          "$ref": "#/$defs/evidenceTypeId"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "description": "What the evidence is presented to show. Bounded text, rendered as data."
+        },
+        "artifact_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "SHA-256 of the artifact the claim rests on. The artifact itself is held wherever its holder keeps it; the hash is what makes the reference portable."
+        },
+        "issuer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "organization_id"
+          ],
+          "properties": {
+            "organization_id": {
+              "$ref": "#/$defs/organizationId"
+            }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "verified_at",
+            "verifier_organization_id"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "unverified",
+                "verified",
+                "failed"
+              ]
+            },
+            "verified_at": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "verifier_organization_id": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/organizationId"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "revocationRecordPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A signed status change for a mandate, an agent, or a key, per commercial-mandate-v0.1.md section 9. The record states what changed and when it took effect; the current status a relying party acts on is read from the status endpoint, and this record is what makes that status auditable afterwards.",
+      "required": [
+        "subject_type",
+        "subject_id",
+        "status",
+        "effective_at",
+        "reason"
+      ],
+      "properties": {
+        "subject_type": {
+          "enum": [
+            "mandate",
+            "agent",
+            "key"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "pattern": "^(mnd|agt|key)_[A-Za-z0-9][A-Za-z0-9_-]{2,127}$"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "suspended",
+            "revoked"
+          ],
+          "description": "active records reinstatement after a suspension. revoked is permanent for the subject version it names."
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Why the status changed. Bounded text, rendered as data."
+        }
+      }
+    },
+    "keyRecordPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Public verification material and lifecycle interval for one key. Verification resolves key status at the signed time and at verification time against this record's version chain: the version whose interval covered the signed time governs historical validity, and the latest version states current status. An expired or revoked key does not erase a signature that was valid when created.",
+      "required": [
+        "controller_organization_id",
+        "algorithm",
+        "public_key_jwk",
+        "status",
+        "valid_from",
+        "valid_until"
+      ],
+      "properties": {
+        "controller_organization_id": {
+          "$ref": "#/$defs/organizationId"
+        },
+        "algorithm": {
+          "enum": [
+            "ES256",
+            "EdDSA"
+          ]
+        },
+        "public_key_jwk": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kty",
+                "crv",
+                "x",
+                "y"
+              ],
+              "properties": {
+                "kty": {
+                  "const": "EC"
+                },
+                "crv": {
+                  "const": "P-256"
+                },
+                "x": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
+                },
+                "y": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kty",
+                "crv",
+                "x"
+              ],
+              "properties": {
+                "kty": {
+                  "const": "OKP"
+                },
+                "crv": {
+                  "const": "Ed25519"
+                },
+                "x": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
+                }
+              }
+            }
+          ],
+          "description": "The public key in JWK form, restricted to the two registered signature suites. No private member is representable: the shapes are closed and admit only public coordinates."
+        },
+        "status": {
+          "enum": [
+            "active",
+            "suspended",
+            "revoked"
+          ]
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_until": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null for a key with no declared end of life. Rotation issues a new version with a bounded interval and a successor record."
+        }
+      }
+    }
+  }
+}

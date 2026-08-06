@@ -1,0 +1,80 @@
+name: Checks
+
+# GOVERNANCE.md section 3.4 requires the conformance suite to pass for any
+# change to schemas, fixtures, the manifest, or the runner. This workflow is
+# what turns that sentence into a gate: the suite and both test suites run on
+# every pull request and on every push to the default branch, so a change that
+# breaks them cannot land without the break being visible on the pull request.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  suite:
+    name: Suite and tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.9 is the version the reference implementation targets, stated in
+        # reference/README.md. 3.12 is a current release, and is the version
+        # the MCP SDK can be installed under, so the stdio client tests that
+        # skip on 3.9 actually execute somewhere.
+        python-version: ["3.9", "3.12"]
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "jsonschema>=4.18" "referencing>=0.30" "cryptography>=41"
+
+      - name: Install the MCP SDK
+        # The SDK requires Python 3.10, per reference/a202_mcp/pyproject.toml.
+        # Where it is absent the stdio client tests skip themselves rather
+        # than fail, which is why this step is conditional and the test step
+        # is not.
+        if: matrix.python-version != '3.9'
+        run: python -m pip install "mcp>=2.0"
+
+      - name: Conformance suite
+        run: python conformance/run-conformance.py
+
+      - name: Reference implementation tests
+        working-directory: reference
+        run: python -m unittest discover -s tests -t . -v
+
+      - name: MCP server tests
+        working-directory: reference
+        run: python -m unittest discover -s a202_mcp/tests -t . -v
+
+  links:
+    name: Internal links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Every link resolves inside the tree
+        run: python .github/scripts/check-links.py

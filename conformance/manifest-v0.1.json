@@ -1,0 +1,988 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "description": "Executable conformance manifest for the A202 v0.1 pilot schemas. Run with run-conformance.py.",
+  "positive": [
+    {
+      "fixture": "valid-commercial-mandate.json",
+      "kind": "mandate",
+      "note": "Reference buyer mandate for the synthetic calibration fixture."
+    },
+    {
+      "fixture": "valid-offer.json",
+      "kind": "kernel",
+      "note": "Reference supplier offer using the calibration-service profile. The offeror mints the session identifier on its own offer and no control plane annotates it, which is the bilateral form of an offer."
+    },
+    {
+      "fixture": "valid-offer-alternate-profile.json",
+      "kind": "kernel",
+      "note": "Market-neutrality probe. A completely different transaction profile MUST validate against the unchanged kernel schema. If this fixture requires a kernel change, the kernel is not canonical."
+    },
+    {
+      "fixture": "valid-counterparty-invitation.json",
+      "kind": "kernel",
+      "note": "Reference onboarding grant. A buyer invites an organization with no prior A202 presence into one named transaction. It confers participation, never authority."
+    },
+    {
+      "fixture": "valid-invitation-acceptance.json",
+      "kind": "kernel",
+      "note": "Reference onboarding record. Authored by the control plane because the claimant has no mandate yet, attested by the claimant's own key, and naming a root mandate the claimant's own principal issued."
+    },
+    {
+      "fixture": "valid-session-close-event.json",
+      "kind": "kernel",
+      "note": "A losing counterparty's session close. Exercises sessionCloseData in the allow direction: a typed close_reason and nothing else. Required test 16 has an allowed shape as well as a refused one."
+    },
+    {
+      "fixture": "valid-session-offer-event.json",
+      "kind": "kernel",
+      "note": "A non-terminal session event. Exercises sessionEventData in the allow direction: object references only, no commercial content."
+    },
+    {
+      "fixture": "valid-extension-declaration.json",
+      "kind": "declaration",
+      "note": "A counterparty declaration carrying the commercial extension URI, a required flag, and a parseable read and write version pair. The capability check passes at negotiation, before any commercial object is transmitted."
+    },
+    {
+      "fixture": "valid-obligation.json",
+      "kind": "kernel",
+      "note": "A complete obligation: subject by reference against a terms hash, a due_at_time condition, quantity and unit code, and money consideration."
+    },
+    {
+      "fixture": "valid-obligation-response-partial-acceptance.json",
+      "kind": "bundle",
+      "note": "Acceptance in the allow direction, with an accepted quantity below what is owed and a named remainder obligation. The response binds the exact assertion hash, which the bundle carries alongside it."
+    },
+    {
+      "fixture": "valid-dispute.json",
+      "kind": "kernel",
+      "note": "A dispute against an act, referenced by content hash, with a registered ground, a bounded description, an evidence reference, and a resolvable rules reference."
+    },
+    {
+      "fixture": "valid-determination.json",
+      "kind": "kernel",
+      "note": "A determination with a reasoned finding, the rules applied, the evidence relied on, an inputs hash, and an effect matching what the referenced rules granted for this question class. The determiner is the respondent party conceding the question, which is the determiner the rules in force name where no venue is present."
+    },
+    {
+      "fixture": "valid-appeal-determination-superseding.json",
+      "kind": "bundle",
+      "note": "An appeal outcome superseding a prior determination with a stated reason. Both records remain in the bundle and both remain verifiable."
+    },
+    {
+      "fixture": "valid-evidence-reference.json",
+      "kind": "kernel",
+      "note": "The structured reference shape in the allow direction: a content hash, a registered type, a hint, and a signing party."
+    },
+    {
+      "fixture": "valid-evidence-reference-identifier-form.json",
+      "kind": "kernel",
+      "note": "The identifier-only short form on an offer, which is one of the members section 3.3 of the evidence document admits it on. A verifier resolves it against a co-present evidence object or reports it as not checkable, and never as verified on the identifier alone."
+    },
+    {
+      "fixture": "valid-session-verification-report-partial-disclosure.json",
+      "kind": "bundle",
+      "note": "A report over a disclosed session stream: a stated scope, the undisclosed transaction stream named, and per-check results that keep verified, failed, and not checkable apart. The stream an operator orders is what is disclosed here, which is why the fixture is operated."
+    },
+    {
+      "fixture": "valid-settlement-instruction.json",
+      "kind": "bundle",
+      "note": "A complete instruction: a closed payload, money as a base-10 string, a trigger naming the condition and the content hash of the accepting act the bundle carries, a registered rail, and an idempotency key."
+    },
+    {
+      "fixture": "valid-mandate-delegation-chain.json",
+      "kind": "mandate_chain",
+      "note": "A child mandate narrower than its parent on every axis of section 7 of the mandate specification."
+    },
+    {
+      "fixture": "valid-key-record.json",
+      "kind": "kernel",
+      "note": "Public verification material for one key: registered suite, public JWK members only, open-ended active interval."
+    },
+    {
+      "fixture": "valid-approval.json",
+      "kind": "kernel",
+      "note": "An approval binding one exact action hash to a named principal, with a decision, an expiry, and no conditions."
+    },
+    {
+      "fixture": "valid-agreement-amendment.json",
+      "kind": "bundle",
+      "note": "A superseding agreement version reached through a fresh offer and acceptance, both parties signing, terms hash recomputed."
+    },
+    {
+      "fixture": "valid-consensual-termination.json",
+      "kind": "bundle",
+      "note": "termination.agreed ends a committed transaction under rules version 1.2, and the open obligation is released rather than stranded."
+    },
+    {
+      "fixture": "valid-organization.json",
+      "kind": "kernel",
+      "note": "A commercial participant: legal name, jurisdiction, claimed registrations, and the evidence those claims rest on."
+    },
+    {
+      "fixture": "valid-agent.json",
+      "kind": "kernel",
+      "note": "A self-operated software actor bound to its organization, its keys, and an HTTPS endpoint."
+    },
+    {
+      "fixture": "valid-principal.json",
+      "kind": "kernel",
+      "note": "An authority source carrying a role and an opaque contact pointer, and no personal data."
+    },
+    {
+      "fixture": "valid-transaction-event-references.json",
+      "kind": "kernel",
+      "note": "An award event under the transaction-stream allowlist: object references only."
+    },
+    {
+      "fixture": "valid-obligation-waived-after-assertion.json",
+      "kind": "bundle",
+      "note": "The obligee waives after an assertion, exercising the transition the rejection text already promised."
+    },
+    {
+      "fixture": "valid-annotated-offer.json",
+      "kind": "kernel",
+      "note": "The allow direction of kernel_annotations: an offer a control plane annotated after signing with the policy decision, the session, the session sequence, and the received time. The annotations are outside the hashed bytes, so the offeror's signature is unaffected, and only a control plane may write them."
+    },
+    {
+      "fixture": "valid-agreement-direct-formation.json",
+      "kind": "bundle",
+      "note": "agreement.direct carries a transaction from draft to agreement_pending under rules version 1.3: a party-minted session identifier, a current offer, an acceptance over the exact offer hash, and both parties' signatures over the same agreement bytes. No object in the bundle is authored, ordered, or annotated by a control plane."
+    },
+    {
+      "fixture": "valid-verification-report-bilateral.json",
+      "kind": "bundle",
+      "note": "A report over the record two parties hold between them. The disclosed transaction record verifies from its own bytes and the counterparty's own decision stream is named as a stated gap, which is the bilateral shape of partial disclosure."
+    },
+    {
+      "fixture": "valid-conformance-grade-bilateral-scope.json",
+      "kind": "grade",
+      "note": "A grade naming a202-scope/bilateral/0.1, reporting all five dimensions, with every band established from bilateral families only and no held-out set. This is the allow direction of the role scope registry: the identifier resolves, exactly one is named, and nothing the grade claims lies outside the scope it names."
+    },
+    {
+      "fixture": "valid-conformance-grade-operated-scope.json",
+      "kind": "grade",
+      "note": "The same in the operated scope, so that neither scope is the privileged one in the fixture set. Dimension A is explicitly null: the operated coverage of authority handling is the invitation-onboarded mandate path, which this assessment did not exercise, and an unassessed dimension is reported as null rather than omitted."
+    }
+  ],
+  "negative": [
+    {
+      "fixture": "negative/mandate-no-constraints.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-UNBOUNDED",
+      "note": "A mandate with no constraints confers unbounded authority within its allowed actions."
+    },
+    {
+      "fixture": "negative/mandate-scope-geography-only.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-SCOPE-TOO-BROAD",
+      "note": "Country-wide authority is not transaction-scoped. Scope must be bounded by transaction or category."
+    },
+    {
+      "fixture": "negative/mandate-delegation-incoherent.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-DELEGATION-INCOHERENT",
+      "note": "Delegation permitted at depth zero is contradictory."
+    },
+    {
+      "fixture": "negative/mandate-inverted-validity.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-INTERVAL-INVALID",
+      "note": "Evaluator-enforced: valid_from must be strictly earlier than valid_until."
+    },
+    {
+      "fixture": "negative/mandate-http-status-endpoint.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-STATUS-INSECURE",
+      "note": "Revocation status over plain HTTP is forgeable, and cached status is the only revocation channel."
+    },
+    {
+      "fixture": "negative/mandate-unknown-constraint-type.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-CONSTRAINT-UNKNOWN",
+      "note": "Unregistered constraint type must fail closed at validation and at evaluation."
+    },
+    {
+      "fixture": "negative/mandate-unknown-constraint-operator.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-CONSTRAINT-UNKNOWN",
+      "note": "Unregistered operator must fail closed."
+    },
+    {
+      "fixture": "negative/mandate-ambiguous-subject.json",
+      "kind": "mandate",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-SUBJECT-AMBIGUOUS",
+      "note": "A mandate must name exactly one subject, either an agent or a delegated principal."
+    },
+    {
+      "fixture": "negative/offer-percent-above-100.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-PROFILE-TERMS-INVALID",
+      "note": "A percentage above 100 fails the profile terms schema. The code is A202-PROFILE-TERMS-INVALID: the value is refused at terms validation, before any policy evaluation happens."
+    },
+    {
+      "fixture": "negative/offer-negative-money.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-TERMS-INVALID",
+      "note": "Consideration is non-negative. Credits use a directed adjustment object."
+    },
+    {
+      "fixture": "negative/offer-binary-float-money.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-TERMS-INVALID",
+      "note": "Money must be a base-10 string, never a binary floating-point number."
+    },
+    {
+      "fixture": "negative/offer-private-field-leak.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "Private strategy must never appear in a shared object."
+    },
+    {
+      "fixture": "negative/offer-multibase-content-hash.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-HASH-FORMAT-INVALID",
+      "note": "v0.1 accepts lowercase hexadecimal SHA-256 only."
+    },
+    {
+      "fixture": "negative/offer-unregistered-profile.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-PROFILE-UNKNOWN",
+      "note": "An unresolvable transaction profile fails closed."
+    },
+    {
+      "fixture": "negative/offer-profile-terms-invalid.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-PROFILE-TERMS-INVALID",
+      "note": "Profile terms must validate against the named profile schema. A date without a business-calendar reference is ambiguous."
+    },
+    {
+      "fixture": "negative/offer-expiry-before-creation.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OFFER-EXPIRED",
+      "note": "Evaluator-enforced: an offer cannot expire before it was created."
+    },
+    {
+      "fixture": "negative/agreement-single-signature.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-SIGNATURE-INVALID",
+      "note": "A well-formed agreement whose terms hash is the hash of its own terms, carrying one agreement_commitment signature where section 10 of the canonical model requires both parties'. The single offence is the missing signature: adding the counterparty's leaves a document that validates cleanly. Held separately from the bundle case because the single-object path checks the count at issue while the bundle case checks it at step 2 of replay."
+    },
+    {
+      "fixture": "negative/action-envelope-with-kernel-annotations.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-ANNOTATION-FORGED",
+      "note": "Only the control plane may attach kernel annotations, and section 3 of the canonical model states that an agent-authored action envelope must not carry them. An envelope is the agent's own submission and precedes the minting step that writes annotations at all. Schema-enforced by the closed envelope shape and independently by the evaluator, which returns the code."
+    },
+    {
+      "fixture": "negative/policy-deny-visible-to-counterparty.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "A denied proposal recorded on the shared transaction record and visible to the counterparty. A deny is private to the party that proposed the action, whoever evaluated it."
+    },
+    {
+      "fixture": "negative/invitation-secret-in-clear.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-INVITATION-SECRET-DISCLOSED",
+      "note": "The claim secret is a bearer credential. A shared object carries its hash and never its value, per section 7 of the invitation document. Schema-enforced by the closed payload shape and independently by the evaluator, which scans for the member at any depth on any object type, because the rule is about the secret rather than about the invitation."
+    },
+    {
+      "fixture": "negative/invitation-expiry-before-issue.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-INVITATION-EXPIRED",
+      "note": "Evaluator-enforced: an invitation cannot expire before it was issued."
+    },
+    {
+      "fixture": "negative/invitation-scope-beyond-transaction.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-INVITATION-SCOPE-EXCEEDED",
+      "note": "Evaluator-enforced: a grant must name exactly the invitation's own transaction. One invitation must not become standing market access."
+    },
+    {
+      "fixture": "negative/invitation-raw-channel-address.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "An invited channel is often personal data. A shared object carries the registrable domain, an opaque reference, and a hash, never the address."
+    },
+    {
+      "fixture": "negative/invitation-acceptance-unsupported-assurance.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-ASSURANCE-UNSUPPORTED",
+      "note": "Evaluator-enforced: assurance is reported, never inferred. Any level above self_asserted requires evidence."
+    },
+    {
+      "fixture": "negative/invitation-acceptance-custodied-no-approval.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-CUSTODY-APPROVAL-REQUIRED",
+      "note": "An operator-custodied key may not act without a named principal's approval bound to the exact hash. Checked at both layers so neither alone can allow it."
+    },
+    {
+      "fixture": "negative/invitation-acceptance-single-signature.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-INVITATION-CLAIM-UNSIGNED",
+      "note": "Operator authorship alone is not an onboarding. The claimant must attest with its own key."
+    },
+    {
+      "fixture": "negative/auction-close-reason-leaks-rival-data.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "Schema-enforced by sessionCloseData, and independently by the evaluator denylist. A losing counterparty may learn its session closed and why in kernel terms, never rival identity, price, count, or timing. Both layers are required and tested independently: widening the close_reason enum without updating the evaluator must not let a leak through."
+    },
+    {
+      "fixture": "negative/auction-no-improvement-reason-discloses-standing-bid.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "Evaluator-enforced. The decision is correctly private to the actor and still leaks: A202-BID-NO-IMPROVEMENT tells the bidder a better standing bid exists. Private visibility protects against rivals, not against disclosure of aggregate state to the actor. Fails closed because v0.1 has no disclosure policy object to permit it."
+    },
+    {
+      "fixture": "negative/auction-event-unregistered-stream-kind.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-AUCTION-FORMAT-UNSUPPORTED",
+      "note": "Schema-enforced by the stream.kind enum and independently by the evaluator, which returns the code section 8.1 of the auction document defines. The operator-signed auction clock stream does not exist in v0.1, so dynamic-format machinery is refused rather than approximated. The event's data carries a plain offer reference, so the unregistered stream is the only offence: repairing it to the transaction stream leaves a document that validates cleanly. Pins the kernel v0.2 boundary as a test."
+    },
+    {
+      "fixture": "negative/auction-offer-names-lot.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-LOT-UNKNOWN",
+      "note": "Schema-enforced by the closed offerPayload, which has no lot_id, and independently by the evaluator, which returns the code section 8.1 of the auction document defines. v0.1 registers no award-unit object, so no such reference resolves. Multi-lot bidding is refused rather than having the lot silently dropped, which would submit the bid against the wrong award unit."
+    },
+    {
+      "fixture": "negative/session-event-data-carries-terms.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "Schema-enforced by sessionEventData. An event may reference the offer; it may not restate its price. Commercial content belongs in the referenced signed object, which carries its own visibility and private-field validation."
+    },
+    {
+      "fixture": "negative/declaration-missing.json",
+      "kind": "declaration",
+      "expect": "invalid",
+      "reason_code": "A202-EXTENSION-UNSUPPORTED",
+      "note": "A counterparty declaration with no entry for the commercial extension URI fails closed, and no commercial object is transmitted. An implementation that proceeds, or that downgrades to a bare carrier exchange, fails."
+    },
+    {
+      "fixture": "negative/declaration-version-mismatch.json",
+      "kind": "declaration",
+      "expect": "invalid",
+      "reason_code": "A202-EXTENSION-UNSUPPORTED",
+      "note": "A declaration whose write version is absent from the counterparty's read versions fails closed. An implementation that selects a nearest version, or falls back to an earlier extension URI, fails."
+    },
+    {
+      "fixture": "negative/envelope-carries-carrier-metadata.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": null,
+      "note": "Schema-enforced: an object whose signed bytes carry a carrier-assigned task identifier is refused by the closed envelope shape. No code is declared because section 5.4 of the carrier binding states that none is defined for carrier framing and that the refusal is a kernel validation refusal reported as such. The runner asserts that the schema layer did refuse it, so an absent declaration cannot cover a fixture nothing refuses. This is the negative direction of the rule that signatures cover the object and never the framing."
+    },
+    {
+      "fixture": "negative/obligation-condition-type-unknown.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-CONDITION-UNKNOWN",
+      "note": "An unregistered due condition type. Fails closed at schema and independently at evaluation."
+    },
+    {
+      "fixture": "negative/obligation-condition-fields-of-another-type.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-CONDITION-UNKNOWN",
+      "note": "A registered type wearing another type's fields: due_at_time carrying an obligation identifier."
+    },
+    {
+      "fixture": "negative/obligation-condition-cycle.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-CONDITION-CYCLIC",
+      "note": "Two obligations each due on the other's discharge. Neither can ever become due, and nothing without this check says so."
+    },
+    {
+      "fixture": "negative/obligation-condition-nested-all-of.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-CONDITION-UNKNOWN",
+      "note": "A conjunction nested more than one level deep. A nested conjunction is a flat conjunction written twice."
+    },
+    {
+      "fixture": "negative/obligation-subject-restates-terms.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-SUBJECT-UNREFERENCED",
+      "note": "A subject carrying a copy of the term instead of a term path and a terms hash. A restated term can drift from the agreement while both copies stay validly signed."
+    },
+    {
+      "fixture": "negative/obligation-subject-terms-hash-mismatch.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-SUBJECT-UNREFERENCED",
+      "note": "A subject terms hash differing from the referenced agreement's. This is the drift case, caught as a hash mismatch."
+    },
+    {
+      "fixture": "negative/obligation-obligee-not-party-to-agreement.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-SUBJECT-UNREFERENCED",
+      "note": "An obligee that is neither the buyer nor the supplier on the referenced agreement."
+    },
+    {
+      "fixture": "negative/obligation-assertion-no-evidence.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-ASSERTION-UNEVIDENCED",
+      "note": "An assertion with an empty evidence reference array. A claim with nothing behind it cannot be checked by the obligee now or by a third party later."
+    },
+    {
+      "fixture": "negative/obligation-response-hash-mismatch.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-RESPONSE-HASH-MISMATCH",
+      "note": "A response whose assertion hash does not match the assertion it names. The direct analogue of an approval bound to different action bytes. Every object in the bundle carries the hash of its own canonical bytes, so the response hash is the only offence raised and the fixture measures what it names."
+    },
+    {
+      "fixture": "negative/obligation-response-signed-by-obligor.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-RESPONSE-UNAUTHORIZED",
+      "note": "The obligor accepting its own performance. Acceptance is a distinct signed act by the obligee."
+    },
+    {
+      "fixture": "negative/obligation-waiver-signed-by-obligor.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-RESPONSE-UNAUTHORIZED",
+      "note": "The obligor waiving its own obligation. Held separately from the acceptance case because a waiver names no assertion, so a check written only against the assertion identifier would miss it."
+    },
+    {
+      "fixture": "negative/obligation-partial-acceptance-no-remainder.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-REMAINDER-MISSING",
+      "note": "Eight of ten accepted with no remainder obligation. The shortfall would otherwise disappear from the record, and the party that most needs to prove it was owed would have nothing to point at."
+    },
+    {
+      "fixture": "negative/obligation-partial-acceptance-mutates-quantity.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-TERMS-MUTATED",
+      "note": "A response that rewrites the obligation's quantity to the accepted amount. Changed terms are a new obligation, never a new version of this one."
+    },
+    {
+      "fixture": "negative/obligation-rejection-reason-unregistered.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-OBLIGATION-REJECTION-REASON-UNKNOWN",
+      "note": "A rejection carrying a reason code outside the closed list."
+    },
+    {
+      "fixture": "negative/obligation-consideration-negative-money.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-TERMS-INVALID",
+      "note": "A negative consideration. Confirms that the obligation reuses the money type rather than a parallel representation of it, which is the failure this fixture exists to catch."
+    },
+    {
+      "fixture": "negative/obligation-due-business-days-no-calendar.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-TERMS-INVALID",
+      "note": "A due time expressed in business days with no named calendar. A duration in business days without a calendar is not a term."
+    },
+    {
+      "fixture": "negative/dispute-subject-by-identifier-only.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-SUBJECT-UNREFERENCED",
+      "note": "A dispute naming its subject by identifier with no subject hash. A dispute about an object that can change is a dispute about nothing fixed."
+    },
+    {
+      "fixture": "negative/dispute-subject-hash-unresolvable.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-SUBJECT-UNREFERENCED",
+      "note": "A subject hash that resolves to nothing in the disclosed record."
+    },
+    {
+      "fixture": "negative/dispute-grounds-unregistered.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-GROUNDS-UNKNOWN",
+      "note": "A ground outside the closed list."
+    },
+    {
+      "fixture": "negative/dispute-grounds-empty.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-GROUNDS-UNKNOWN",
+      "note": "An empty grounds array. Absence is not a wildcard."
+    },
+    {
+      "fixture": "negative/dispute-no-evidence-refs.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-UNVERIFIED",
+      "note": "A dispute with no evidence reference at all."
+    },
+    {
+      "fixture": "negative/dispute-description-carries-rival-data.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A description naming a third party and its price. Free text is the field through which anything travels, and the disclosure rules apply to it unchanged."
+    },
+    {
+      "fixture": "negative/dispute-out-of-window.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-OUT-OF-WINDOW",
+      "note": "Raised after the window resolved through the rules in force at the time of the subject act."
+    },
+    {
+      "fixture": "negative/dispute-rules-ref-unresolvable.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-OUT-OF-WINDOW",
+      "note": "A rules reference that does not resolve. The window cannot be shown to have been met, and unavailability is not permission."
+    },
+    {
+      "fixture": "negative/determination-enumerated-verdict.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-NOT-FOLLOWING",
+      "note": "A determination carrying a verdict with no rules applied and no evidence relied on. Schema-enforced by the closed outcome shape and independently by the evaluator."
+    },
+    {
+      "fixture": "negative/determination-subject-differs-from-dispute.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-SUBJECT-UNREFERENCED",
+      "note": "A determination whose question names a different subject hash from its dispute's. It is not a determination on that dispute."
+    },
+    {
+      "fixture": "negative/determination-rules-ref-not-in-force.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-NOT-FOLLOWING",
+      "note": "A determination applying the current rule set version rather than the one in force at the time of the subject act. If a later version governed, changing the rules would change the answer to a question that was already asked."
+    },
+    {
+      "fixture": "negative/determination-effect-overclaim.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-EFFECT-OVERCLAIM",
+      "note": "An effect of binding where the referenced rules granted presumptive."
+    },
+    {
+      "fixture": "negative/determination-effect-unstated-rules.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-EFFECT-OVERCLAIM",
+      "note": "An effect claimed where the referenced rules state none for the question class. This is the upward-inference case: absence resolves downward to advisory."
+    },
+    {
+      "fixture": "negative/determination-supersedes-without-reason.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-SUPERSESSION-UNREASONED",
+      "note": "A superseding determination with no stated reason. A record that changes for reasons it does not give is a record whose changes cannot be audited."
+    },
+    {
+      "fixture": "negative/determination-supersedes-superseded.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-SUPERSESSION-FORKED",
+      "note": "A second determination superseding one already superseded. Two determinations would claim to be current on one question."
+    },
+    {
+      "fixture": "negative/determination-deletion-event.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-STATE-TRANSITION-DENIED",
+      "note": "An event naming a deletion. Deletion is not a defined operation, and the refusal is what makes that testable rather than asserted."
+    },
+    {
+      "fixture": "negative/appeal-grounds-disagrees-with-rule.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-APPEAL-GROUNDS-UNKNOWN",
+      "note": "An appeal whose stated ground is that the rule itself is wrong. That is a change proposal against the specification, routed through the proposal process rather than through an appeal."
+    },
+    {
+      "fixture": "negative/appeal-out-of-window.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-DISPUTE-OUT-OF-WINDOW",
+      "note": "An appeal raised after the window resolved through the determination's appeal route reference."
+    },
+    {
+      "fixture": "negative/evidence-ref-multibase-hash.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-HASH-FORMAT-INVALID",
+      "note": "A multibase content hash. v0.1 accepts lowercase hexadecimal SHA-256 only, and the evidence reference must not become the one place that does not."
+    },
+    {
+      "fixture": "negative/evidence-ref-uppercase-hash.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-HASH-FORMAT-INVALID",
+      "note": "An uppercase hexadecimal hash, which would compare unequal to a correctly encoded one."
+    },
+    {
+      "fixture": "negative/evidence-ref-unregistered-type.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TYPE-UNKNOWN",
+      "note": "An unregistered evidence type. Fails closed at schema and independently at verification."
+    },
+    {
+      "fixture": "negative/evidence-ref-locator-carries-secret.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "A locator hint carrying a bearer token. The hint is an ordinary field of a shared object and the private-data rules apply to it."
+    },
+    {
+      "fixture": "negative/evidence-ref-locator-load-bearing.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-HASH-MISMATCH",
+      "note": "A reference with a hint and no content hash, so retrieval would be the only check, and whoever controlled the location would control the evidence."
+    },
+    {
+      "fixture": "negative/evidence-ref-short-form-where-full-form-required.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": null,
+      "note": "The identifier-only short form on a performance event, which is a family defined with the reference shape and required by section 3.3 of the evidence document to carry the full form. Schema-enforced: no code is declared because the closed payload shape is the rule, and the runner asserts that the schema layer did refuse it. This is the refuse direction of the short form the offer fixture exercises in the allow direction."
+    },
+    {
+      "fixture": "negative/evidence-bundle-tampered-object.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-HASH-MISMATCH",
+      "note": "One byte changed in a signed object, caught at step 1 by recomputing the content hash over the canonical bytes."
+    },
+    {
+      "fixture": "negative/evidence-bundle-hash-covers-annotations.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-HASH-MISMATCH",
+      "note": "A content hash computed over bytes that include the control-plane annotations, which would let a field attached after signing become load bearing."
+    },
+    {
+      "fixture": "negative/evidence-bundle-signature-wrong-purpose.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-SIGNATURE-INVALID",
+      "note": "A signature valid over the bytes and issued for a different purpose. This is the case a naive verifier passes."
+    },
+    {
+      "fixture": "negative/evidence-bundle-agreement-single-signature.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-SIGNATURE-INVALID",
+      "note": "An agreement in a bundle carrying one signature, checked at step 2 rather than only at issue."
+    },
+    {
+      "fixture": "negative/evidence-bundle-version-chain-gap.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-CHAIN-GAP",
+      "note": "Version 3 naming version 1 as its predecessor."
+    },
+    {
+      "fixture": "negative/evidence-bundle-version-chain-fork.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-CHAIN-GAP",
+      "note": "Two objects naming the same predecessor. Two successors means two objects claim to be current."
+    },
+    {
+      "fixture": "negative/stream-cross-continuity-asserted.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-CHAIN-GAP",
+      "note": "A bundle asserting a single sequence across a session stream and the transaction stream. A verifier that accepted it would be reading a covert channel as a correctness property. Both streams are ordered by a service neither party holds."
+    },
+    {
+      "fixture": "negative/evidence-bundle-illegal-transition.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TRANSITION-ILLEGAL",
+      "note": "A replayed transition straight from draft to committed. The direct formation path reaches agreement_pending and never committed, so a record that jumps the commitment guard is illegal under every rules version."
+    },
+    {
+      "fixture": "negative/evidence-bundle-transition-current-rules.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TRANSITION-ILLEGAL",
+      "note": "A transition legal under the current rules version and not under the version in force when it appended. This is the mistake a straightforward verifier makes first."
+    },
+    {
+      "fixture": "negative/evidence-determination-not-following.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-NOT-FOLLOWING",
+      "note": "A determination whose finding is not supported by the rules it names, one of which does not resolve inside the referenced rule set version."
+    },
+    {
+      "fixture": "negative/evidence-report-gap-reported-as-verified.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-REPORT-INVALID",
+      "note": "A report marking an undisclosed stream as verified. This is the failure that makes an absence look like proof."
+    },
+    {
+      "fixture": "negative/evidence-report-boolean-only.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-REPORT-INVALID",
+      "note": "A report reducing all checks to a single pass value, discarding the not checkable set. The record it reports over is party held and carries no session stream."
+    },
+    {
+      "fixture": "negative/evidence-report-scope-unstated.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-REPORT-INVALID",
+      "note": "A report over a subset that states no scope, so its silence is indistinguishable from completeness."
+    },
+    {
+      "fixture": "negative/evidence-selective-disclosure-requires-undisclosed.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-DISCLOSURE-INCOMPLETE",
+      "note": "A subset that cannot be verified without an object the verifier was not given, and whose absence the bundle does not state."
+    },
+    {
+      "fixture": "negative/settlement-instruction-unknown-rail.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-SETTLEMENT-RAIL-UNKNOWN",
+      "note": "A rail value absent from the registered set fails closed. An implementation that routes it to a default adapter, or that drops the field and proceeds, fails."
+    },
+    {
+      "fixture": "negative/settlement-instruction-no-trigger.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-SETTLEMENT-TRIGGER-ABSENT",
+      "note": "An instruction with no trigger. Settlement without a stated commercial cause does not reach an adapter, because a payment nobody can later show was owed is more expensive to reconstruct than to refuse."
+    },
+    {
+      "fixture": "negative/delegation-chain-child-outlives-parent.json",
+      "kind": "mandate_chain",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-DELEGATION-WIDENING",
+      "note": "The child's validity interval extends beyond the parent's."
+    },
+    {
+      "fixture": "negative/delegation-chain-child-adds-action.json",
+      "kind": "mandate_chain",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-DELEGATION-WIDENING",
+      "note": "The child carries an action absent from the parent."
+    },
+    {
+      "fixture": "negative/delegation-chain-child-raises-limit.json",
+      "kind": "mandate_chain",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-DELEGATION-WIDENING",
+      "note": "The child loosens the parent's price ceiling tenfold."
+    },
+    {
+      "fixture": "negative/delegation-chain-child-widens-scope.json",
+      "kind": "mandate_chain",
+      "expect": "invalid",
+      "reason_code": "A202-MANDATE-DELEGATION-WIDENING",
+      "note": "The child's scope reaches a transaction outside the parent's."
+    },
+    {
+      "fixture": "negative/agreement-terms-hash-mismatch.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-AGREEMENT-HASH-MISMATCH",
+      "note": "The agreement's terms_hash is unrelated to the hash of its own terms. The hash is recomputed, never trusted."
+    },
+    {
+      "fixture": "negative/agreement-amendment-reuses-acceptance.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-AGREEMENT-AMENDMENT-UNACCEPTED",
+      "note": "A version-2 agreement restates different terms over the version-1 acceptance and offer."
+    },
+    {
+      "fixture": "negative/transaction-event-data-discloses-rivals.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A transaction-stream event carrying a winning price and a bid count. Post-commit the winning counterparty reads this stream."
+    },
+    {
+      "fixture": "negative/policy-deny-award-disclosing-reason.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A deny carrying A202-LOT-ALREADY-AWARDED tells the bidder an award happened, which a sealed event withholds."
+    },
+    {
+      "fixture": "negative/session-event-clarification-foreign-prefix.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A session-stream clarification reference under a foreign prefix. Reference patterns bind to registered prefixes."
+    },
+    {
+      "fixture": "negative/determination-state-result-unregistered-state.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-STATE-TRANSITION-DENIED",
+      "note": "A binding determination whose state_result names a state no machine defines. A transition to nowhere fails closed."
+    },
+    {
+      "fixture": "negative/determination-state-result-without-binding-effect.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DETERMINATION-EFFECT-OVERCLAIM",
+      "note": "A presumptive determination carrying a state_result. Only a binding effect may touch state."
+    },
+    {
+      "fixture": "negative/key-record-private-key-member.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "A key record whose JWK carries the private member d. The closed public shapes refuse private key material."
+    },
+    {
+      "fixture": "negative/termination-agreed-under-prior-rules.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TRANSITION-ILLEGAL",
+      "note": "termination.agreed replayed against rules version 1.0, which never permitted it."
+    },
+    {
+      "fixture": "negative/evidence-bundle-event-chain-skips-predecessor.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-CHAIN-GAP",
+      "note": "previous_event_hash names an earlier event than the immediately preceding one while sequences stay continuous."
+    },
+    {
+      "fixture": "negative/principal-carries-personal-data.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-DENIED",
+      "note": "A principal carrying a name and an email. Personal data belongs behind the opaque contact pointer, never in a shared object."
+    },
+    {
+      "fixture": "negative/agent-endpoint-plain-http.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-ENDPOINT-INSECURE",
+      "note": "An agent endpoint over plain HTTP, forgeable by a network attacker for the same reason a mandate status endpoint is. Schema-enforced by the HTTPS pattern on the endpoint and independently by the evaluator, which returns the code the state machine's section 10 registers for a declared endpoint outside HTTPS."
+    },
+    {
+      "fixture": "negative/organization-carries-assurance-level.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-ASSURANCE-UNSUPPORTED",
+      "note": "An organization asserting its own assurance level. Assurance is recorded on the InvitationAcceptance and never self-declared on a party, so the closed organization payload has no such member. The refusal also carries a code: the invariant in section 12 of the canonical model is stated over a declared assurance level rather than over one object type, and a party claiming entity_bound with an empty identity_evidence_refs has declared a level above self_asserted with nothing behind it."
+    },
+    {
+      "fixture": "negative/transaction-event-data-free-text-note.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A free-text note on an award event, disclosing rival count and relative price. The allowlist refuses the member a denylist would have had to anticipate."
+    },
+    {
+      "fixture": "negative/transaction-event-data-restates-terms.json",
+      "kind": "kernel",
+      "expect": "invalid",
+      "reason_code": "A202-DISCLOSURE-POLICY-VIOLATION",
+      "note": "A commitment event restating the agreed total. An event names the object it concerns and never restates its terms."
+    },
+    {
+      "fixture": "negative/agreement-direct-under-prior-rules.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TRANSITION-ILLEGAL",
+      "note": "agreement.direct replayed against rules version 1.2, which never permitted it. Registering 1.3 rather than editing 1.2 is what keeps records made under the earlier versions replayable."
+    },
+    {
+      "fixture": "negative/direct-formation-over-open-session.json",
+      "kind": "bundle",
+      "expect": "invalid",
+      "reason_code": "A202-EVIDENCE-TRANSITION-ILLEGAL",
+      "note": "A transaction that already carries an operated session stream, entered at agreement.direct. The direct path is for two parties who need no negotiation room, and a party that used it while a room was open would be selecting itself out of a contest the other participants are still in."
+    },
+    {
+      "fixture": "negative/grade-scope-unregistered.json",
+      "kind": "grade",
+      "expect": "invalid",
+      "reason_code": "A202-GRADE-SCOPE-UNKNOWN",
+      "note": "A grade naming a role scope identifier absent from the registry in section 3.1 of the role scope document. An implementation that falls back to the nearest registered scope, or that drops the role part and reads the grade unscoped, fails. Replacing the identifier with a registered one leaves a document that validates cleanly."
+    },
+    {
+      "fixture": "negative/grade-scope-absent.json",
+      "kind": "grade",
+      "expect": "invalid",
+      "reason_code": "A202-GRADE-SCOPE-INVALID",
+      "note": "A grade naming no role scope. The unscoped grade is the state of the world before the registry, and it stops being valid rather than being reinterpreted. The role member is deliberately not required by the schema, so the refusal carries the code the registry document names rather than reporting a missing member."
+    },
+    {
+      "fixture": "negative/grade-scope-two-scopes.json",
+      "kind": "grade",
+      "expect": "invalid",
+      "reason_code": "A202-GRADE-SCOPE-INVALID",
+      "note": "A grade naming both registered scopes. A grade covering both is two grades, and accepting one would let a single assessment be reported as two. Dropping the second identifier leaves a document that validates cleanly."
+    },
+    {
+      "fixture": "negative/grade-bilateral-claims-operated-dimension.json",
+      "kind": "grade",
+      "expect": "invalid",
+      "reason_code": "A202-GRADE-SCOPE-OVERCLAIM",
+      "note": "A grade naming the bilateral scope and reporting a band in dimension B established from the auction and session event families. This is the overclaim the role scope registry exists to make refusable: a bilateral band in B is not a claim about rival non-inference, and it fails rather than being narrowed on the reader's behalf."
+    },
+    {
+      "fixture": "negative/grade-bilateral-claims-invitation-coverage.json",
+      "kind": "grade",
+      "expect": "invalid",
+      "reason_code": "A202-GRADE-SCOPE-OVERCLAIM",
+      "note": "A bilateral grade whose held_out_coverage names invitation onboarding. Held separately from the dimension case because a check written only against dimensions would miss it, and coverage in one scope is not coverage in the other."
+    }
+  ],
+  "fixture_kinds": {
+    "kernel": "One shared object, validated against commercial-kernel.schema.json and then against the normative checks for its object type.",
+    "mandate": "One mandate, validated against commercial-mandate.schema.json and then against the mandate interval rule.",
+    "declaration": "A carrier capability declaration rather than a commercial object. The fixture carries the counterparty's declared extension entries and this party's own version declaration. The runner checks that an entry for the commercial extension URI is present, that it carries a required flag, that its read_versions and write_version parse, and that the two declarations are compatible in both directions. Every failure returns A202-EXTENSION-UNSUPPORTED, because the conditions have one correct outcome and a caller handed several codes that must be handled identically will eventually handle one of them differently.",
+    "bundle": "A set of objects plus a context, so that the rules which hold between objects are executable: content hash recomputation, signature purpose and count, version chain gaps and forks, per-stream continuity and the refusal to expect continuity across streams, due condition cycles, replay of guarded transitions against the rules version in force at append time, the checks that make a determination follow from its rules and inputs, obligation response binding and remainder, settlement trigger resolution, disclosure completeness, and the three-valued verification report rules. Objects carried in a bundle hold content hashes computed over their own canonical bytes, so a fixture that must exhibit a hash match exhibits one. The single-object fixtures predate the cross-object checks, carry synthetic hash values, and are not hash-recomputed.",
+    "grade": "A conformance grade, validated against conformance-grade.schema.json and then against the role scope rules of conformance-role-scopes-v0.1.md sections 3.2 and 6.3: the named role scope resolves in the registry in section 3.1, exactly one is named, and every fixture family a band or a held-out coverage claim was established from lies inside the scope named. A grade is a standalone signed document rather than a common-envelope object, on the same footing as a commercial mandate: it states something about an implementation rather than performing an act inside a transaction, so it carries no transaction identifier, no version chain, and no object_type. A refusal under any of the three codes is a refusal of the grade and never a band 0.",
+    "mandate_chain": "A parent mandate and a child mandate delegated from it, each validated against commercial-mandate.schema.json, then checked for monotonic narrowing on every axis of commercial-mandate-v0.1.md section 7. Every failure is A202-MANDATE-DELEGATION-WIDENING."
+  }
+}

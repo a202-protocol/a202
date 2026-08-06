@@ -1,0 +1,37 @@
+# Code owners
+#
+# This file routes review requests. It records who is asked to review a change
+# to a given path, and nothing more. The rules a change lands under are in
+# GOVERNANCE.md section 3, and the people who hold maintainer status are in
+# MAINTAINERS.md. Where this file and MAINTAINERS.md disagree, MAINTAINERS.md
+# is the record and this file is stale.
+#
+# GOVERNANCE.md section 3.2 requires that a change be reviewed by someone
+# other than its author; GOVERNANCE.md section 3 records how that requirement
+# applies while the project has a single maintainer. The routing is recorded
+# in advance so that adding a second maintainer is a one-line change.
+#
+# @The-JKR is the GitHub account of A. A. Musse. Ownership is held by named
+# accounts rather than by an organisation team, because GOVERNANCE.md section 2
+# holds maintainer status with the person, not with an organisation: a team
+# entry would route review by organisation membership instead. Adding a
+# maintainer is adding an account to these lines and a name to MAINTAINERS.md.
+
+* @The-JKR
+
+# The set GOVERNANCE.md section 3.4 governs. A change to any of these requires
+# the conformance suite to pass, which .github/workflows/checks.yml enforces.
+/schemas/ @The-JKR
+/conformance/ @The-JKR
+
+# The record of why the specification says what it says.
+/proposals/ @The-JKR
+
+# The documents that state how the project is run, what it reserves, and how a
+# vulnerability is handled.
+/GOVERNANCE.md @The-JKR
+/CHARTER.md @The-JKR
+/SECURITY.md @The-JKR
+/TRADEMARK.md @The-JKR
+/MAINTAINERS.md @The-JKR
+/RELEASES.md @The-JKR

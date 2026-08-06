@@ -1,0 +1,33 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "agt_northstar_buyer_01",
+  "object_type": "agent",
+  "version": 1,
+  "created_at": "2026-07-01T00:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": null,
+  "previous_version_id": null,
+  "payload": {
+    "represented_organization_id": "org_northstar",
+    "operator_organization_id": "org_northstar",
+    "endpoint": "https://agents.northstar.invalid/a202/buyer-01",
+    "key_ids": [
+      "key_northstar_agent_01"
+    ],
+    "status": "active"
+  },
+  "content_hash": "f5fa4938308e85a96b1fea783a4ba45ffaa35595dfbe17b80e3612ca2786b231",
+  "signatures": [
+    {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ]
+}

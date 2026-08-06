@@ -1,0 +1,152 @@
+{
+  "fixture_kind": "mandate_chain",
+  "note": "The child adds a transaction the parent's scope does not contain. Scope narrows down a chain, never widens.",
+  "parent": {
+    "spec_version": "a202-mandate/0.1",
+    "id": "mnd_northstar_buyer_01",
+    "issuer": {
+      "organization_id": "org_northstar",
+      "principal_id": "prn_northstar_procurement_director",
+      "key_id": "key_northstar_principal_01"
+    },
+    "subject": {
+      "agent_id": "agt_northstar_buyer_01",
+      "key_id": "key_northstar_agent_01"
+    },
+    "represented_organization_id": "org_northstar",
+    "parent_mandate_id": null,
+    "valid_from": "2026-07-25T00:00:00Z",
+    "valid_until": "2026-08-25T00:00:00Z",
+    "status_endpoint": "https://sandbox.a202.invalid/v1/mandates/mnd_northstar_buyer_01/status",
+    "actions": [
+      "intent.publish",
+      "invitation.issue",
+      "invitation.revoke",
+      "qualification.request",
+      "clarification.send",
+      "offer.submit",
+      "offer.accept",
+      "agreement.sign",
+      "settlement.instruct"
+    ],
+    "scope": {
+      "transaction_ids": [
+        "txn_calibration_demo_01"
+      ],
+      "categories": [
+        "services.calibration"
+      ],
+      "counterparty_organization_ids": [
+        "org_delta",
+        "org_meridian"
+      ],
+      "geographies": [
+        "NL"
+      ]
+    },
+    "constraints": [
+      {
+        "id": "c_total_price",
+        "type": "commercial.decimal",
+        "path": "$.proposed_terms.total.amount",
+        "operator": "maximum",
+        "value": "4000.00",
+        "on_failure": "deny"
+      },
+      {
+        "id": "c_prepayment",
+        "type": "commercial.decimal",
+        "path": "$.proposed_terms.payment.prepayment_percent",
+        "operator": "maximum",
+        "value": "20",
+        "on_failure": "deny"
+      }
+    ],
+    "approval_rules": [],
+    "delegation": {
+      "allowed": true,
+      "maximum_depth": 1
+    },
+    "evidence_refs": [
+      "evd_northstar_org_identity_01"
+    ],
+    "proof": {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "created_at": "2026-07-25T00:00:00Z",
+      "purpose": "mandate_issuance",
+      "signature": "synthetic-placeholder"
+    }
+  },
+  "child": {
+    "spec_version": "a202-mandate/0.1",
+    "id": "mnd_northstar_junior_01",
+    "issuer": {
+      "organization_id": "org_northstar",
+      "principal_id": "prn_northstar_procurement_director",
+      "key_id": "key_northstar_principal_01"
+    },
+    "subject": {
+      "agent_id": "agt_northstar_junior_01",
+      "key_id": "key_northstar_agent_02"
+    },
+    "represented_organization_id": "org_northstar",
+    "parent_mandate_id": "mnd_northstar_buyer_01",
+    "valid_from": "2026-07-26T00:00:00Z",
+    "valid_until": "2026-08-10T00:00:00Z",
+    "status_endpoint": "https://sandbox.a202.invalid/v1/mandates/mnd_northstar_junior_01/status",
+    "actions": [
+      "offer.submit",
+      "offer.accept"
+    ],
+    "scope": {
+      "transaction_ids": [
+        "txn_calibration_demo_01",
+        "txn_other_market_01"
+      ],
+      "categories": [
+        "services.calibration"
+      ],
+      "counterparty_organization_ids": [
+        "org_delta",
+        "org_meridian"
+      ],
+      "geographies": [
+        "NL"
+      ]
+    },
+    "constraints": [
+      {
+        "id": "c_total_price",
+        "type": "commercial.decimal",
+        "path": "$.proposed_terms.total.amount",
+        "operator": "maximum",
+        "value": "2500.00",
+        "on_failure": "deny"
+      },
+      {
+        "id": "c_prepayment",
+        "type": "commercial.decimal",
+        "path": "$.proposed_terms.payment.prepayment_percent",
+        "operator": "maximum",
+        "value": "20",
+        "on_failure": "deny"
+      }
+    ],
+    "approval_rules": [],
+    "delegation": {
+      "allowed": false,
+      "maximum_depth": 0
+    },
+    "evidence_refs": [
+      "evd_northstar_org_identity_01"
+    ],
+    "proof": {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "created_at": "2026-07-25T00:00:00Z",
+      "purpose": "mandate_issuance",
+      "signature": "synthetic-placeholder"
+    }
+  }
+}

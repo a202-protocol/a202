@@ -1,0 +1,58 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "dsp_delta_appeal_01",
+  "object_type": "dispute",
+  "version": 1,
+  "created_at": "2026-08-12T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_delta",
+    "agent_id": "agt_delta_supplier_01",
+    "mandate_id": "mnd_delta_supplier_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "27b0ca96a95c8cdf53edd6fb517dc480e6dccffdcbbd379b018dd8a067969b49",
+  "signatures": [
+    {
+      "key_id": "key_delta_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-12T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "raising_party": {
+      "organization_id": "org_delta",
+      "agent_id": "agt_delta_supplier_01"
+    },
+    "respondent_party": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "subject_type": "determination",
+    "subject_id": "det_calibration_question_01",
+    "grounds": [
+      "disagreement_with_rule"
+    ],
+    "evidence_refs": [
+      {
+        "evidence_id": "evd_delta_calibration_certificate_01",
+        "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+        "evidence_type": "third_party_certificate",
+        "signed_by": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+      }
+    ],
+    "rules_ref": {
+      "rule_set_id": "a202-rules/pilot",
+      "version": "1.0",
+      "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+    },
+    "subject_hash": "3274b65b6a5d5e0db42a42523f904d980cdb6ed7cb234c8ee97beb06f6b72996",
+    "description": "The rule applied to this question should not exist in this form."
+  }
+}

@@ -1,0 +1,94 @@
+name: Change proposal
+description: Propose a normative change to the specification, in the form the proposal process expects
+title: "Proposal: "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        An A202 Change Proposal is the unit in which this specification changes. The process is in `proposals/README.md`, and this form is shaped like it so that a proposal arrives in the form it will be reviewed in.
+
+        A proposal is required for any change that alters what a conformant implementation has to do, may do, or must refuse. That includes a schema field, an enum member, a constraint, a fixture, an error code, a state, a transition, or a guard.
+
+        **Do not use this form for a suspected vulnerability.** Report privately to security@a202.org. See `SECURITY.md`.
+
+        Anyone may raise a proposal, on the terms in `CONTRIBUTING.md`. The process is the same for a maintainer and an external contributor.
+
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Stage
+      description: A proposal enters at stage 1 or stage 2. Stages 3 to 5 are reached by review, not by claim.
+      options:
+        - "1. Problem statement: a problem stated in terms of what cannot currently be done, or can currently be done wrongly"
+        - "2. Experimental: a concrete proposed change, explicitly not stable"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What goes wrong today, in terms of what an implementation or a counterparty cannot currently do, or can currently do wrongly. A problem statement that already names its solution is usually solving the wrong problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: situation
+    attributes:
+      label: The commercial situation in which it goes wrong
+      description: A concrete example. Two parties, what each is trying to do, and the point at which the specification leaves them without an answer or gives them the wrong one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The specification change, in the words that would land. Leave empty for a stage 1 problem statement.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including doing nothing, and why each was not chosen.
+    validations:
+      required: false
+
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility
+      description: What breaks, for whom, and what a migration looks like. State whether previously issued objects remain valid.
+    validations:
+      required: false
+
+  - type: textarea
+    id: fixtures
+    attributes:
+      label: Fixtures
+      description: The conformance fixtures that would verify the change, in both the allow and the refuse direction. A proposal that cannot be expressed as a fixture is a proposal whose semantics are not yet decided, which is why stage 3 is where proposals most often fail.
+    validations:
+      required: false
+
+  - type: textarea
+    id: origin
+    attributes:
+      label: Origin
+      description: Where this came from, including whether it arose from a particular implementation's experience. This is context for reviewers rather than an argument.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This is not a suspected vulnerability. A vulnerability goes to security@a202.org and never to an issue.
+          required: true
+        - label: This proposal introduces no commercial material, competitive comparison, pricing, customer reference, or implementation mechanism behind a published property. The boundary is in CHARTER.md sections 2 and 3.
+          required: true
+        - label: I understand the `A202-NNNN` identifier is allocated by the maintainers when the proposal is filed, and that a withdrawn or rejected proposal keeps its number.
+          required: true

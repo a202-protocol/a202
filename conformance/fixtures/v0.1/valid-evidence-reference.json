@@ -1,0 +1,42 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "prf_delta_calibration_02",
+  "object_type": "performance_event",
+  "version": 1,
+  "created_at": "2026-08-10T11:00:00Z",
+  "created_by": {
+    "organization_id": "org_delta",
+    "agent_id": "agt_delta_supplier_01",
+    "mandate_id": "mnd_delta_supplier_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "0ba137a6597cac3072effefd90610c36c74a7f0478d586af246ba910248df3e2",
+  "signatures": [
+    {
+      "key_id": "key_delta_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-10T11:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "obligation_id": "obl_delta_calibration_01",
+    "asserted_quantity": "8",
+    "unit_code": "H87",
+    "unit_name": "piece",
+    "evidence_refs": [
+      {
+        "evidence_id": "evd_delta_calibration_certificate_01",
+        "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+        "evidence_type": "third_party_certificate",
+        "signed_by": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+      }
+    ]
+  }
+}

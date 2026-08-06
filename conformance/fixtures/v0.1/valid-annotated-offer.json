@@ -1,0 +1,77 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "off_calibration_operated_01",
+  "object_type": "offer",
+  "version": 1,
+  "created_at": "2026-07-25T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_delta",
+    "agent_id": "agt_delta_supplier_01",
+    "mandate_id": "mnd_delta_supplier_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "5b1d0a3c7e2f48d96a05b7c1e83f2a460d97cb3158ea24f70b6c95d8317ae4f2",
+  "signatures": [
+    {
+      "key_id": "key_delta_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T10:00:00Z",
+      "purpose": "offer_submission"
+    }
+  ],
+  "kernel_annotations": {
+    "policy_decision_id": "pol_delta_offer_01",
+    "session_id": "ses_northstar_delta_01",
+    "session_sequence": 3,
+    "received_at": "2026-07-25T10:00:02Z"
+  },
+  "payload": {
+    "offeror": {
+      "organization_id": "org_delta",
+      "agent_id": "agt_delta_supplier_01"
+    },
+    "offeree": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "session_id": "ses_northstar_delta_01",
+    "supersedes_offer_id": null,
+    "valid_until": "2026-07-26T10:00:00Z",
+    "terms": {
+      "profile": "a202-profile/calibration-service/0.1",
+      "core": {
+        "description": "Calibration and digital certificates for 20 pressure transmitters",
+        "quantity": "20",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "total": {
+          "currency": "EUR",
+          "amount": "3200.00"
+        }
+      },
+      "profile_terms": {
+        "completion": {
+          "business_days_after_collection": 15,
+          "business_calendar": "NL"
+        },
+        "payment": {
+          "prepayment_percent": "20",
+          "balance_trigger": "buyer_acceptance"
+        },
+        "acceptance": {
+          "certificate_required": true,
+          "machine_readable_result_required": true,
+          "qualification_standard": "ISO/IEC 17025:2017"
+        },
+        "rework": {
+          "included_attempts": 1
+        }
+      }
+    },
+    "evidence_refs": [
+      "evd_delta_accreditation_01"
+    ]
+  }
+}

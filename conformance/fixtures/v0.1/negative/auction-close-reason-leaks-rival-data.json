@@ -1,0 +1,43 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "evt_auction_close_leak_01",
+  "object_type": "transaction_event",
+  "version": 1,
+  "created_at": "2026-07-25T16:00:00Z",
+  "created_by": {
+    "organization_id": "org_a202_operator",
+    "agent_id": "agt_a202_control_01",
+    "mandate_id": "mnd_a202_control_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "fb8cb58c9a9f4bd48a683d8d81545deb00dbe6959c45f22669bbb81177d3cb95",
+  "signatures": [
+    {
+      "key_id": "key_a202_control_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T16:00:00Z",
+      "purpose": "event_append"
+    }
+  ],
+  "payload": {
+    "stream": {
+      "kind": "session",
+      "id": "ses_northstar_delta_01"
+    },
+    "sequence": 7,
+    "event_type": "negotiation.closed",
+    "occurred_at": "2026-07-25T16:00:00Z",
+    "previous_event_hash": "2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b",
+    "action_hash": "3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c",
+    "policy_decision_id": "pol_a202_close_01",
+    "from_state": "active",
+    "to_state": "rejected",
+    "data": {
+      "close_reason": "not_selected",
+      "competing_bid_count": 3,
+      "winning_price": "2980.00"
+    }
+  }
+}

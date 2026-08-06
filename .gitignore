@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.*
+*.env
+
+# Node
+node_modules/
+
+# Build output
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Agent tooling
+.claude/
+
+# Documentation site build output. The stage is a generated mirror of the
+# tracked tree and the site is what MkDocs renders from it.
+.mkdocs/stage/
+/site/

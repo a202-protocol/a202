@@ -1,0 +1,134 @@
+{
+  "fixture_kind": "bundle",
+  "note": "The obligor accepting its own performance. Acceptance is a distinct signed act by the obligee.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "obl_delta_calibration_01",
+      "object_type": "obligation",
+      "version": 1,
+      "created_at": "2026-08-02T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "b5384a9b4e9d89d7eb8087462cf3907e14eec0d25a22a14c62e9aee5532d6af3",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-02T09:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "agreement_id": "agr_calibration_demo_01",
+        "commitment_id": "cmt_delta_calibration_01",
+        "obligor": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "obligee": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "subject": {
+          "agreement_id": "agr_calibration_demo_01",
+          "terms_hash": "8c627a6dd9a8de24d77734c591a70162a04a5789c12d1aac39d194d90b52e533",
+          "profile": "a202-profile/calibration-service/0.1",
+          "term_path": "$.terms.core.quantity"
+        },
+        "due_condition": {
+          "type": "due_at_time",
+          "at": "2026-08-14T12:00:00Z"
+        },
+        "quantity": "8",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "consideration": {
+          "currency": "EUR",
+          "amount": "3200.00"
+        },
+        "state": "pending"
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "prf_delta_calibration_01",
+      "object_type": "performance_event",
+      "version": 1,
+      "created_at": "2026-08-10T11:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "b95ebf195415da471418eaa6d0e49b00b5c31121833a4daee42e04bad23aaff8",
+      "signatures": [
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-10T11:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "obligation_id": "obl_delta_calibration_01",
+        "asserted_quantity": "8",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "evidence_refs": [
+          {
+            "evidence_id": "evd_delta_calibration_certificate_01",
+            "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+            "evidence_type": "third_party_certificate",
+            "signed_by": {
+              "organization_id": "org_delta",
+              "agent_id": "agt_delta_supplier_01"
+            },
+            "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+          }
+        ]
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "obr_northstar_calibration_01",
+      "object_type": "obligation_response",
+      "version": 1,
+      "created_at": "2026-08-11T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "ff4d6ee7889bf202d6960d9f9fa208ec917cb3cba6e359fa676e9f920379bef2",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-11T10:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "obligation_id": "obl_delta_calibration_01",
+        "response_type": "accept",
+        "assertion_id": "prf_delta_calibration_01",
+        "assertion_hash": "b95ebf195415da471418eaa6d0e49b00b5c31121833a4daee42e04bad23aaff8",
+        "accepted_quantity": "8"
+      }
+    }
+  ]
+}

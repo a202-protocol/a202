@@ -1,0 +1,45 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "evt_commit_terms_01",
+  "object_type": "transaction_event",
+  "version": 1,
+  "created_at": "2026-08-01T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "payload": {
+    "stream": {
+      "kind": "transaction",
+      "id": "txn_calibration_demo_01"
+    },
+    "sequence": 10,
+    "event_type": "agreement.committed",
+    "occurred_at": "2026-08-01T09:00:00Z",
+    "previous_event_hash": null,
+    "action_hash": "a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8",
+    "policy_decision_id": "pol_northstar_select_01",
+    "from_state": "agreement_pending",
+    "to_state": "committed",
+    "data": {
+      "agreement_id": "agr_calibration_demo_01",
+      "total": {
+        "currency": "EUR",
+        "amount": "3200.00"
+      }
+    }
+  },
+  "content_hash": "8e6bbbc616e97117566af3d51fc91aef0453a462cdec4aed9da7e48da0081e20",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "event_append"
+    }
+  ]
+}

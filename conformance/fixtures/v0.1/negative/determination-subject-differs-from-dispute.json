@@ -1,0 +1,132 @@
+{
+  "fixture_kind": "bundle",
+  "note": "The determination names a different subject hash from the dispute it determines, so it is not a determination on that dispute.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "dsp_delta_calibration_01",
+      "object_type": "dispute",
+      "version": 1,
+      "created_at": "2026-08-12T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "904b7778c68bea1b3637d5aea659af83266d1346b3f633120edb11b8a8913c10",
+      "signatures": [
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-12T09:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "raising_party": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "respondent_party": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "subject_type": "act",
+        "subject_id": "off_calibration_demo_01",
+        "grounds": [
+          "authority_exceeded"
+        ],
+        "evidence_refs": [
+          {
+            "evidence_id": "evd_delta_calibration_certificate_01",
+            "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+            "evidence_type": "third_party_certificate",
+            "signed_by": {
+              "organization_id": "org_delta",
+              "agent_id": "agt_delta_supplier_01"
+            },
+            "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+          }
+        ],
+        "rules_ref": {
+          "rule_set_id": "a202-rules/pilot",
+          "version": "1.0",
+          "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+        },
+        "subject_hash": "9e93f2925f8f3b66e9d12522f0a6458157285abecc109d260fc23999374fe46b",
+        "description": "The referenced act was taken outside the constraints of the mandate that covered it."
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "det_calibration_question_01",
+      "object_type": "determination",
+      "version": 1,
+      "created_at": "2026-08-15T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "063da5709e4d3154774c879bb7770d570f84013066327f2adaeb15030e978088",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-15T10:00:00Z",
+          "purpose": "object_issuance"
+        }
+      ],
+      "payload": {
+        "dispute_id": "dsp_delta_calibration_01",
+        "question": {
+          "subject_type": "act",
+          "subject_hash": "8d0a07155735ab89207e4bfb6c1ab4452afa2a35fbb2bcd3f916c71bd621b068",
+          "subject_id": "off_calibration_demo_01",
+          "rules_ref": {
+            "rule_set_id": "a202-rules/pilot",
+            "version": "1.0",
+            "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+          }
+        },
+        "outcome": {
+          "finding": "The obligation stood in the asserted state at the time of the response, and the response bound the assertion it named.",
+          "rules_applied": [
+            "a202-rules/pilot#obligation.acceptance-binds-assertion"
+          ],
+          "evidence_relied_on": [
+            {
+              "evidence_id": "evd_delta_calibration_certificate_01",
+              "content_hash": "36e260736276da6f4efaf4ee1e4623f96cef8477605c391c3336af23de12ab6c",
+              "evidence_type": "third_party_certificate",
+              "signed_by": {
+                "organization_id": "org_delta",
+                "agent_id": "agt_delta_supplier_01"
+              },
+              "locator_hint": "https://evidence.sandbox.a202.invalid/delta/calibration-certificate-01"
+            }
+          ],
+          "inputs_hash": "8cd5377fa1a660e41079032b4a79256c5a3bfb8a226bbc9c5508480013725cf9",
+          "state_result": null
+        },
+        "determiner": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "authority_basis_ref": "a202-rules/pilot#determiner.authority",
+        "effect": "binding",
+        "supersedes": null,
+        "appeal_route_ref": "a202-rules/pilot#appeal.route",
+        "determined_at": "2026-08-15T10:00:00Z",
+        "effective_from": "2026-08-15T10:00:00Z"
+      }
+    }
+  ]
+}

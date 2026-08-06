@@ -1,0 +1,42 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "prn_northstar_procurement_director",
+  "object_type": "principal",
+  "version": 1,
+  "created_at": "2026-07-01T00:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": null,
+  "previous_version_id": null,
+  "payload": {
+    "organization_id": "org_northstar",
+    "role": "procurement_director",
+    "status": "active",
+    "authority_evidence_refs": [
+      {
+        "evidence_id": "evd_northstar_principal_role_01",
+        "content_hash": "220d96bfbf2eaf25e508086f56725a2e870026fe036832f63c9dbf8ce4eeec3f",
+        "evidence_type": "signed_document",
+        "locator_hint": null,
+        "signed_by": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        }
+      }
+    ],
+    "contact_ref": "chn_northstar_director_01"
+  },
+  "content_hash": "ba0000a33bf98c086d3c4b012974aa4d12c75cc10e474eacfca48dd2986311b1",
+  "signatures": [
+    {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+# Documentation site configuration. `.mkdocs/stage.py` mirrors the tracked
+# tree into `.mkdocs/stage/` and promotes the pages authored for the site
+# under docs/ to the stage root. The authored pages are informative in
+# full; where one of them and a specification document disagree, the
+# document is the definition.
+# Build: python3 .mkdocs/stage.py && mkdocs build
+# repo_url is added when the repository has a public home.
+
+site_name: A202 Protocol
+site_description: "A202, the Verifiable Agreement Protocol for Agent-Led Commerce: an open specification of commercial authority, negotiation state, and verifiable conformance for transactions between independent organisations."
+site_url: https://a202.org/
+docs_dir: .mkdocs/stage
+site_dir: site
+
+strict: true
+
+# The repository's own link checker (.github/scripts/check-links.py) is the
+# authority on links: it checks every tracked markdown file and fails the
+# Checks workflow on any defect. MkDocs link validation is downgraded to
+# info because it cannot see the machinery paths the stage excludes, and a
+# second, weaker checker producing hard failures would only disagree with
+# the real one.
+validation:
+  links:
+    not_found: info
+    absolute_links: info
+    unrecognized_links: info
+
+theme:
+  name: material
+  font: false
+  favicon: assets/favicon.svg
+  icon:
+    logo: material/file-sign
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_css:
+  - assets/extra.css
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Overview:
+      - Introduction: introduction.md
+      - A202 with A2A and MCP: carriers.md
+      - Charter: CHARTER.md
+      - Threat model: THREAT-MODEL.md
+  - Specification:
+      - Canonical commercial model: schemas/canonical-commercial-model-v0.1.md
+      - Transaction profile extension model: schemas/transaction-profile-extension-model-v0.1.md
+      - Schemas v0.1: schemas/v0.1/README.md
+      - Commercial mandate: authority/commercial-mandate-v0.1.md
+      - Counterparty invitation: discovery/counterparty-invitation-v0.1.md
+      - Transaction state machine: negotiation/pilot-transaction-state-machine-v0.1.md
+      - Auction event semantics: negotiation/auction-event-semantics-v0.1.md
+      - Obligation: agreement/obligation-v0.1.md
+      - Evidence verification: evidence/evidence-verification-v0.1.md
+      - Determination and dispute: disputes/determination-v0.1.md
+      - Settlement handoff: fulfillment/settlement-handoff-v0.1.md
+      - A2A carrier binding: bindings/a2a-binding-v0.1.md
+  - Conformance:
+      - Grades: conformance/conformance-grades-v0.1.md
+      - Role scopes: conformance/conformance-role-scopes-v0.1.md
+  - Reference:
+      - Reference implementation: reference/README.md
+      - MCP server: reference/a202_mcp/README.md
+  - Proposals:
+      - proposals/README.md
+      - proposals/A202-0001-carrier-bindings.md
+      - proposals/A202-0002-obligation.md
+      - proposals/A202-0003-determination.md
+      - proposals/A202-0004-evidence-verification.md
+      - proposals/A202-0005-settlement-handoff.md
+      - proposals/A202-0006-bilateral-conformance-role-scopes.md
+      - proposals/A202-0007-exception-prefix-and-deferred-payloads.md
+      - proposals/A202-0008-replay-single-source.md
+      - proposals/A202-0009-enforcement-fidelity.md
+      - proposals/A202-0010-model-completion.md
+      - proposals/A202-0011-registry-and-waiver-corrections.md
+      - proposals/A202-0012-party-family-payloads.md
+      - proposals/A202-0013-transaction-event-allowlist.md
+      - proposals/A202-0014-bilateral-formation-and-scope-repair.md
+      - proposals/A202-0015-fixture-minimality-orphan-codes-and-grade-scope.md
+      - proposals/A202-0016-casing-short-form-and-amendment-corrections.md
+      - proposals/A202-0017-submission-success-status.md
+  - Project:
+      - Governance: GOVERNANCE.md
+      - Maintainers: MAINTAINERS.md
+      - Contributing: CONTRIBUTING.md
+      - Code of conduct: CODE_OF_CONDUCT.md
+      - Security: SECURITY.md
+      - Releases: RELEASES.md
+      - Changelog: CHANGELOG.md
+      - Trademark: TRADEMARK.md

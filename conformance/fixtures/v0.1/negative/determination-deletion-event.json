@@ -1,0 +1,41 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "evt_determination_deleted_01",
+  "object_type": "transaction_event",
+  "version": 1,
+  "created_at": "2026-08-06T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "2ecda51f1f4d79fb2bf092c6b1060771ebcd73f082a8def15289180a13c690b0",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-06T10:00:00Z",
+      "purpose": "event_append"
+    }
+  ],
+  "payload": {
+    "stream": {
+      "kind": "transaction",
+      "id": "txn_calibration_demo_01"
+    },
+    "sequence": 7,
+    "event_type": "determination.deleted",
+    "occurred_at": "2026-08-06T10:00:00Z",
+    "previous_event_hash": "ff0732a16d4bf357b2644ce477babdbd87ebf04e051d6dc04b5ce6b8897aa7d9",
+    "action_hash": "fd2e98b9b5290c3e63b77b5973bc89e24b4ba33fbeb8bde1dd7a7ebd521488f5",
+    "policy_decision_id": "pol_determination_deleted_01",
+    "from_state": "exception_open",
+    "to_state": "exception_open",
+    "data": {
+      "determination_id": "det_calibration_question_01"
+    }
+  }
+}

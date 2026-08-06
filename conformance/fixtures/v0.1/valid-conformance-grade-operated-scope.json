@@ -1,0 +1,78 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "subject": {
+    "organization_id": "org_a202_operator",
+    "implementation": "A202 pilot control plane 0.9"
+  },
+  "level": "peer_assessed",
+  "dimensions": {
+    "A": null,
+    "B": {
+      "band": 1,
+      "established_from": [
+        "session-event",
+        "auction",
+        "stream-disclosure"
+      ]
+    },
+    "C": {
+      "band": 1,
+      "established_from": [
+        "stream-disclosure",
+        "direct-formation-contention"
+      ]
+    },
+    "D": {
+      "band": 1,
+      "established_from": [
+        "session-event"
+      ]
+    },
+    "E": {
+      "band": 1,
+      "established_from": [
+        "invitation",
+        "auction",
+        "appeal",
+        "annotated-offer"
+      ]
+    }
+  },
+  "scope": {
+    "role_scopes": [
+      "a202-scope/operated/0.1"
+    ],
+    "profiles": [
+      "a202-profile/calibration-service/0.1",
+      "a202-profile/freight-spot/0.1"
+    ],
+    "transports": [
+      "https://schemas.a202.org/a2a-ext/commercial/0.1"
+    ]
+  },
+  "held_out_coverage": {
+    "dimensions": [
+      "B",
+      "E"
+    ],
+    "case_count": 24,
+    "families": [
+      "session-event",
+      "auction"
+    ]
+  },
+  "issued_at": "2026-07-30T09:00:00Z",
+  "expires_at": "2027-07-30T09:00:00Z",
+  "status": "active",
+  "determination_ref": {
+    "determination_id": "det_grade_operator_operated_01",
+    "determination_hash": "b28f7e6104c3a95d27fe0b81c46a3d97521ecf8043ba69d17c0e5f39a8b41d26"
+  },
+  "signature": {
+    "key_id": "key_northstar_agent_01",
+    "algorithm": "ES256",
+    "signature": "synthetic-placeholder-signature-value",
+    "signed_at": "2026-07-30T09:00:00Z",
+    "purpose": "grade_issuance"
+  }
+}

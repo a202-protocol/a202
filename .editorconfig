@@ -1,0 +1,26 @@
+# https://editorconfig.org
+#
+# The conformance runner hashes the re-serialised object rather than the bytes
+# of the file, so an editor's choice of line ending cannot change a content
+# hash. These settings are for readability and for keeping diffs to the lines
+# that were actually edited.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.py]
+indent_size = 4
+max_line_length = 100
+
+[*.md]
+indent_size = 2
+
+[Makefile]
+indent_style = tab

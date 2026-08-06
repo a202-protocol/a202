@@ -1,0 +1,54 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "inv_raw_address_01",
+  "object_type": "counterparty_invitation",
+  "version": 1,
+  "created_at": "2026-07-26T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "dad2c3ca32fd4545fdc1a5bd06c586fa84df27254fcb82036a6dd603f1f0b047",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-26T09:00:00Z",
+      "purpose": "invitation_issuance"
+    }
+  ],
+  "payload": {
+    "inviting_party": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "invited_channel": {
+      "channel_type": "email_domain_scoped",
+      "channel_domain": "invited.party@example.invalid",
+      "channel_ref": "chn_helix_procurement_01",
+      "channel_hash": "1122334455667788990011223344556677889900112233445566778899001122"
+    },
+    "claim_secret_hash": "9f8e7d6c5b4a39281706f5e4d3c2b1a09f8e7d6c5b4a39281706f5e4d3c2b1a0",
+    "expires_at": "2026-08-02T09:00:00Z",
+    "purpose_note": "Northstar is sourcing accredited pressure transmitter calibration.",
+    "disclosed_scope": {
+      "category": "services.calibration",
+      "summary": "Calibration and digital certificates for 20 pressure transmitters.",
+      "response_deadline": "2026-08-01T17:00:00Z"
+    },
+    "granted_scope": {
+      "transaction_ids": [
+        "txn_calibration_demo_01"
+      ],
+      "actions": [
+        "offer.submit"
+      ]
+    },
+    "minimum_assurance": "self_asserted",
+    "endpoint_offer": "participant_operated"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "fixture_kind": "bundle",
+  "note": "A bundle asserting one sequence across a session stream and the transaction stream. A verifier that accepted it would be reading a covert channel as a correctness property.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_transaction_committed_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-06T10:00:00Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "d45c62d5436f755b9c6cf325f2c6d92bd37ac920785ef23c33a32bcfd3f39f8e",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-06T10:00:00Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_calibration_demo_01"
+        },
+        "sequence": 4,
+        "event_type": "agreement.committed",
+        "occurred_at": "2026-08-06T10:00:00Z",
+        "previous_event_hash": null,
+        "action_hash": "22242b21536d7df1af1294f95df366d30f731f0d5f7711236129eab816ea4d1f",
+        "policy_decision_id": "pol_transaction_committed_01",
+        "from_state": "agreement_pending",
+        "to_state": "committed",
+        "data": {}
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_session_offer_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-06T11:00:00Z",
+      "created_by": {
+        "organization_id": "org_a202_operator",
+        "agent_id": "agt_a202_control_01",
+        "mandate_id": "mnd_a202_control_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "content_hash": "3b8c205bf6f530218127be2596eadb171b74d3dfafeecf7aa95cef873a3763c4",
+      "signatures": [
+        {
+          "key_id": "key_a202_control_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-06T11:00:00Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "session",
+          "id": "ses_northstar_delta_01"
+        },
+        "sequence": 1,
+        "event_type": "offer.submitted",
+        "occurred_at": "2026-08-06T11:00:00Z",
+        "previous_event_hash": "d45c62d5436f755b9c6cf325f2c6d92bd37ac920785ef23c33a32bcfd3f39f8e",
+        "action_hash": "a90398cb3a8cd2e03f5f833d2aff6906f2ae2d3c3e1723443f7325beefd878f7",
+        "policy_decision_id": "pol_session_offer_01",
+        "from_state": "opened",
+        "to_state": "active",
+        "data": {
+          "offer_id": "off_calibration_demo_01",
+          "supersedes_offer_id": null
+        }
+      }
+    }
+  ]
+}

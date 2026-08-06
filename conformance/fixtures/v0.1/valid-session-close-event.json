@@ -1,0 +1,41 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "evt_session_close_delta_01",
+  "object_type": "transaction_event",
+  "version": 1,
+  "created_at": "2026-07-25T16:00:00Z",
+  "created_by": {
+    "organization_id": "org_a202_operator",
+    "agent_id": "agt_a202_control_01",
+    "mandate_id": "mnd_a202_control_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "8849dc69ebb94640b82bd73f7cdb363d00399c9d89d29f3015e869fa8e1a4fe0",
+  "signatures": [
+    {
+      "key_id": "key_a202_control_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T16:00:00Z",
+      "purpose": "event_append"
+    }
+  ],
+  "payload": {
+    "stream": {
+      "kind": "session",
+      "id": "ses_northstar_delta_01"
+    },
+    "sequence": 7,
+    "event_type": "session.closed",
+    "occurred_at": "2026-07-25T16:00:00Z",
+    "previous_event_hash": "2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b",
+    "action_hash": "3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c",
+    "policy_decision_id": "pol_a202_close_01",
+    "from_state": "active",
+    "to_state": "closed",
+    "data": {
+      "close_reason": "not_selected"
+    }
+  }
+}

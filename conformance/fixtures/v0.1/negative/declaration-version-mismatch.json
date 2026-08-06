@@ -1,0 +1,25 @@
+{
+  "fixture_kind": "declaration",
+  "note": "The counterparty writes a version this party does not read. There is no nearest-version selection and no fallback to an earlier extension URI.",
+  "local_party": {
+    "read_versions": [
+      "0.1"
+    ],
+    "write_version": "0.1"
+  },
+  "counterparty_declaration": {
+    "extensions": [
+      {
+        "uri": "https://schemas.a202.org/a2a-ext/commercial/0.1",
+        "description": "Exchanges A202 commercial objects.",
+        "required": true,
+        "params": {
+          "read_versions": [
+            "0.2"
+          ],
+          "write_version": "0.2"
+        }
+      }
+    ]
+  }
+}

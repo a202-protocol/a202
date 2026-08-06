@@ -1,0 +1,53 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "det_calibration_question_01",
+  "object_type": "determination",
+  "version": 1,
+  "created_at": "2026-08-15T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "affc959215802eaf9428d73ea0bf70d9a7041dd665fb0a1e970d41b1e381d544",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-15T10:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "dispute_id": "dsp_delta_calibration_01",
+    "question": {
+      "subject_type": "obligation_state",
+      "subject_hash": "50715387eccdc981c16984cb2b68aecb74a3762df8baa7ddf6398054db5f696f",
+      "subject_id": "obl_delta_calibration_01",
+      "rules_ref": {
+        "rule_set_id": "a202-rules/pilot",
+        "version": "1.0",
+        "rules_hash": "11a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f80"
+      }
+    },
+    "outcome": {
+      "verdict": "upheld",
+      "finding": "The refusal is upheld.",
+      "inputs_hash": "374753a447129ad59f1762cceb5ea98df650b690be7b7788c86867fad24d684e",
+      "state_result": null
+    },
+    "determiner": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "authority_basis_ref": "a202-rules/pilot#determiner.authority",
+    "effect": "presumptive",
+    "supersedes": null,
+    "appeal_route_ref": "a202-rules/pilot#appeal.route",
+    "determined_at": "2026-08-15T10:00:00Z",
+    "effective_from": "2026-08-15T10:00:00Z"
+  }
+}

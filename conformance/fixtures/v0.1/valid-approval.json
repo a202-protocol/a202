@@ -1,0 +1,35 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "apr_northstar_custody_01",
+  "object_type": "approval",
+  "version": 1,
+  "created_at": "2026-08-01T09:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "payload": {
+    "action_hash": "d1a4c2e7f0b3958d6a1c4e7f0b3958d6a1c4e7f0b3958d6a1c4e7f0b3958d6a1",
+    "approver": {
+      "organization_id": "org_northstar",
+      "principal_id": "prn_northstar_procurement_director",
+      "role": "procurement_director"
+    },
+    "decision": "approved",
+    "expires_at": "2026-08-01T10:00:00Z",
+    "conditions": []
+  },
+  "content_hash": "3dfe5b1489cce9aa3416eb904916c55bce0d6fb9b80c451233bc56528ae22fd0",
+  "signatures": [
+    {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ]
+}

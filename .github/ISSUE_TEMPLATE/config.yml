@@ -1,0 +1,11 @@
+# A blank issue carries none of the structure the proposal process depends on,
+# so the two forms are the only routes in. A vulnerability is neither of them
+# and is routed out of the issue tracker entirely.
+blank_issues_enabled: false
+contact_links:
+  - name: Report a vulnerability privately
+    url: mailto:security@a202.org
+    about: A specification defect that lets an implementation be induced to disclose a counterparty's activity, accept an unauthorised commitment, or forge an authority chain is exploitable against every implementation at once. Never open an issue for one. See SECURITY.md.
+  - name: Raise a conduct concern
+    url: mailto:conduct@a202.org
+    about: Read by the maintainers and nobody else. See CODE_OF_CONDUCT.md.

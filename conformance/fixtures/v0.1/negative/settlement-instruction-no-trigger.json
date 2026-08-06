@@ -1,0 +1,36 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "stl_delta_calibration_01",
+  "object_type": "settlement_instruction",
+  "version": 1,
+  "created_at": "2026-08-12T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "d6ac5331f70c4259556721d9032c1b0a4118070eb9fe30886392671d489552b3",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-12T10:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ],
+  "payload": {
+    "obligation_id": "obl_delta_calibration_01",
+    "agreement_id": "agr_calibration_demo_01",
+    "amount": {
+      "currency": "EUR",
+      "amount": "3200.00"
+    },
+    "payer_organization_id": "org_northstar",
+    "payee_organization_id": "org_delta",
+    "rail": "rail_test_sandbox",
+    "idempotency_key": "stl-delta-calibration-01-attempt-1"
+  }
+}

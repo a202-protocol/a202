@@ -1,0 +1,50 @@
+name: Docs
+
+# The documentation site renders the tracked tree: .mkdocs/stage.py mirrors
+# the repository into the docs directory and mkdocs.yml arranges it. This
+# workflow proves on every change that the site still builds. Deployment is
+# a separate, deliberate act and is not performed here.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the documentation toolchain
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-docs.txt
+
+      - name: Stage the tracked tree
+        run: python .mkdocs/stage.py
+
+      - name: Build
+        run: mkdocs build
+
+      - name: Upload the built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site/
+          retention-days: 14

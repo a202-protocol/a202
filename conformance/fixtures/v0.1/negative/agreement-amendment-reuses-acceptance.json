@@ -1,0 +1,167 @@
+{
+  "fixture_kind": "bundle",
+  "note": "A version-2 agreement restating different terms over the version-1 acceptance and offer. Changed terms need a fresh offer and acceptance; a re-versioned agreement nobody re-accepted is a unilateral restatement wearing an amendment's shape.",
+  "context": {},
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "agr_calibration_demo_01",
+      "object_type": "agreement",
+      "version": 1,
+      "created_at": "2026-08-01T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": null,
+      "payload": {
+        "accepted_offer_id": "off_calibration_demo_01",
+        "accepted_offer_hash": "eca663f3dfe2e3d3d985da3135bea5e7eb6e66c492aa9cfd67018ada44fea26a",
+        "acceptance_id": "acc_calibration_demo_01",
+        "buyer": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "supplier": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "terms": {
+          "profile": "a202-profile/calibration-service/0.1",
+          "core": {
+            "description": "Calibration and digital certificates for 10 pressure transmitters",
+            "quantity": "10",
+            "unit_code": "H87",
+            "unit_name": "piece",
+            "total": {
+              "currency": "EUR",
+              "amount": "3200.00"
+            }
+          },
+          "profile_terms": {
+            "completion": {
+              "business_days_after_collection": 15,
+              "business_calendar": "NL"
+            },
+            "payment": {
+              "prepayment_percent": "20",
+              "balance_trigger": "buyer_acceptance"
+            },
+            "acceptance": {
+              "certificate_required": true,
+              "machine_readable_result_required": true,
+              "qualification_standard": "ISO/IEC 17025:2017"
+            },
+            "rework": {
+              "included_attempts": 1
+            }
+          }
+        },
+        "terms_hash": "04d44f9dd83ddfd635756402d0df88de3cdc7b56faa3fe5d59966abbbf4d8055",
+        "effective_at": "2026-08-01T09:00:00Z",
+        "commitment_ids": [
+          "cmt_delta_calibration_01"
+        ]
+      },
+      "content_hash": "b1e9dea03e0b0766ee143322941a50518603e7d595678c7af0bf6a67351a5a82",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "agreement_commitment"
+        },
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "agreement_commitment"
+        }
+      ]
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "agr_calibration_demo_02",
+      "object_type": "agreement",
+      "version": 2,
+      "created_at": "2026-08-12T11:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_calibration_demo_01",
+      "previous_version_id": "agr_calibration_demo_01",
+      "payload": {
+        "accepted_offer_id": "off_calibration_demo_01",
+        "accepted_offer_hash": "eca663f3dfe2e3d3d985da3135bea5e7eb6e66c492aa9cfd67018ada44fea26a",
+        "acceptance_id": "acc_calibration_demo_01",
+        "buyer": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "supplier": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "terms": {
+          "profile": "a202-profile/calibration-service/0.1",
+          "core": {
+            "description": "Calibration and digital certificates for 12 pressure transmitters",
+            "quantity": "12",
+            "unit_code": "H87",
+            "unit_name": "piece",
+            "total": {
+              "currency": "EUR",
+              "amount": "3760.00"
+            }
+          },
+          "profile_terms": {
+            "completion": {
+              "business_days_after_collection": 15,
+              "business_calendar": "NL"
+            },
+            "payment": {
+              "prepayment_percent": "20",
+              "balance_trigger": "buyer_acceptance"
+            },
+            "acceptance": {
+              "certificate_required": true,
+              "machine_readable_result_required": true,
+              "qualification_standard": "ISO/IEC 17025:2017"
+            },
+            "rework": {
+              "included_attempts": 1
+            }
+          }
+        },
+        "terms_hash": "d1916f0036c87faa40ac651f448a2375f43503bb519c174a051a723765be695d",
+        "effective_at": "2026-08-12T11:00:00Z",
+        "commitment_ids": [
+          "cmt_delta_calibration_01"
+        ]
+      },
+      "content_hash": "c3103362d83e32da2de42fd20700335666c74bb68b2c04d83358c97cae819e54",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "agreement_commitment"
+        },
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-01T09:00:00Z",
+          "purpose": "agreement_commitment"
+        }
+      ]
+    }
+  ]
+}

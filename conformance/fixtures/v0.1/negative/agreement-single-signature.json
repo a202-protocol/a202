@@ -1,0 +1,73 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "agr_calibration_demo_01",
+  "object_type": "agreement",
+  "version": 1,
+  "created_at": "2026-07-25T10:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": "txn_calibration_demo_01",
+  "previous_version_id": null,
+  "content_hash": "aa6b1264d6e136f4b66fc2e9b7ab5c758b06e09ff9ceb0f55450373cd0423364",
+  "signatures": [
+    {
+      "key_id": "key_northstar_agent_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-07-25T10:00:00Z",
+      "purpose": "agreement_commitment"
+    }
+  ],
+  "payload": {
+    "accepted_offer_id": "off_calibration_demo_01",
+    "accepted_offer_hash": "bb8368d183b1cf026b4e4a7ee7c2b8b22715fb8bf73ad18e6b7cee37a40886dd",
+    "acceptance_id": "acc_calibration_demo_01",
+    "buyer": {
+      "organization_id": "org_northstar",
+      "agent_id": "agt_northstar_buyer_01"
+    },
+    "supplier": {
+      "organization_id": "org_delta",
+      "agent_id": "agt_delta_supplier_01"
+    },
+    "terms": {
+      "profile": "a202-profile/calibration-service/0.1",
+      "core": {
+        "description": "Calibration and digital certificates for 20 pressure transmitters",
+        "quantity": "20",
+        "unit_code": "H87",
+        "unit_name": "piece",
+        "total": {
+          "currency": "EUR",
+          "amount": "3200.00"
+        }
+      },
+      "profile_terms": {
+        "completion": {
+          "business_days_after_collection": 15,
+          "business_calendar": "NL"
+        },
+        "payment": {
+          "prepayment_percent": "20",
+          "balance_trigger": "buyer_acceptance"
+        },
+        "acceptance": {
+          "certificate_required": true,
+          "machine_readable_result_required": true,
+          "qualification_standard": "ISO/IEC 17025:2017"
+        },
+        "rework": {
+          "included_attempts": 1
+        }
+      }
+    },
+    "terms_hash": "ff62dfa782120e07495682b3f779b317e2326552b2c412dc555ea4b070fd18ff",
+    "effective_at": "2026-07-25T10:00:00Z",
+    "commitment_ids": [
+      "cmt_calibration_demo_01"
+    ]
+  }
+}

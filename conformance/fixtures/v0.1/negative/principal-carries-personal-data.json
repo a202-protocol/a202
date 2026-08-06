@@ -1,0 +1,33 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "id": "prn_northstar_procurement_director",
+  "object_type": "principal",
+  "version": 1,
+  "created_at": "2026-07-01T00:00:00Z",
+  "created_by": {
+    "organization_id": "org_northstar",
+    "agent_id": "agt_northstar_buyer_01",
+    "mandate_id": "mnd_northstar_buyer_01"
+  },
+  "transaction_id": null,
+  "previous_version_id": null,
+  "payload": {
+    "organization_id": "org_northstar",
+    "role": "procurement_director",
+    "status": "active",
+    "authority_evidence_refs": [],
+    "contact_ref": "chn_northstar_director_01",
+    "full_name": "Marieke de Vries",
+    "email": "m.devries@northstar.invalid"
+  },
+  "content_hash": "dd51d4f96d24f350d877d895cecb9f973b4f087f5c8f20e1e7357769485706c7",
+  "signatures": [
+    {
+      "key_id": "key_northstar_principal_01",
+      "algorithm": "ES256",
+      "signature": "synthetic-placeholder-signature-value",
+      "signed_at": "2026-08-01T09:00:00Z",
+      "purpose": "object_issuance"
+    }
+  ]
+}

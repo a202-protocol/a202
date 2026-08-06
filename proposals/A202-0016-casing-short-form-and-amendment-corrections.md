@@ -1,0 +1,65 @@
+# A202-0016: Name the value an object carries, admit the short form the fixtures already use, and state the amendment rule where the inventory defers it
+
+**Status:** Fixtures and compatibility. Stage 3 of the five stages in [README.md](README.md) section 3. All three changes are implemented, and the suite passes with them in place.
+
+**Date:** 30 July 2026
+
+**Status of this document:** Informative in full. It states no requirement on an implementation. The normative text this proposal amends is carried by [fulfillment/settlement-handoff-v0.1.md](../fulfillment/settlement-handoff-v0.1.md), [evidence/evidence-verification-v0.1.md](../evidence/evidence-verification-v0.1.md), and [schemas/canonical-commercial-model-v0.1.md](../schemas/canonical-commercial-model-v0.1.md), each of which marks its own normative sections.
+
+## 1. Problem
+
+Three defects of one family, found in the founder review of 30 July 2026. In each, a normative sentence disagrees with something already deployed: a schema, a fixture, or a later section of the set. Where prose and an enforced artifact disagree, an implementer who follows the prose fails the suite, which is the worst available outcome because the prose is what a reader is entitled to rely on.
+
+**A settlement instruction could not both conform to section 2.1 and validate.** Section 2.1 of the settlement document required the common envelope "with `object_type` set to `SettlementInstruction`". The kernel schema registers `settlement_instruction`, the conditional at that value is what constrains the payload, and [valid-settlement-instruction.json](../conformance/fixtures/v0.1/valid-settlement-instruction.json) carries `settlement_instruction`. An object built to the sentence carries an `object_type` that is not a member of the enum and is refused. The sentence was the only one in any normative document asserting a CamelCase value for an enum field, and the document elsewhere uses the two spellings correctly and without saying that it is doing so: `SettlementInstruction` for the object kind, in section 2's opening line and in the annexes, and the enum value nowhere else. One sentence crossed the two, and nothing said which was which.
+
+**The evidence document defined a shape the rest of the set did not use.** Section 3 made `content_hash`, `evidence_type`, and `signed_by` REQUIRED with no alternative, and section 2 item 1 requires an implementation to emit references "in the shape defined in section 3". Meanwhile the kernel schema's `evidenceRefOrId` admits a bare `evd_` identifier on five members, the mandate schema admits it on its own `evidence_refs`, the runner's `evidence_reference_failures` returns no failure for one, and seven positive fixtures carry it, including `valid-offer`, `valid-commercial-mandate`, and the bilateral direct-formation bundle. [A202-0004](A202-0004-evidence-verification.md) section 4.1 is where the form was decided: it records the identifier-only form as remaining valid, names it the short form, and states that closing it is a MAJOR change deliberately not taken. That reasoning never reached the adopted document. So the normative text forbade what the deployed artifacts required, and a reader who obeyed section 3 literally would have called seven passing fixtures non-conformant.
+
+**The object inventory deferred a rule the same document had already landed.** Section 5.4 gave the `Agreement` row's mutable-fields cell as "None; amend in future spec". Section 10.1, adopted through [A202-0010](A202-0010-model-completion.md), defines the amendment path: a superseding agreement version reached through a fresh offer and a fresh acceptance, dual-signed, refusing a version that reuses its predecessor's acceptance or offer. The cell pointed a reader at a future specification for a rule five sections below it, and `valid-agreement-amendment` and `agreement-amendment-reuses-acceptance` have fixtured both directions of it since 28 July.
+
+## 2. Change
+
+1. **Section 2.1 of the settlement document names the enum value.** `object_type` is set to `settlement_instruction`. A short paragraph follows it stating the convention the document was already keeping: `SettlementInstruction` names the object kind, `settlement_instruction` is the registered enum member an instance carries, and where a rule states what an object carries it states the enum value. The reference to the kind in section 2's opening line stands, because it refers to the kind. No schema, fixture, or runner behaviour changes; the prose moves to where they already were.
+
+2. **Section 3 of the evidence document admits the short form, and a new section 3.3 constrains it.** The field table is marked by form: `evidence_id` is REQUIRED in both, `content_hash`, `evidence_type`, and `signed_by` are REQUIRED in the full form, and the table states for each that the short form does not carry it. A sentence after the table closes the gap the marking opens: a reference carrying some full-form fields and not others is an incomplete full form and is refused, not a short form. Section 3.3 states five rules, and each of them is the behaviour already enforced rather than a new one.
+
+   - The short form is admitted only on the five members that predate the reference shape: `evidence_refs` on an `Offer` and a `CommercialMandate`, `assurance_evidence_refs` on an `InvitationAcceptance`, `identity_evidence_refs` on an `Organization`, and `authority_evidence_refs` on a `Principal`. Every family defined with the shape requires the full form, which is what the kernel schema already does by referencing `evidenceRef` rather than `evidenceRefOrId` from a performance event, a dispute, and a determination's `evidence_relied_on`.
+   - A short form resolves only where the referenced `Evidence` object is co-present, in the same bundle or the same transaction record. Resolved that way the hash chain is unbroken: the referencing object's own `content_hash` covers the identifier and is recomputed at step 1, and the referenced object's `content_hash` and `signatures` are checked at steps 1 and 2 like any other object in the set. Nothing is accepted on the strength of a name.
+   - A short form whose target is not co-present is `not_checkable` under section 5 and is named as an unresolved reference at step 7. It is never verified and never failed, and the object carrying it is not thereby invalid: the target may exist and simply not have been disclosed, which under section 6 is the normal case. This is exactly what the reference verifier does today, and it is why `valid-agreement-direct-formation` and `valid-agreement-amendment` pass while carrying short-form references to evidence neither bundle contains.
+   - A resolution does not travel. Two sets can carry different `Evidence` objects under one identifier and each verify internally, so a verifier may not carry a short-form resolution from one bundle into another, and may not read a short form as evidence that particular bytes were referenced. This is the substitution the content hash removes and the short form does not.
+   - Nothing new takes the short form, and an implementation SHOULD emit the full form even where the short form is admitted.
+
+3. **The `Agreement` row of section 5.4 states the rule.** The cell becomes "None; amend by a superseding version reached through a fresh offer and acceptance, under section 10.1". The rest of the section 5.4 table was read against [A202-0010](A202-0010-model-completion.md) and [A202-0014](A202-0014-bilateral-formation-and-scope-repair.md) in the same pass and no other cell is stale: the session-scoped `Offer` and `Acceptance` rows survive bilateral formation, where the session identifier is party minted rather than absent, and the `PolicyDecision` owner in section 5.2, which was the comparable defect, was corrected by A202-0014.
+
+## 3. What this proposal does not change
+
+No schema changes. No object changes shape, no enum gains or loses a member, no reason code is added, and no state or transition is touched. The runner's normative layer and the reference verifier are unchanged: both were checked against the words being written, and both were already enforcing them. That is the test this proposal had to pass to stay a corrections proposal, and where the two had disagreed the change would have belonged in the enforcement layer instead.
+
+## 4. Alternatives considered
+
+**Close the short form here instead of writing it down.** Rejected. It is the reading A202-0004 section 4.1 considered and declined: requiring the full form everywhere invalidates every object carrying a bare identifier, which today includes seven positive fixtures and the mandate schema's own reference array, and RELEASES.md section 2 classifies that as MAJOR. Taking it inside a corrections proposal would also decide a migration question in a document nobody would think to look in. The form stays, the constraints on it become explicit, and closing it remains available to a proposal that argues for it and carries the migration.
+
+**Say nothing and let the schema govern.** Rejected. It is the position that produced the defect: an implementer reads the specification, and a specification whose normative section forbids what its schema requires has already failed whichever of the two the implementer trusted. It also leaves the fail-closed rules unwritten, and those are the load-bearing part. Admitting a weaker form without stating that its resolution does not travel is how a short form becomes read as equivalent to a full one.
+
+**Fix the settlement casing the other way, by registering `SettlementInstruction` in the enum.** Rejected without much hesitation. Every other member of the enum is snake_case, the fixture set and the reference implementation are written against `settlement_instruction`, and one CamelCase member would make the enum's own convention unstateable. The prose was wrong, not the schema.
+
+**Leave the `Agreement` cell and rely on section 10.1.** Rejected. An inventory that says a rule is deferred is a statement about the rule, not an absence of one, and a reader who checks the inventory for what may change about an agreement gets a wrong answer without any signal to read further.
+
+## 5. Compatibility
+
+All three are **PATCH-class** under [RELEASES.md](../RELEASES.md) section 2. No normative requirement changes for any implementation that was passing the suite, because in each case the suite was already enforcing the corrected reading. The migration surface is empty. An implementation built against the settlement sentence rather than the schema could not have passed the suite at any point, so there is nobody in that population to migrate.
+
+One classification is worth stating explicitly rather than assumed. Admitting the short form in the evidence document looks like a MINOR addition and is not one: the form was already admitted by the schema this document depends on, and the document's own conformance clause pointed at a section that did not describe it. What lands is the description, and the fail-closed constraints in section 3.3 are constraints on a verifier's reporting that the three-valued output of section 5 already imposed.
+
+## 6. Fixture plan
+
+Implemented, not planned.
+
+The allow direction of the short form is `valid-evidence-reference-identifier-form`, which has exercised it since A202-0004 and whose manifest note now cites section 3.3 and the co-presence rule rather than restating the behaviour loosely. `valid-evidence-reference` remains the full form's allow direction.
+
+The refuse direction is added: `negative/evidence-ref-short-form-where-full-form-required`, a performance event carrying a bare `evd_` identifier where section 3.3 rule 1 requires the full form. It is refused by the closed payload shape and declares no reason code, on the rule the runner already applies to a schema-enforced refusal for which no code is defined, and the runner asserts that the schema layer did refuse it so that an absent declaration cannot cover a fixture nothing refuses. It matches `negative/evidence-*.json` and no other family pattern, so the partition in [conformance-role-scopes-v0.1.md](../conformance/conformance-role-scopes-v0.1.md) section 4.3 stays total and disjoint.
+
+The other two changes are fixtured already and add nothing. `valid-settlement-instruction` carries `settlement_instruction` and is the allow direction of the corrected sentence; `valid-agreement-amendment` and `negative/agreement-amendment-reuses-acceptance` are both directions of the rule the `Agreement` cell now states.
+
+## 7. Origin
+
+The founder review of 30 July 2026, reading the adopted set against the schemas and the fixture set rather than against itself. All three findings are of the shape [A202-0009](A202-0009-enforcement-fidelity.md) named: a document states a property and the artifact that enforces it says something else. The difference here is the direction. In A202-0009 the prose was right and nothing checked it; in these three the check was right and the prose was wrong, which is the harder one to notice from a passing suite.

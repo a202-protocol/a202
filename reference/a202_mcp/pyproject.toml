@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "a202-mcp"
+version = "0.1.0"
+description = "A202 bilateral capabilities exposed as MCP tools, over the reference implementation in this repository"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+keywords = ["a202", "mcp", "commerce", "mandate", "verification"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Libraries",
+]
+# The server binds the SDK's low-level Server through its constructor
+# handlers, which is the 2.0 interface. Verified against mcp 2.0.0.
+dependencies = [
+  "mcp>=2.0",
+  "jsonschema>=4.18",
+  "referencing>=0.30",
+  "cryptography>=41",
+]
+
+[project.scripts]
+a202-mcp = "a202_mcp.__main__:main"
+
+# The package sits one directory below the reference implementation it wraps,
+# so the distribution root is this directory and the import name is set here
+# rather than inferred from it.
+[tool.setuptools]
+package-dir = { "a202_mcp" = "." }
+packages = ["a202_mcp"]
+
+# `mcp` requires Python 3.10, which is what requires-python states. The tool
+# handlers themselves import nothing from the SDK and run on 3.9, the version
+# the reference implementation targets, so the test suite runs there too.

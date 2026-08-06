@@ -1,0 +1,277 @@
+{
+  "fixture_kind": "bundle",
+  "note": "Two parties who already found each other form an agreement with no operator in the record: the offeror mints the session identifier on its own offer, the offeree accepts over the exact offer hash, agreement.direct carries the transaction from draft to agreement_pending under rules version 1.3, and both parties sign the same agreement bytes. No object in the bundle is authored, ordered, or annotated by a control plane.",
+  "context": {
+    "rules_version_in_force": "1.3"
+  },
+  "objects": [
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "off_bilateral_direct_01",
+      "object_type": "offer",
+      "version": 1,
+      "created_at": "2026-08-20T09:00:00Z",
+      "created_by": {
+        "organization_id": "org_delta",
+        "agent_id": "agt_delta_supplier_01",
+        "mandate_id": "mnd_delta_supplier_01"
+      },
+      "transaction_id": "txn_bilateral_direct_01",
+      "previous_version_id": null,
+      "content_hash": "e026986a67c9c3ecb2dc544e990143dcdea0ff701c0d99177d44622a4f8939ed",
+      "signatures": [
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T09:00:00Z",
+          "purpose": "offer_submission"
+        }
+      ],
+      "payload": {
+        "offeror": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "offeree": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "session_id": "ses_delta_northstar_direct_01",
+        "supersedes_offer_id": null,
+        "valid_until": "2026-08-21T09:00:00Z",
+        "terms": {
+          "profile": "a202-profile/calibration-service/0.1",
+          "core": {
+            "description": "Calibration and digital certificates for 20 pressure transmitters",
+            "quantity": "20",
+            "unit_code": "H87",
+            "unit_name": "piece",
+            "total": {
+              "currency": "EUR",
+              "amount": "3200.00"
+            }
+          },
+          "profile_terms": {
+            "completion": {
+              "business_days_after_collection": 15,
+              "business_calendar": "NL"
+            },
+            "payment": {
+              "prepayment_percent": "20",
+              "balance_trigger": "buyer_acceptance"
+            },
+            "acceptance": {
+              "certificate_required": true,
+              "machine_readable_result_required": true,
+              "qualification_standard": "ISO/IEC 17025:2017"
+            },
+            "rework": {
+              "included_attempts": 1
+            }
+          }
+        },
+        "evidence_refs": [
+          "evd_delta_accreditation_01"
+        ]
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "acc_bilateral_direct_01",
+      "object_type": "acceptance",
+      "version": 1,
+      "created_at": "2026-08-20T11:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_bilateral_direct_01",
+      "previous_version_id": null,
+      "content_hash": "786a152610d1f035e653bdc456c417c15ae0aabce1a380f4125dc8aa77fe1797",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T11:00:00Z",
+          "purpose": "offer_acceptance"
+        }
+      ],
+      "payload": {
+        "offer_id": "off_bilateral_direct_01",
+        "offer_hash": "e026986a67c9c3ecb2dc544e990143dcdea0ff701c0d99177d44622a4f8939ed",
+        "session_id": "ses_delta_northstar_direct_01",
+        "accepting_party": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        }
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "agr_bilateral_direct_01",
+      "object_type": "agreement",
+      "version": 1,
+      "created_at": "2026-08-20T12:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_bilateral_direct_01",
+      "previous_version_id": null,
+      "content_hash": "c53a3580a40eb5d1e23f0f9d7f456db30807b136565a6979f1c87015b7b4285b",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T12:00:00Z",
+          "purpose": "agreement_commitment"
+        },
+        {
+          "key_id": "key_delta_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T12:00:00Z",
+          "purpose": "agreement_commitment"
+        }
+      ],
+      "payload": {
+        "accepted_offer_id": "off_bilateral_direct_01",
+        "accepted_offer_hash": "e026986a67c9c3ecb2dc544e990143dcdea0ff701c0d99177d44622a4f8939ed",
+        "acceptance_id": "acc_bilateral_direct_01",
+        "buyer": {
+          "organization_id": "org_northstar",
+          "agent_id": "agt_northstar_buyer_01"
+        },
+        "supplier": {
+          "organization_id": "org_delta",
+          "agent_id": "agt_delta_supplier_01"
+        },
+        "terms": {
+          "profile": "a202-profile/calibration-service/0.1",
+          "core": {
+            "description": "Calibration and digital certificates for 20 pressure transmitters",
+            "quantity": "20",
+            "unit_code": "H87",
+            "unit_name": "piece",
+            "total": {
+              "currency": "EUR",
+              "amount": "3200.00"
+            }
+          },
+          "profile_terms": {
+            "completion": {
+              "business_days_after_collection": 15,
+              "business_calendar": "NL"
+            },
+            "payment": {
+              "prepayment_percent": "20",
+              "balance_trigger": "buyer_acceptance"
+            },
+            "acceptance": {
+              "certificate_required": true,
+              "machine_readable_result_required": true,
+              "qualification_standard": "ISO/IEC 17025:2017"
+            },
+            "rework": {
+              "included_attempts": 1
+            }
+          }
+        },
+        "terms_hash": "ff62dfa782120e07495682b3f779b317e2326552b2c412dc555ea4b070fd18ff",
+        "effective_at": "2026-08-20T12:00:00Z",
+        "commitment_ids": [
+          "cmt_bilateral_direct_01"
+        ]
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_bilateral_direct_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-20T11:30:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_bilateral_direct_01",
+      "previous_version_id": null,
+      "content_hash": "31fa07818d284419bb536418d720061f0736f85a7cb3407503471eab0c18430c",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T11:30:00Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_bilateral_direct_01"
+        },
+        "sequence": 1,
+        "event_type": "agreement.direct",
+        "occurred_at": "2026-08-20T11:30:00Z",
+        "previous_event_hash": null,
+        "action_hash": "63fe2ce6a865ebefec7cdfc1c8995856312fd7b8f09ff7c1844df39257b44515",
+        "policy_decision_id": "pol_bilateral_direct_01",
+        "from_state": "draft",
+        "to_state": "agreement_pending",
+        "data": {
+          "offer_id": "off_bilateral_direct_01",
+          "acceptance_id": "acc_bilateral_direct_01",
+          "session_id": "ses_delta_northstar_direct_01"
+        }
+      }
+    },
+    {
+      "spec_version": "a202-commercial/0.1",
+      "id": "evt_bilateral_commit_01",
+      "object_type": "transaction_event",
+      "version": 1,
+      "created_at": "2026-08-20T12:00:00Z",
+      "created_by": {
+        "organization_id": "org_northstar",
+        "agent_id": "agt_northstar_buyer_01",
+        "mandate_id": "mnd_northstar_buyer_01"
+      },
+      "transaction_id": "txn_bilateral_direct_01",
+      "previous_version_id": null,
+      "content_hash": "b024650607d107037e099b71b95fe8ca02dfb0c8ff849fe1b9a4f6cb1e772b15",
+      "signatures": [
+        {
+          "key_id": "key_northstar_agent_01",
+          "algorithm": "ES256",
+          "signature": "synthetic-placeholder-signature-value",
+          "signed_at": "2026-08-20T12:00:00Z",
+          "purpose": "event_append"
+        }
+      ],
+      "payload": {
+        "stream": {
+          "kind": "transaction",
+          "id": "txn_bilateral_direct_01"
+        },
+        "sequence": 2,
+        "event_type": "agreement.committed",
+        "occurred_at": "2026-08-20T12:00:00Z",
+        "previous_event_hash": "31fa07818d284419bb536418d720061f0736f85a7cb3407503471eab0c18430c",
+        "action_hash": "9c62451d178f66224a7a08749675acbacc3d46f8892c9e172c3657eed3000436",
+        "policy_decision_id": "pol_bilateral_commit_01",
+        "from_state": "agreement_pending",
+        "to_state": "committed",
+        "data": {
+          "agreement_id": "agr_bilateral_direct_01"
+        }
+      }
+    }
+  ]
+}
