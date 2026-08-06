@@ -4,11 +4,12 @@
 # full; where one of them and a specification document disagree, the
 # document is the definition.
 # Build: python3 .mkdocs/stage.py && mkdocs build
-# repo_url is added when the repository has a public home.
 
 site_name: A202 Protocol
 site_description: "A202, the Verifiable Agreement Protocol for Agent-Led Commerce: an open specification of commercial authority, negotiation state, and verifiable conformance for transactions between independent organisations."
 site_url: https://a202.org/
+repo_url: https://github.com/a202-protocol/a202
+repo_name: a202-protocol/a202
 docs_dir: .mkdocs/stage
 site_dir: site
 
@@ -32,6 +33,7 @@ theme:
   favicon: assets/favicon.svg
   icon:
     logo: material/file-sign
+    repo: fontawesome/brands/github
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
