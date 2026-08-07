@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{#
+  Structured data for search engines and AI answer systems. One block on
+  every page: the site as a WebSite, the specification as a TechArticle,
+  and the sponsor as an Organization, tied to the project's other homes
+  (GitHub, npm) via sameAs so knowledge graphs treat them as one entity.
+#}
+{% block extrahead %}
+  {{ super() }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://a202.org/#website",
+        "url": "https://a202.org/",
+        "name": "A202 Protocol",
+        "alternateName": "A202, the Verifiable Agreement Protocol for Agent-Led Commerce",
+        "description": "An open, carrier-neutral specification of commercial authority, negotiation state, and verifiable conformance for transactions between independent organisations, including transactions conducted on their behalf by software agents.",
+        "publisher": { "@id": "https://a202.org/#organization" }
+      },
+      {
+        "@type": "TechArticle",
+        "@id": "https://a202.org/#specification",
+        "headline": "A202, the Verifiable Agreement Protocol for Agent-Led Commerce",
+        "about": "An open specification of commercial authority, negotiation state, and verifiable conformance for agent-led transactions between independent organisations.",
+        "url": "https://a202.org/",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "author": { "@type": "Person", "name": "A. A. Musse" },
+        "publisher": { "@id": "https://a202.org/#organization" },
+        "sameAs": [
+          "https://github.com/a202-protocol/a202",
+          "https://www.npmjs.com/package/a202-protocol"
+        ]
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://a202.org/#organization",
+        "name": "Plural Worlds",
+        "url": "https://a202.org/",
+        "sameAs": [
+          "https://github.com/a202-protocol"
+        ]
+      }
+    ]
+  }
+  </script>
+{% endblock %}

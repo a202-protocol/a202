@@ -1,0 +1,46 @@
+# A202 Protocol
+
+> A202, the Verifiable Agreement Protocol for Agent-Led Commerce: an open, carrier-neutral, Apache-2.0 specification of commercial authority, negotiation state, and verifiable conformance for transactions between independent organisations, including transactions conducted on their behalf by software agents. Status: v0.1 working documents, pre-release. The name is spoken "A two-oh-two"; the 202 is HTTP 202 Accepted.
+
+A202 defines typed objects for delegated commercial authority, a state machine for the transaction and for each bilateral session inside it, rules for what may be disclosed to whom, and an executable conformance suite (148 fixtures) that turns each rule into a check an implementation passes or fails. It is not a payment protocol (it stops at an authorised settlement handoff to payment rails), not a transport (A2A and MCP are carriers), and not an identity scheme. Source of truth: https://github.com/a202-protocol/a202 (raw markdown of every document). Schemas resolve under https://schemas.a202.org. Full site text: https://a202.org/llms-full.txt
+
+## Overview
+
+- [What is A202?](https://a202.org/what-is-a202/): direct answers — definition, name, scope, non-goals, status
+- [Introduction](https://a202.org/introduction/): the three layers and a reading order
+- [A202 with A2A and MCP](https://a202.org/carriers/): how A202 composes with carrier protocols
+- [A202 compared with AP2, ACP, and UCP](https://a202.org/comparison/): what each protocol answers and assumes
+- [Charter](https://a202.org/CHARTER/): purpose, scope, non-goals, design principles
+- [Threat model](https://a202.org/THREAT-MODEL/): adversaries assumed and properties defended
+
+## Specification
+
+- [Canonical commercial model](https://a202.org/schemas/canonical-commercial-model-v0.1/): the object model, envelope, canonical bytes, and invariants
+- [Transaction profile extension model](https://a202.org/schemas/transaction-profile-extension-model-v0.1/): how domain vocabulary enters without changing the kernel
+- [Commercial mandate](https://a202.org/authority/commercial-mandate-v0.1/): delegated commercial authority as a typed, signed object
+- [Counterparty invitation](https://a202.org/discovery/counterparty-invitation-v0.1/): how parties with no prior presence enter a named transaction
+- [Transaction state machine](https://a202.org/negotiation/pilot-transaction-state-machine-v0.1/): the aggregate and per-session state machines
+- [Auction event semantics](https://a202.org/negotiation/auction-event-semantics-v0.1/): event and disclosure rules for competitive bidding
+- [Obligation](https://a202.org/agreement/obligation-v0.1/): what is owed once an agreement forms
+- [Evidence verification](https://a202.org/evidence/evidence-verification-v0.1/): what was proven, checkable by replay
+- [Determination and dispute](https://a202.org/disputes/determination-v0.1/): what was decided, and by whom
+- [Settlement handoff](https://a202.org/fulfillment/settlement-handoff-v0.1/): the authorised instruction handed to payment rails
+- [A2A carrier binding](https://a202.org/bindings/a2a-binding-v0.1/): carrying A202 objects over the Agent2Agent protocol
+
+## Conformance
+
+- [Conformance grades](https://a202.org/conformance/conformance-grades-v0.1/): the executable fixture set and what a grade asserts
+- [Role scopes](https://a202.org/conformance/conformance-role-scopes-v0.1/): the surface a grade covers
+
+## Reference
+
+- [Reference implementation](https://a202.org/reference/): a passing implementation of the specification
+- [A202 MCP server](https://a202.org/reference/a202_mcp/): the seven capabilities two organisations need to buy and sell directly, over the Model Context Protocol
+
+## Optional
+
+- [Governance](https://a202.org/GOVERNANCE/): how the project is run, and what the sponsor does and does not control
+- [Proposals](https://a202.org/proposals/): every normative change lands under a numbered, public proposal
+- [Releases](https://a202.org/RELEASES/): versioning and compatibility policy
+- [Contributing](https://a202.org/CONTRIBUTING/): terms a contribution is accepted under
+- [Trademark](https://a202.org/TRADEMARK/): permitted use of the A202 name

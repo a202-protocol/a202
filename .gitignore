@@ -28,3 +28,6 @@ build/
 # tracked tree and the site is what MkDocs renders from it.
 .mkdocs/stage/
 /site/
+
+# Local docs-build virtualenv
+.venv-docs/

@@ -1,3 +1,7 @@
+---
+description: "How the A202 protocol composes with A2A and MCP: A202 defines commercial meaning, A2A carries it between agents, and MCP gives a model the capabilities — three protocols that compose rather than compete."
+---
+
 # A202 with A2A and MCP
 
 **Status:** Informative in full. This page describes how A202 composes with

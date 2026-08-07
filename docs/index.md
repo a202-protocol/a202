@@ -1,5 +1,6 @@
 ---
 title: A202
+description: "A202, the Verifiable Agreement Protocol for Agent-Led Commerce: an open, carrier-neutral specification of commercial authority, negotiation state, and verifiable conformance for transactions between independent organisations and the software agents acting for them."
 hide:
   - navigation
   - toc

@@ -41,6 +41,56 @@ STAGE = ROOT / ".mkdocs" / "stage"
 ASSETS = ROOT / ".mkdocs" / "assets"
 DOCS = "docs/"
 
+# Stage-relative markdown files concatenated, in this order, into
+# `llms-full.txt` at the stage root: the full text of the site for a
+# language model that wants the documents rather than the rendered pages.
+# `llms.txt` (the curated map, authored in docs/) links to it.
+LLMS_FULL = [
+    "index.md",
+    "what-is-a202.md",
+    "introduction.md",
+    "carriers.md",
+    "comparison.md",
+    "CHARTER.md",
+    "THREAT-MODEL.md",
+    "schemas/canonical-commercial-model-v0.1.md",
+    "schemas/transaction-profile-extension-model-v0.1.md",
+    "authority/commercial-mandate-v0.1.md",
+    "discovery/counterparty-invitation-v0.1.md",
+    "negotiation/pilot-transaction-state-machine-v0.1.md",
+    "negotiation/auction-event-semantics-v0.1.md",
+    "agreement/obligation-v0.1.md",
+    "evidence/evidence-verification-v0.1.md",
+    "disputes/determination-v0.1.md",
+    "fulfillment/settlement-handoff-v0.1.md",
+    "bindings/a2a-binding-v0.1.md",
+    "conformance/conformance-grades-v0.1.md",
+    "conformance/conformance-role-scopes-v0.1.md",
+    "GOVERNANCE.md",
+    "RELEASES.md",
+]
+
+
+def write_llms_full() -> int:
+    parts = [
+        "# A202, the Verifiable Agreement Protocol for Agent-Led Commerce\n\n"
+        "This file is the concatenated markdown of the A202 site and "
+        "specification set, for language models. The curated map is "
+        "https://a202.org/llms.txt and the source of truth is "
+        "https://github.com/a202-protocol/a202.\n"
+    ]
+    included = 0
+    for rel in LLMS_FULL:
+        src = STAGE / rel
+        if not src.is_file():
+            print(f"llms-full: skipping missing {rel}", file=sys.stderr)
+            continue
+        parts.append(f"\n\n---\n\nSource: https://a202.org/{rel}\n\n")
+        parts.append(src.read_text(encoding="utf-8"))
+        included += 1
+    (STAGE / "llms-full.txt").write_text("".join(parts), encoding="utf-8")
+    return included
+
 EXCLUDED_PREFIXES = (".github/", ".mkdocs/")
 EXCLUDED_FILES = {
     ".editorconfig",
@@ -94,9 +144,12 @@ def main() -> int:
     if ASSETS.is_dir():
         shutil.copytree(ASSETS, STAGE / "assets", dirs_exist_ok=True)
 
+    concatenated = write_llms_full()
+
     print(
         f"staged {mirrored} tracked files and {promoted} site pages "
-        f"into {STAGE.relative_to(ROOT)}"
+        f"into {STAGE.relative_to(ROOT)}, and concatenated {concatenated} "
+        f"documents into llms-full.txt"
     )
     return 0
 

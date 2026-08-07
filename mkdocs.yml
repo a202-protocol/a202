@@ -29,6 +29,7 @@ validation:
 
 theme:
   name: material
+  custom_dir: .mkdocs/overrides
   font: false
   favicon: assets/favicon.svg
   icon:
@@ -86,8 +87,10 @@ plugins:
 nav:
   - Home: index.md
   - Overview:
+      - What is A202?: what-is-a202.md
       - Introduction: introduction.md
       - A202 with A2A and MCP: carriers.md
+      - A202 compared with AP2, ACP, and UCP: comparison.md
       - Charter: CHARTER.md
       - Threat model: THREAT-MODEL.md
   - Specification:

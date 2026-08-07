@@ -33,7 +33,7 @@ Only the open protocol: normative semantics, schemas, fixtures, the conformance 
 2. **No commercial material.** Strategy, pricing, monetization, customer references, competitor comparisons, and positioning against any other specification or product are out of scope, in a single sentence inside an otherwise technical document as much as in a whole file. A proposal that introduces them is closed with that reason.
 3. **No mechanism design.** The published surface is the property a participant is guaranteed, the interface and wire format a counterparty implements against, the procedure by which the property is independently verified, and the conformance tests with the public fixture set. Operator implementation mechanism sits outside that surface, as [CHARTER.md](CHARTER.md) section 3 states.
 4. **No build status.** A specification states what a conformant implementation must do. It does not report what any particular implementation has or has not built.
-5. **No path or link leaves this repository.** Every relative link and every referenced path must resolve inside this tree, which `.github/scripts/check-links.py` enforces on every change.
+5. **No path or link leaves a specification document.** Every relative link and every referenced path must resolve inside this tree, which `.github/scripts/check-links.py` enforces on every change. The one exception is `docs/`, the pages authored for the documentation site and informative in full: a site page that describes other projects cites their published documents over `https:`, because a citation is a reference to a source, not a dependency of the specification.
 
 ## Writing rules
 

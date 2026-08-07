@@ -1,3 +1,7 @@
+---
+description: "An orientation to the A202 protocol: the three layers — commercial objects, transaction state, and verification — and a reading order through the specification documents."
+---
+
 # Introduction
 
 **Status:** Informative in full. This page orients a reader; it states no

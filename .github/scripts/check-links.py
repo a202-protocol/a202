@@ -12,7 +12,13 @@ reference-style link definitions, and reports three kinds of defect:
     escaping    a relative target that resolves outside the repository root
     external    a target carrying a URL scheme, which leaves the tree by
                 definition. `mailto:` is allowed, because an address is a
-                correspondence route rather than a path out of the tree
+                correspondence route rather than a path out of the tree.
+                In `docs/` — the pages authored for the site, informative
+                in full — an `https:` link is also allowed: a site page
+                that describes other projects cites their published
+                documents, and a citation is a reference to a source, not
+                a dependency of the specification. Specification documents
+                keep the absolute rule
 
 Links inside fenced code blocks and inline code spans are skipped: a link in an
 example is a sample of what an implementation would emit, not a reference this
@@ -85,6 +91,8 @@ def classify(root, source, target):
         return None
     if SCHEME.match(target):
         if target.lower().startswith("mailto:"):
+            return None
+        if source.startswith("docs/") and target.lower().startswith("https:"):
             return None
         return "external: leaves the repository"
     path = target.split("#", 1)[0].split("?", 1)[0]
