@@ -1,0 +1,10 @@
+# Generated output and local machinery, none of which the MCP server reads.
+.git
+.github
+.mkdocs/stage
+.venv-docs
+site
+node_modules
+__pycache__
+*.pyc
+.DS_Store
