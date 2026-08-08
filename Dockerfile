@@ -8,6 +8,13 @@
 # where the same server's tests run on every change.
 FROM python:3.12-slim
 
+# The first label is how the MCP Registry verifies that the image at
+# ghcr.io/a202-protocol/a202-mcp belongs to the server named
+# io.github.a202-protocol/a202-mcp in server.json. The second links the
+# GHCR package back to this repository.
+LABEL io.modelcontextprotocol.server.name="io.github.a202-protocol/a202-mcp"
+LABEL org.opencontainers.image.source="https://github.com/a202-protocol/a202"
+
 WORKDIR /a202
 COPY . .
 

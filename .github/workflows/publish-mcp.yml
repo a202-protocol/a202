@@ -1,0 +1,61 @@
+name: Publish MCP server
+
+# Builds the reference MCP server image, pushes it to GHCR, and publishes
+# the server named in server.json to the MCP Registry
+# (registry.modelcontextprotocol.io). Publication is a deliberate act, so
+# the workflow runs only when dispatched by hand.
+#
+# The registry verifies two things: that this workflow's OIDC token comes
+# from the a202-protocol organisation, which grants the
+# io.github.a202-protocol/* namespace, and that the image at the
+# server.json identifier carries the io.modelcontextprotocol.server.name
+# label naming the same server. The image must be publicly pullable when
+# the publish step runs: GHCR creates a new package as private, so the
+# first run pushes the image, the package is made public once in its
+# settings, and the workflow is dispatched again to publish.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  publish:
+    name: Build, push, and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read the server version from server.json
+        id: version
+        run: echo "version=$(jq -r .version server.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push the image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/a202-protocol/a202-mcp:${{ steps.version.outputs.version }}
+            ghcr.io/a202-protocol/a202-mcp:latest
+
+      - name: Install mcp-publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Authenticate to the MCP Registry
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish to the MCP Registry
+        run: ./mcp-publisher publish
