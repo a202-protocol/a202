@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.a202-protocol/a202-mcp",
   "title": "A202",
-  "description": "Reference MCP server for A202, the Verifiable Agreement Protocol for Agent-Led Commerce: mandates, agreement formation, obligations, evidence verification, and transaction records.",
+  "description": "Verifiable agreements for agent-led commerce: mandates, obligations, evidence, transaction records.",
   "version": "0.1.0",
   "websiteUrl": "https://a202.org",
   "repository": {
