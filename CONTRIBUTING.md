@@ -2,9 +2,9 @@
 
 **Status:** Informative in full.
 
-## Pre-release status
+## Release status
 
-No release has been made. The contents are `v0.1` working documents under the release policy in [RELEASES.md](RELEASES.md).
+`v0.1.0` is the current release of the set, under the release policy in [RELEASES.md](RELEASES.md). It is pre-1.0, so a MINOR increment may break compatibility and any break carries migration notes.
 
 **External contributions are welcome**, under the terms and process below.
 

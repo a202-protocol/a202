@@ -90,9 +90,10 @@ Worlds; permitted use is stated in [TRADEMARK.md](../TRADEMARK.md).
 
 ## What is its status?
 
-**Pre-release.** The contents are `v0.1` working documents under the
-release policy in [RELEASES.md](../RELEASES.md); no release has been
-tagged. The conformance suite currently holds 148 executable fixtures,
+**Released, pre-1.0.** `v0.1.0` is the current release under the release
+policy in [RELEASES.md](../RELEASES.md): a tag, a digest for every schema
+file, the conformance manifest, and release notes, published together.
+The conformance suite currently holds 148 executable fixtures,
 and every normative change lands under a numbered, public
 [proposal](../proposals/README.md).
 

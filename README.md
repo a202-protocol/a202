@@ -12,9 +12,9 @@ Created and developed by A. A. Musse. See [MAINTAINERS.md](MAINTAINERS.md).
 
 ## Status
 
-**Pre-release.**
+**Released, pre-1.0.**
 
-- No release has been made. The contents are `v0.1` working documents, not a tagged release of the set. See [RELEASES.md](RELEASES.md).
+- `v0.1.0` is the first tagged release of the set: a tag, a digest for every schema file, the conformance manifest, and release notes, published together. See [RELEASES.md](RELEASES.md) and [CHANGELOG.md](CHANGELOG.md). Before 1.0 a MINOR increment may break compatibility, and any break carries migration notes.
 - The name is **A202**, spoken "A two-oh-two", and in full **A202, the Verifiable Agreement Protocol for Agent-Led Commerce**. The long form is a descriptor and not an expansion: the letters do not stand for it. The `202` is HTTP 202 Accepted, which [A202-0017](proposals/A202-0017-submission-success-status.md) makes the status an accepted submission returns, because acceptance is the primitive the rest of the specification is built on. The `A202-` reason-code prefix, the `A202-NNNN` proposal identifiers, and the `a202-commercial/0.1` specification version string all follow from the name.
 - **A202**™ is a trademark of Plural Worlds. Permitted use of the name is stated in [TRADEMARK.md](TRADEMARK.md).
 - Schema `$id` values resolve under `https://schemas.a202.org`. Fixture hosts use reserved `.invalid` names, because test data must never resolve.

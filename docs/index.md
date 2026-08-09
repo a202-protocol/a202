@@ -165,7 +165,6 @@ by another protocol without changing what they mean.
 
 ---
 
-**Status: pre-release.** No release has been made. The contents are `v0.1`
-working documents under the release policy in [RELEASES.md](../RELEASES.md),
-and the specification is licensed under the
-[Apache License, Version 2.0](../LICENSE).
+**Status: released, pre-1.0.** `v0.1.0` is the current release under the
+release policy in [RELEASES.md](../RELEASES.md), and the specification is
+licensed under the [Apache License, Version 2.0](../LICENSE).

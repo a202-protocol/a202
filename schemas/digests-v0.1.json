@@ -1,0 +1,40 @@
+{
+  "spec_version": "a202-commercial/0.1",
+  "release": "v0.1.0",
+  "algorithm": "sha-256",
+  "encoding": "hex-lower",
+  "covers": "The bytes of the file on disk, whole and unmodified, including its trailing newline. Not the canonical form of section 4 of the canonical commercial model, which covers commercial objects rather than schema documents.",
+  "description": "Digest of every schema file in the release, required by RELEASES.md section 3.2. A schema whose digest differs from the digest recorded here is not this release. Checked on every push and pull request by .github/scripts/check-schema-digests.py.",
+  "schemas": [
+    {
+      "path": "schemas/v0.1/commercial-kernel.schema.json",
+      "id": "https://schemas.a202.org/v0.1/commercial-kernel.schema.json",
+      "digest": "b4ca6b12a05590815e08d950d807620d722f14fd620dddd7ef5217fb63978de6"
+    },
+    {
+      "path": "schemas/v0.1/commercial-mandate.schema.json",
+      "id": "https://schemas.a202.org/v0.1/commercial-mandate.schema.json",
+      "digest": "b9111785deedcc9424a04e9d9b4d410fe026e3fdef45f5cfdf59acb62ce29327"
+    },
+    {
+      "path": "schemas/v0.1/conformance-grade.schema.json",
+      "id": "https://schemas.a202.org/v0.1/conformance-grade.schema.json",
+      "digest": "975e6c520f48e23fce69e9777f09e418ecb3be6be82bb05f15877566a1736057"
+    },
+    {
+      "path": "schemas/v0.1/profiles/calibration-service-0.1.schema.json",
+      "id": "https://schemas.a202.org/v0.1/profiles/calibration-service-0.1.schema.json",
+      "digest": "9740a1e4aa40aac1fee2da32ce8bf283e645b757480911f0c0bae8b42be156a7"
+    },
+    {
+      "path": "schemas/v0.1/profiles/freight-spot-0.1.schema.json",
+      "id": "https://schemas.a202.org/v0.1/profiles/freight-spot-0.1.schema.json",
+      "digest": "28c4c210904c84535bbc28073b09c1504eaa9db483eb87ec3e2dc884fc2b83db"
+    }
+  ],
+  "conformance_manifest": {
+    "path": "conformance/manifest-v0.1.json",
+    "digest": "5eb13df10f4f1222cac409659afb85a5586db8321bfb395dd14f4d973647b0c7",
+    "note": "The manifest as released, required by RELEASES.md section 3.3. Recorded here so that the fixture set a release names is as verifiable as the schemas it validates against."
+  }
+}
