@@ -79,7 +79,8 @@ for the field-by-field picture.
 
 ## Who is behind A202, and under what terms?
 
-A202 was created by A. A. Musse and is sponsored by Plural Worlds, under
+A202 was created by A. A. Musse and is sponsored by [Plural
+Worlds](https://pluralworlds.com), under
 a published [governance document](../GOVERNANCE.md) that states what the
 sponsor does and does not control. The whole repository — specification
 text, schemas, fixtures, and reference implementation — is licensed under
