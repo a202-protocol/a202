@@ -119,6 +119,6 @@ Each of the following is a stated scope decision.
 
 ## 8. Review status
 
-This threat model describes a pre-release specification. As of its date, no release has been tagged, no external security review of the specification has taken place, and no independent implementation exists. The conformance suite tests the specification's own reading of itself: the reference implementation and the runner were built against the same documents by the same project, so their agreement is a consistency check rather than independent confirmation.
+This threat model describes a pre-1.0 specification. As of its date, `v0.1.0` is the only tagged release, no external security review of the specification has taken place, and no independent implementation exists. The conformance suite tests the specification's own reading of itself: the reference implementation and the runner were built against the same documents by the same project, so their agreement is a consistency check rather than independent confirmation.
 
 External review is welcome. A reader who finds a way through any property in section 2 should report it privately per [SECURITY.md](SECURITY.md).

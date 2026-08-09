@@ -31,3 +31,13 @@ build/
 
 # Local docs-build virtualenv
 .venv-docs/
+
+# Wrangler's local account and deployment cache. Written by the Cloudflare
+# CLI when the schema host is deployed from this directory's neighbourhood.
+# It is a machine-local credential cache and never part of a release.
+.wrangler/
+
+# Release working notes. A checklist is written against one maintainer's
+# machine and names local paths; the released record is the tag, the
+# digests, the manifest, and CHANGELOG.md.
+/RELEASE-CHECKLIST-*.md

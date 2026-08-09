@@ -58,9 +58,9 @@ Version 1.0 is the point at which the compatibility guarantee in section 2 becom
 
 The governance under which 1.0 is declared is reviewed before it is declared. See [GOVERNANCE.md](GOVERNANCE.md) section 7.
 
-## 5. Pre-release status
+## 5. Release status
 
-No release has been made. The current contents are `v0.1` working documents, not a tagged release of the set. The policy above applies from the first release.
+`v0.1.0` is the first release of the set, made under the policy above: a tag on the released commit, a digest for every schema file, the conformance manifest as released, and release notes naming every `A202` identifier carried. The set is pre-1.0, so the compatibility freedoms and obligations in section 4 under "Before 1.0" apply to it.
 
 ## 6. Where the release notes accumulate
 

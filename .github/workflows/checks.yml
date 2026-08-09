@@ -78,3 +78,23 @@ jobs:
 
       - name: Every link resolves inside the tree
         run: python .github/scripts/check-links.py
+
+  digests:
+    name: Schema digests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # RELEASES.md section 3.2 requires a digest for every schema file, so
+      # that an implementer can verify that the schema it validates against
+      # is the schema that was released. This step is what keeps the recorded
+      # digests true: a schema or manifest edit that does not regenerate them
+      # fails here rather than at the next release.
+      - name: Recorded digests match the schemas and the manifest
+        run: python .github/scripts/check-schema-digests.py
