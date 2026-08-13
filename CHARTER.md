@@ -38,12 +38,12 @@ The specification covers the following object families. Each is present in this 
 
 The following are outside the specification. They are named because each is adjacent enough that a reader would otherwise reasonably expect to find it here.
 
-1. **Agent profiles and listings.** How an agent or organisation describes itself for discovery, and how supply and demand are advertised, are not specified here.
-2. **Marketplace and matching.** Bringing a buyer and a seller together, ranking candidates, and recommending counterparties are not specified here. A202 begins once the parties are identified.
-3. **Settlement orchestration.** The specification defines a settlement instruction as an authorised object and an adapter receipt as evidence of an external system's response. Moving money, routing payments, and reconciling ledgers belong to payment rails and are not specified here.
-4. **Reputation.** No score, rating, or history-derived trust signal is defined. Assurance is reported from evidence, and conformance grades are reported from assessment. Neither is reputation, and neither is inferred from transaction outcomes.
-5. **Turn-taking and impasse.** Whose turn it is, how many responses an open offer may receive, and when a negotiation is declared deadlocked are not specified in v0.1. The state machine constrains which transitions are legal, not the conversational discipline over them.
-6. **Operator implementation mechanism.** How any particular operator implements isolation, evaluates policy, ranks or scores bids, sequences streams, handles award contention, normalises timing and error responses, generates adversarial test cases, or runs an appeal is outside this specification and is not published here. What is published is the property such an implementation must exhibit, the interface a counterparty implements against, and the procedure by which the property is independently verified.
+1. **Agent profiles and listings.**
+2. **Marketplace and matching.**
+3. **Settlement orchestration.**
+4. **Reputation.**
+5. **Turn-taking and impasse.**
+6. **Operator implementation mechanism.**
 
 A non-goal is a statement about this specification's scope. It is not a claim that the excluded capability is unimportant, and it does not prevent a later version from taking one of these up through the proposal process.
 

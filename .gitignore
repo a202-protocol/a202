@@ -41,3 +41,4 @@ build/
 # machine and names local paths; the released record is the tag, the
 # digests, the manifest, and CHANGELOG.md.
 /RELEASE-CHECKLIST-*.md
+.gstack/
