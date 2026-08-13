@@ -98,3 +98,28 @@ jobs:
       # fails here rather than at the next release.
       - name: Recorded digests match the schemas and the manifest
         run: python .github/scripts/check-schema-digests.py
+
+  npm:
+    name: npm package identifiers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # packages/a202-protocol/ is published to npm and carries no
+      # implementation, so the identifiers it exports are the whole of what it
+      # says. This step holds them to the tree: a specification version bump
+      # that does not update the package fails here rather than being noticed
+      # by an implementer reading a stale published artifact.
+      - name: Exported identifiers match the specification
+        run: python .github/scripts/check-npm-package.py
+
+      - name: The package loads and packs
+        run: |
+          node -e "require('./packages/a202-protocol')"
+          npm pack --dry-run ./packages/a202-protocol
