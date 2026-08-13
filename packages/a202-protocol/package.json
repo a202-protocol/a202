@@ -1,0 +1,24 @@
+{
+  "name": "a202-protocol",
+  "version": "0.0.1",
+  "description": "A202, the Verifiable Agreement Protocol for Agent-Led Commerce. This package holds the name for the protocol project; the JavaScript SDK has not been published yet.",
+  "keywords": [
+    "a202",
+    "protocol",
+    "commerce",
+    "agents",
+    "verifiable",
+    "specification"
+  ],
+  "homepage": "https://a202.org",
+  "bugs": "https://github.com/a202-protocol/a202/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a202-protocol/a202.git"
+  },
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ]
+}
