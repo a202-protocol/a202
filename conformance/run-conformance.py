@@ -77,6 +77,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import re
 import sys
@@ -95,6 +96,20 @@ SCHEMAS = ROOT / "schemas" / "v0.1"
 PROFILES = SCHEMAS / "profiles"
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "v0.1"
 MANIFEST = Path(__file__).resolve().parent / "manifest-v0.1.json"
+
+
+def load_reference_canonical_bytes():
+    """Load the repository's canonicalizer without importing package extras."""
+    path = ROOT / "reference" / "a202_reference" / "canonical.py"
+    spec = importlib.util.spec_from_file_location("a202_reference_canonical", path)
+    if spec is None or spec.loader is None:  # pragma: no cover - import machinery
+        raise RuntimeError(f"cannot load canonicalizer from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.canonical_bytes
+
+
+canonical_bytes = load_reference_canonical_bytes()
 
 
 def load(path: Path) -> dict:
@@ -130,27 +145,6 @@ def profile_registry() -> dict[str, dict]:
 
 def rfc3339(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
-
-
-def canonical_bytes(obj: dict) -> bytes:
-    """Serialize under the canonicalization profile of canonical model section 4.
-
-    content_hash, signatures, and kernel_annotations are omitted from the bytes
-    being hashed, so that a control-plane annotation attached after signing can
-    never become load bearing, and so that a signature covers the object rather
-    than the framing around it.
-
-    RFC 8785 orders members by their UTF-16 code units. Every key in this
-    fixture set is ASCII, where that order and Python's own string order agree.
-    """
-    stripped = {
-        key: value
-        for key, value in obj.items()
-        if key not in ("content_hash", "signatures", "kernel_annotations")
-    }
-    return json.dumps(
-        stripped, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    ).encode("utf-8")
 
 
 def content_hash_of(obj: dict) -> str:
