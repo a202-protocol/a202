@@ -1,0 +1,12 @@
+{
+  "description": "RFC 8785 orders object member names by UTF-16 code units, so a supplementary-plane key sorts before U+E000.",
+  "value": {
+    "id": "x",
+    "content_hash": "excluded",
+    "signatures": [{"signature": "excluded"}],
+    "kernel_annotations": {"trace": "excluded"},
+    "\ue000": "internal",
+    "\ud83d\udea2": "freight"
+  },
+  "canonical": "{\"id\":\"x\",\"\ud83d\udea2\":\"freight\",\"\ue000\":\"internal\"}"
+}
