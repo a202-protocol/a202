@@ -5,7 +5,7 @@ import unittest
 
 from a202_reference.canonical import canonical_bytes, canonicalize, content_hash
 
-from .support import FIXTURES, runner
+from .support import FIXTURES, REPO_ROOT, runner
 
 
 class CanonicalizationTest(unittest.TestCase):
@@ -23,6 +23,19 @@ class CanonicalizationTest(unittest.TestCase):
         # point. Python's native string order would sort these the other way.
         value = {"！": 1, "\U0001d306": 2}
         self.assertEqual(canonicalize(value), '{"\U0001d306":2,"！":1}')
+
+    def test_runner_uses_utf16_code_unit_ordering(self):
+        vector_path = (
+            REPO_ROOT
+            / "conformance"
+            / "fixtures"
+            / "canonicalization"
+            / "rfc8785-utf16-member-order.json"
+        )
+        vector = json.loads(vector_path.read_text())
+        expected = vector["canonical"].encode("utf-8")
+        self.assertEqual(canonical_bytes(vector["value"]), expected)
+        self.assertEqual(runner.canonical_bytes(vector["value"]), expected)
 
     def test_floats_refused(self):
         with self.assertRaises(ValueError):
